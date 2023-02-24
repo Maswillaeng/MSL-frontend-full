@@ -1,9 +1,13 @@
 const Li = ({data}) => {
     return <> {
         Object.keys(data)[0] !== '게시판'
-            ? <li className="nav-item">
-                    <a className="nav-link" href={data[Object.keys(data)[0]].href}>{Object.keys(data)[0]}</a>
-                </li>
+            ? data[Object.keys(data)[0]].event
+                ? <li className="nav-item" onClick={data[Object.keys(data)[0]].event}>
+                        <a className="nav-link" href='#!'>{Object.keys(data)[0]}</a>
+                    </li>
+                : <li className="nav-item">
+                        <a className="nav-link" href={data[Object.keys(data)[0]].href}>{Object.keys(data)[0]}</a>
+                    </li>
             : <li className="nav-item dropdown">
                     <a
                         className="nav-link dropdown-toggle"

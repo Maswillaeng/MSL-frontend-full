@@ -1,13 +1,16 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowRight, faArrowLeft, faCircle as faCircleS, faThumbsUp as faThumbsUpS, faThumbsDown as faThumbsDownS} from '@fortawesome/free-solid-svg-icons';
 import {faCircle as faCircleR, faThumbsUp as faThumbsUpR, faBell, faThumbsDown as faThumbsDownR} from '@fortawesome/free-regular-svg-icons';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Comment from '../components/Comment';
 import Button from '../components/Button';
 import {useNavigate} from 'react-router-dom';
 
 export default function BoardDetail() {
     const [login, setLogin] = useState(true)
+    useEffect(()=>{
+        //네비타고 들어왔을때 페이지 최상단으로 셋팅되도록 해줘야함
+    },[])
     return <div
         className='container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5'
         style={{

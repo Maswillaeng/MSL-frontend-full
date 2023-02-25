@@ -5,31 +5,23 @@ const Nav = () => {
     const location = useLocation();
   return (
     <>
-      {location.pathname === '/' && <MainNav/>}
-      {location.pathname === '/login' && <MainNav />}
-      {location.pathname === '/signUp' && <MainNav />}
-      {location.pathname === '/board' && <MainNav />}
-      {location.pathname === '/boardDetail/:id' && <MainNav />}
-      {location.pathname === '/boardCreate' && <BoardCreateNav />}
+      {location.pathname === '/boardCreate' ? <BoardCreateNav /> : <MainNav/>}
     </>
   );
 }
 
 const MainNav = ()=>{
-    const navArr = [
-        {
-            "홈으로": {
-                href: "/"
-            }
-        }, {
-            "로그인하기": {
-                href: "/login"
-            }
-        }, {
+    const navArr = [  {
             "회원가입": {
                 href: "/signUp"
             }
-        }, {
+        },
+        {
+            "로그인하기": {
+                href: "/login"
+            }
+        },
+        {
             "게시판": {
                 href: "/#!"
             }
@@ -37,20 +29,10 @@ const MainNav = ()=>{
     ]
 
     return <nav className="navbar navbar-expand-lg bg-light py-2 fs-3">
-        <div className="container-fluid">
+        <div className="container-fluid px-5">
             <a className="navbar-brand fs-1" href="/">칵테일 레시피</a>
-            <button
-                className="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul className="navbar-nav">
+                <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center">
                     {
                         navArr.map((data, idx) =>< Li data = {
                             data

@@ -95,7 +95,6 @@ const BottomHotBox = () => {
         if(rowCount>1){
             addRowData(rowCount) 
         }
-        
     },[rowCount])
     return <div className='w-75 my-5'>
         <div className='ps-3 fs-1 '>

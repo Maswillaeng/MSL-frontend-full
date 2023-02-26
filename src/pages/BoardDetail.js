@@ -6,6 +6,7 @@ import Comment from '../components/Comment';
 import Button from '../components/Button';
 import {useNavigate,useLocation} from 'react-router-dom';
 import members from '../dummy/members';
+import ProfileIcon from '../components/ProfileIcon';
 
 export default function BoardDetail() {
     const location = useLocation()
@@ -50,7 +51,8 @@ const TopImgBox = ({data}) => {
                 onClick={downCurrentImg}
                 className='mx-3 '
                 style={{
-                    height: '40px'
+                    height: '40px',
+                    cursor:'pointer'
                 }}/>} 
             </div>
             <div>
@@ -71,7 +73,8 @@ const TopImgBox = ({data}) => {
                 onClick={upCurrentImg}
                 className='mx-3 '
                 style={{
-                    height: '40px'
+                    height: '40px',
+                    cursor:'pointer'
                 }}/>} 
             </div>            
         </div>
@@ -88,7 +91,16 @@ const TopImgBox = ({data}) => {
 }
 
 const TopProfileBox = ({data}) => {
+    const [like,setLike]=useState(false)
+    const likeHandler =()=>{
+        setLike(!like)
+    }
+    const [subscribe,setSubscribe]=useState(false)
+    const subscribeHandler =()=>{
+        setSubscribe(!subscribe)
+    }
     const userImgae = members.filter(x=>x.nickname===data.nickname)[0].userImage
+    const userSubscribe = members.filter(x=>x.nickname===data.nickname)[0].subscribeCount
     return <div className='w-100 d-flex justify-content-center align-items-center'>
         <div className=' mt-5 '>
             <img
@@ -97,49 +109,23 @@ const TopProfileBox = ({data}) => {
                     height: '70px'
                 }}
                 src={userImgae}
-                alt="1"/>
+                alt="detailThumbnail"/>
         </div>
         <div className='ms-2 mt-5 me-5'>
             <div >
                 {data.nickname}
             </div>
             <div className='d-flex justify-content-center align-items-center'>
-                구독자 35명
+                구독자 {userSubscribe}명
             </div>
         </div>
         <div
             className='mx-5 mt-5 d-flex justify-content-start align-items-start flex-column'>
-            <div className='mb-3'>
-                <FontAwesomeIcon
-                    style={{
-                        height: '25px',
-                        cursor: 'pointer',
-                        marginBottom: '-5px'
-                    }}
-                    icon={faThumbsUpR}
-                    className='me-1 '/>
-                <span
-                    style={{
-                        color: 'white',
-                        cursor: 'pointer'
-                    }}
-                    className='bg-primary p-2 rounded'>좋아요</span>
+            <div className='mb-4' onClick={likeHandler}>
+                <ProfileIcon message={'좋아요'} type={like} addStyle={like ? 'bg-primary border-primary' : 'border-primary'}/>
             </div>
-            <div >
-                <FontAwesomeIcon
-                    style={{
-                        height: '25px',
-                        cursor: 'pointer',
-                        marginBottom: '-5px'
-                    }}
-                    icon={faBell}
-                    className='me-2'/>
-                <span
-                    style={{
-                        color: 'white',
-                        cursor: 'pointer'
-                    }}
-                    className='bg-danger p-2 rounded'>구독하기</span>
+            <div onClick={subscribeHandler}>
+                <ProfileIcon message={'구독하기'} type={subscribe} addStyle={subscribe ? 'bg-danger border-danger ms-1' : 'border-danger ms-1'}/>
             </div>
         </div>
     </div>
@@ -154,7 +140,7 @@ const TopContentBox = ({data}) => {
         </div>
         <div
             className='w-50 mb-4 d-flex flex-column justify-content-end align-items-end'>
-            2023-02-24
+            {data.createAt}
         </div>
         <div className='w-50'>
             {data.content}

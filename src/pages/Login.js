@@ -71,7 +71,7 @@ export default function Login() {
             <div className='mx-5'>
                 <a className='nav-link' href="/signUp">회원가입</a>
             </div>
-            <div>
+            <div className='my-3'>
                 <span style={{
                         cursor: 'pointer'
                     }}>이메일

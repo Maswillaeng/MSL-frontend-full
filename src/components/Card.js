@@ -15,7 +15,7 @@ const Card = ({data}) => {
                 cursor: 'pointer'
             }}>
             <div className='mb-5'>
-                <img style={{maxHeight:'200px',minHeight:'200px'}} src={data.thumbnail} alt="1"/>
+                <img style={{maxHeight:'180px',minHeight:'180px'}} src={data.thumbnail} alt="thumbnail"/>
             </div>
             <div
                 className='mt-4'

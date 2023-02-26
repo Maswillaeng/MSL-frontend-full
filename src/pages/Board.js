@@ -26,39 +26,45 @@ export default function Board() {
     }
     //카드 줄 카운트
     const [rowCount, setRowCount] = useState(1)
+    console.log(rowCount)
     //api가 생기면 활용할 로딩
     const [loading, setLoading] = useState(false)
-    const loadingHandeler = () => {
-        setLoading(!loading)
-    }
     useEffect(() => {
+        setLoading(true)
         infinityScroll(setRowCount, scroll, rowCount)
-        reloadCardData(rowCount)
-    }, [scroll,rowCount])
+        .then(()=>{
+            setLoading(false)
+        })
+    }, [scroll])
     return <div
         className='container rounded d-flex flex-column justify-content-center align-items-center my-5'
         style={{
             maxWidth: '90vw',
             minHeight: '85vh'
         }}>
-        <BoardTop/>
+        <BoardTop reloadCardData={reloadCardData} rowCount={rowCount}/>
         <BoardMiddle cardData={cardData} rowCount={rowCount} rowData={rowData} reloadCardData={reloadCardData} addRowData={addRowData} />
         <BoardBottom loading={loading}/>
     </div>
 }
 
-const BoardTop = () => {
+const BoardTop = ({reloadCardData,rowCount}) => {
+    //useEffect를 스크롤과 rowCount를 같이썼더니 의도치않은 랜더링이 일어나서 top을 활용해서 변경하기로함
+    useEffect(()=>{
+        reloadCardData(rowCount)
+    },[rowCount])
     return <div className={`d-flex flex-column justify-content-flex w-100 mt-1 `}>
         <h1 className='ps-5'>자유게시판</h1>
     </div>
 }
 
 const BoardMiddle = ({rowCount,cardData,rowData,addRowData}) => {
+    //cardData가 변경되면 CardRow 추가
     useEffect(()=>{
-        if(rowCount>2){
+        if(rowCount>1){
             addRowData(cardData) 
         }
-    },[rowCount])
+    },[cardData])
 
     return <div
         className={`d-flex flex-column justify-content-start align-items-center w-100 flex-grow-1 mt-5`}>

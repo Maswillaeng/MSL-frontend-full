@@ -12,7 +12,7 @@ const CardRow = ({cardList}) => {
                 x
             }
             key = {
-                x
+                x.post_id
             } />)
         }
     </div>

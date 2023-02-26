@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '../components/Button'
 import CardRow from '../components/CardRow';
+import boardData from '../dummy/boardData';
+
 
 const Home = () => {
     return <div
@@ -21,10 +23,10 @@ const TopSearchBox = () => {
         console.log('hi')
     }
     return <div className='mb-3 w-100 d-flex justify-content-center align-items-center'>
-        <form class="my-2 d-flex justify-content-center align-items-center">
+        <form className="my-2 d-flex justify-content-center align-items-center">
             <input
                 type="text"
-                class="form-control w-75 me-2"
+                className="form-control w-75 me-2"
                 id="search"
                 placeholder="검색어를 입력해주세요."/>
             <Button className='w-25' buttonEvent={buttonEvent} message={'검색'}/>
@@ -35,38 +37,38 @@ const TopSearchBox = () => {
 const TopMainNavBox = () => {
     return <div className='mb-5 w-100 d-flex justify-content-center align-items-center'>
         <ul
-            class="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
+            className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
             <li
-                class="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
-                <a class="nav-link active" aria-current="page" href="#!">MY페이지</a>
+                className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
+                <a className="nav-link active" aria-current="page" href="#!">MY페이지</a>
             </li>
             <li
-                class="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
-                <a class="nav-link" href="#!">레시피</a>
+                className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
+                <a className="nav-link" href="#!">레시피</a>
             </li>
             <li
-                class="nav-item dropdown flex-grow-1 d-flex justify-content-center align-items-center">
+                className="nav-item dropdown flex-grow-1 d-flex justify-content-center align-items-center">
                 <a
-                    class="nav-link dropdown-toggle"
+                    className="nav-link dropdown-toggle"
                     data-bs-toggle="dropdown"
                     href="#!"
                     role="button"
                     aria-expanded="false">칵테일맛집</a>
-                <ul class="dropdown-menu ">
+                <ul className="dropdown-menu ">
                     <li>
-                        <a class="dropdown-item" href="#!">서울/경기</a>
+                        <a className="dropdown-item" href="#!">서울/경기</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#!">광역시</a>
+                        <a className="dropdown-item" href="#!">광역시</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#!">그외</a>
+                        <a className="dropdown-item" href="#!">그외</a>
                     </li>
                 </ul>
             </li>
             <li
-                class="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
-                <a class="nav-link disabled" href="#!" tabindex="-1" aria-disabled="true">미정</a>
+                className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
+                <a className="nav-link disabled" href="#!" tabIndex="-1" aria-disabled="true">미정</a>
             </li>
         </ul>
     </div>
@@ -79,28 +81,33 @@ const TopImgBox = () => {
 }
 
 const BottomHotBox = () => {
+    const [rowData,setRowData]=useState([boardData.slice(0,4)])
+    const addRowData =(count)=>{
+        if(boardData.slice(4*(count-1),4*count).length!==0){
+            setRowData([...rowData,boardData.slice(4*(count-1),4*count)])
+        }
+    }
     const [rowCount, setRowCount] = useState(1)
     const upRowCount = () => {
         setRowCount(rowCount + 1)
     }
-    const rowList = Array(rowCount)
-        .fill(1)
-        .map((x, i) => x = x + i)
-    console.log(rowList)
-    const cardList = Array(4)
-        .fill(1)
-        .map((x, i) => x = x + i)
+    useEffect(()=>{
+        if(rowCount>1){
+            addRowData(rowCount) 
+        }
+        
+    },[rowCount])
     return <div className='w-75 my-5'>
         <div className='ps-3 fs-1 '>
             인기레시피
         </div>
         <div className='my-3 w-100'>
             {
-                rowList.map(x =>< CardRow key = {
-                    x
+                rowData.map((x,i) =>< CardRow key = {
+                    i
                 }
                 cardList = {
-                    cardList
+                    x
                 } />)
             }
         </div>

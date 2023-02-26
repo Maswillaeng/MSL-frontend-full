@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CardRow from '../components/CardRow';
 import Loading from '../components/Loading';
+import boardData from '../dummy/boardData';
 import {infinityScroll} from '../function/infinityScroll';
 
 export default function Board() {
@@ -8,9 +9,22 @@ export default function Board() {
     const [scroll, setScroll] = useState(0)
     window.addEventListener('scroll', () => {
         setScroll(document.documentElement.scrollTop)
-        console.log(scroll)
     })
     //카드 카운트
+    const [cardData,setCardData] = useState(boardData.slice(0,4))
+
+    //rowCount를 전달받아서 활용하면 될듯?
+    const reloadCardData = (number)=>{
+        setCardData(boardData.slice(4*(number-1),4*number))
+    }
+    //cardData를 전달받아서 데이터를 추가
+    const [rowData,setRowData] = useState([cardData])
+    const addRowData = (data)=>{
+        if(data.length!==0){
+            setRowData([...rowData,data])
+        }
+    }
+    //카드 줄 카운트
     const [rowCount, setRowCount] = useState(1)
     //api가 생기면 활용할 로딩
     const [loading, setLoading] = useState(false)
@@ -19,7 +33,8 @@ export default function Board() {
     }
     useEffect(() => {
         infinityScroll(setRowCount, scroll, rowCount)
-    }, [scroll])
+        reloadCardData(rowCount)
+    }, [scroll,rowCount])
     return <div
         className='container rounded d-flex flex-column justify-content-center align-items-center my-5'
         style={{
@@ -27,7 +42,7 @@ export default function Board() {
             minHeight: '85vh'
         }}>
         <BoardTop/>
-        <BoardMiddle rowCount={rowCount}/>
+        <BoardMiddle cardData={cardData} rowCount={rowCount} rowData={rowData} reloadCardData={reloadCardData} addRowData={addRowData} />
         <BoardBottom loading={loading}/>
     </div>
 }
@@ -38,16 +53,17 @@ const BoardTop = () => {
     </div>
 }
 
-const BoardMiddle = ({rowCount}) => {
-    //카드리스트 데이터를 4개씩 짤라서 전달해야할듯?
-    const cardList = Array(4)
-        .fill(1)
-        .map((x, i) => x = x + i)
-    const cardRowList = Array(rowCount).fill(1)
+const BoardMiddle = ({rowCount,cardData,rowData,addRowData}) => {
+    useEffect(()=>{
+        if(rowCount>2){
+            addRowData(cardData) 
+        }
+    },[rowCount])
+
     return <div
         className={`d-flex flex-column justify-content-start align-items-center w-100 flex-grow-1 mt-5`}>
         <div className="container text-center">
-            {cardRowList.map(x => <CardRow cardList={cardList} key={x}/>)}
+          {rowData.map((x,i)=><CardRow cardList={x} key={i}/>)}
         </div>
     </div>
 }

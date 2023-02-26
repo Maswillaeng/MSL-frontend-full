@@ -1,11 +1,11 @@
-export const infinityScroll = (setRowCount, scroll, rowCount) => {
-    if (scroll === 37) {
+export  const infinityScroll = async(setRowCount, scroll, rowCount) => {
+    if (scroll === 40) {
         setRowCount(rowCount + 1)
     }
-    if (scroll === 429) {
+    if (scroll === 461) {
         setRowCount(rowCount + 1)
     }
-    if (scroll === 429 + (498 * (rowCount - 2))) {
+    if (scroll === 461 + (498 * (rowCount - 2))) {
         setRowCount(rowCount + 1)
     }
 }

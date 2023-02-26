@@ -4,9 +4,11 @@ import {faCircle as faCircleR, faThumbsUp as faThumbsUpR, faBell, faThumbsDown a
 import React, {useEffect, useState} from 'react';
 import Comment from '../components/Comment';
 import Button from '../components/Button';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate,useLocation} from 'react-router-dom';
+import members from '../dummy/members';
 
 export default function BoardDetail() {
+    const location = useLocation()
     const [login, setLogin] = useState(true)
     useEffect(()=>{
         //네비타고 들어왔을때 페이지 최상단으로 셋팅되도록 해줘야함
@@ -17,51 +19,76 @@ export default function BoardDetail() {
             maxWidth: '60vw'
         }}>
         <div className='w-100 mb-5'>
-            <TopImgBox/>
-            <TopProfileBox/>
-            <TopContentBox/>
+            <TopImgBox data={location.state.data}/>
+            <TopProfileBox data={location.state.data}/>
+            <TopContentBox data={location.state.data}/>
         </div>
         <BottomCommentBox login={login}/>
     </div>
 }
 
-const TopImgBox = () => {
-    const imgSrc = 'https://blog.kakaocdn.net/dn/bpgcLh/btqDpgZy521/qnY4WLpC8YSEiG1UWavVk0/img.jpg'
+const TopImgBox = ({data}) => {
     //이미지 개수만큼 생성할 state만들어야할듯
+    const circleArr = Array(data.imgSrc.length).fill(1)
+    const [currentImg, setCurrentImg] = useState(0)
+    const upCurrentImg = ()=>{
+        if(currentImg<data.imgSrc.length-1){
+            setCurrentImg(currentImg+1)
+        }
+    }
+    const downCurrentImg = ()=>{
+        if(currentImg>0){
+        setCurrentImg(currentImg-1)
+        }
+    }
     return <div
         className='w-100 d-flex justify-content-center align-items-center flex-column'>
-        <div>
-            <FontAwesomeIcon
+        <div className='d-flex justify-content-center align-items-center'>
+            <div style={{minWidth:'70px',}}>
+            {currentImg!==0 &&<FontAwesomeIcon
                 icon={faArrowLeft}
+                onClick={downCurrentImg}
                 className='mx-3 '
                 style={{
                     height: '40px'
-                }}/>
+                }}/>} 
+            </div>
+            <div>
             <img
-                className='rounded img-thumbnail'
+                className='img-thumbnail'
                 style={{
-                    width: '500px'
+                    minHeight:'350px',
+                    maxHeight:'350px',
+                    minWidth: '500px',
+                    maxWidth: '500px',
                 }}
-                src={imgSrc}
+                src={data.imgSrc[currentImg]}
                 alt="1"/>
-            <FontAwesomeIcon
+            </div>
+            <div style={{minWidth:'70px',}}>
+            {currentImg<data.imgSrc.length-1 &&<FontAwesomeIcon
                 icon={faArrowRight}
-                className='mx-3'
+                onClick={upCurrentImg}
+                className='mx-3 '
                 style={{
                     height: '40px'
-                }}/>
+                }}/>} 
+            </div>            
         </div>
         <div>
-            <FontAwesomeIcon icon={faCircleS} className='mx-2 mt-2'/>
-            <FontAwesomeIcon icon={faCircleR} className='mx-2 mt-2'/>
-            <FontAwesomeIcon icon={faCircleR} className='mx-2 mt-2'/>
-            <FontAwesomeIcon icon={faCircleR} className='mx-2 mt-2'/>
-            <FontAwesomeIcon icon={faCircleR} className='mx-2 mt-2'/>
+            {
+                circleArr.map(
+                    (x, i) => currentImg === i
+                        ? <FontAwesomeIcon icon={faCircleS} className='mx-2 mt-2' key={i}/>
+                        : <FontAwesomeIcon icon={faCircleR} className='mx-2 mt-2' key={i}/>
+                )
+            }
         </div>
     </div>
 }
 
-const TopProfileBox = () => {
+const TopProfileBox = ({data}) => {
+    const userImgae = members.filter(x=>x.nickname===data.nickname)[0].userImage
     return <div className='w-100 d-flex justify-content-center align-items-center'>
         <div className=' mt-5 '>
             <img
@@ -69,12 +96,12 @@ const TopProfileBox = () => {
                 style={{
                     height: '70px'
                 }}
-                src={'https://avatars.githubusercontent.com/u/117655658?v=4'}
+                src={userImgae}
                 alt="1"/>
         </div>
         <div className='ms-2 mt-5 me-5'>
             <div >
-                shdomi8599
+                {data.nickname}
             </div>
             <div className='d-flex justify-content-center align-items-center'>
                 구독자 35명
@@ -118,11 +145,11 @@ const TopProfileBox = () => {
     </div>
 }
 
-const TopContentBox = () => {
+const TopContentBox = ({data}) => {
     return <div
         className='d-flex flex-column justify-content-center align-items-center my-5'>
         <div className='w-50'>
-            <h1>맛있는 칵테일레시피입니다
+            <h1>{data.title}
             </h1>
         </div>
         <div
@@ -130,7 +157,7 @@ const TopContentBox = () => {
             2023-02-24
         </div>
         <div className='w-50'>
-            너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 너무 맛있따 
+            {data.content}
         </div>
     </div>
 }

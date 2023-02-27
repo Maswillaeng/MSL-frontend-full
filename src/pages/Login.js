@@ -2,8 +2,13 @@ import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import login from "../function/login";
+import members from "../dummy/members";
+import { useNavigate } from "react-router-dom";
+import getUser from "../function/getUser";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
   const userArr = ["email", "password"];
   const targetRefs = useRef([]);
@@ -27,14 +32,22 @@ export default function Login() {
     //     .then((res) => {
     //         console.log(res);
     //     })
-    setFormCheck(true);
+
+    if (
+      members.filter(
+        (x) => x.email === user.email && x.password === user.password
+      ).length !== 0
+    ) {
+      login(
+        members.filter(
+          (x) => x.email === user.email && x.password === user.password
+        )[0].nickname
+      );
+      alert("로그인에 성공했습니다.");
+      navigate("/");
+    }
   };
-  //폼 제출 체크용
-  const [formCheck, setFormCheck] = useState(false);
-  //제출되면 다시 false로
-  useEffect(() => {
-    setFormCheck(false);
-  }, [formCheck]);
+
   return (
     <form
       className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"

@@ -14,10 +14,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import members from "../dummy/members";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
+import getUser from "../function/getUser";
 
 export default function BoardDetail() {
   const location = useLocation();
-  const [login, setLogin] = useState(true);
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -33,7 +33,7 @@ export default function BoardDetail() {
         <TopProfileBox data={location.state.data} />
         <TopContentBox data={location.state.data} />
       </div>
-      <BottomCommentBox login={login} data={location.state.data} />
+      <BottomCommentBox data={location.state.data} />
     </div>
   );
 }
@@ -195,7 +195,7 @@ const BottomCommentBox = ({ login, data }) => {
   };
   //비회원일때 로그인창으로 이동하게 조건문 달아줘야할듯
   const buttonEvent = () => {
-    if (false) {
+    if (!getUser('user')) {
       return navigate("/login");
     }
     if (commentText === "") {
@@ -203,7 +203,7 @@ const BottomCommentBox = ({ login, data }) => {
     }
     commentData.push({
       post_id: data.post_id,
-      nickname: "shdomi8599",
+      nickname: getUser('user'),
       createAt: "2023-02-27",
       content: commentText,
       like: 0,
@@ -227,7 +227,7 @@ const BottomCommentBox = ({ login, data }) => {
         ))}
       </div>
       <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">
-        {login ? (
+        {getUser('user') ? (
           <>
             <div className="w-100 d-flex justify-content-center align-items-center flex-column">
               <button
@@ -255,7 +255,7 @@ const BottomCommentBox = ({ login, data }) => {
                       }
                       alt="1"
                     />
-                    <span className="ms-1">shdomi8599</span>
+                    <span className="ms-1">{getUser('user')}</span>
                   </label>
                   <textarea
                     value={commentText}

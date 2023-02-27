@@ -26,7 +26,6 @@ export default function Board() {
   };
   //카드 줄 카운트
   const [rowCount, setRowCount] = useState(1);
-  console.log(rowCount);
   //api가 생기면 활용할 로딩
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -57,7 +56,7 @@ export default function Board() {
 }
 
 const BoardTop = ({ reloadCardData, rowCount }) => {
-  //useEffect를 스크롤과 rowCount를 같이썼더니 의도치않은 랜더링이 일어나서 top을 활용해서 변경하기로함
+  //Board의 useEffect로 스크롤과 rowCount를 같이썼더니 의도치않은 랜더링이 일어나서 BoardTop을 활용해서 변경하기로함
   useEffect(() => {
     reloadCardData(rowCount);
   }, [rowCount]);

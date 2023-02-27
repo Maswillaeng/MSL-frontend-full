@@ -38,14 +38,13 @@ const BoardCreate = () => {
   const [postData, setPostData] = useState({});
   return (
     <>
-      {" "}
       <BoardCreateNav
         content={content}
         imgData={imgData}
         imgNum={imgNum}
         setPostData={setPostData}
         postData={postData}
-      />{" "}
+      />
       <div
         className="container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5 "
         style={{

@@ -1,4 +1,16 @@
+import { useNavigate } from "react-router-dom";
+import getUser from "../function/getUser";
+
 const Li = ({ data }) => {
+  const navigate = useNavigate();
+  const checkLogin = () => {
+    if (getUser("user")) {
+      navigate("/boardCreate");
+    } else {
+      alert("로그인을 부탁드려요.");
+      navigate("/login");
+    }
+  };
   return (
     <>
       {" "}
@@ -34,7 +46,7 @@ const Li = ({ data }) => {
               </a>
             </li>
             <li>
-              <a className="dropdown-item" href="/boardCreate">
+              <a className="dropdown-item" href="#!" onClick={checkLogin}>
                 글쓰기
               </a>
             </li>

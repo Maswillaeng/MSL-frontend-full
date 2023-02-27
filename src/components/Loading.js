@@ -1,5 +1,5 @@
-const Loading = ({addStyle}) => {
-    return <div className={`spinner-border ${addStyle}`} role="status"></div>
-}
+const Loading = ({ addStyle }) => {
+  return <div className={`spinner-border ${addStyle}`} role="status"></div>;
+};
 
-export default Loading
+export default Loading;

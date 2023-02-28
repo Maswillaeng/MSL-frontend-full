@@ -23,15 +23,16 @@ export default function Login() {
     if (user.password === "") {
       return targetRefs.current[1].focus();
     }
-    // axios
-    //     .post('http://localhost:8080/api/sign', 'member', {
-    //         headers: {
-    //             "Content-Type": `application/json`
-    //         }
-    //     })
-    //     .then((res) => {
-    //         console.log(res);
-    //     })
+    axios
+        .post('http://localhost:8080/api/sign', 'member', {
+            headers: {
+                "Content-Type": `application/json`
+            }
+        })
+        .then((res = '토큰값') => {
+          login(res)
+            console.log(res);
+        })
 
     if (
       members.filter(

@@ -4,7 +4,9 @@ const Button = ({ size, buttonEvent, message, addStyle = "" }) => {
       <button
         type="button"
         onClick={buttonEvent}
-        className={`btn btn-secondary btn-${size} ${addStyle}`}
+        className={`btn btn-${size} ${addStyle}  text-light`}
+        style={{backgroundColor:'#AA233C'}}
+
       >
         {message}
       </button>

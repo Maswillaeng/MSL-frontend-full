@@ -46,13 +46,13 @@ const MainNav = () => {
   ];
 
   return (
-    <nav className="navbar navbar-expand-lg bg-light py-2 fs-3">
-      <div className="container-fluid px-5">
-        <a className="navbar-brand fs-1" href="/">
+    <nav className="navbar navbar-expand-lg bg-light py-2 fs-3 ">
+      <div className="container-fluid px-5 main-bg-color">
+        <a className="navbar-brand fs-1 text-light" href="/">
           칵테일 레시피
         </a>
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center">
+        <div className="collapse navbar-collapse " id="navbarNavDropdown">
+          <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center ">
             {getUser("user")
               ? loginNavArr.map((data, idx) => (
                   <Li data={data} idx={idx} key={Object.keys(data)[0]} />

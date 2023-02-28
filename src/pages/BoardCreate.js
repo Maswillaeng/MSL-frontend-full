@@ -36,6 +36,7 @@ const BoardCreate = () => {
     });
   };
   const [postData, setPostData] = useState({});
+  console.log(postData)
   return (
     <>
       <BoardCreateNav
@@ -86,6 +87,7 @@ const BoardCreateNav = ({ content, imgData, imgNum, setPostData }) => {
       imgData: Object.values(imgData).filter((x) => x !== ""),
     });
   };
+
   const backPage = () => {
     navigate(-1);
   };

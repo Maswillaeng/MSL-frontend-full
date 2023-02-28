@@ -36,7 +36,7 @@ const BoardCreate = () => {
     });
   };
   const [postData, setPostData] = useState({});
-  console.log(postData)
+  console.log(postData);
   return (
     <>
       <BoardCreateNav
@@ -89,7 +89,7 @@ const BoardCreateNav = ({ content, imgData, imgNum, setPostData }) => {
   };
 
   const backPage = () => {
-    navigate(-1);
+    navigate(-2);
   };
   const navArr = [
     {
@@ -264,7 +264,9 @@ const BottomContentBox = ({ updateContent }) => {
             name="categori"
             onChange={updateContent}
           >
-            <option selected="selected">카테고리</option>
+            <option disabled>-칵테일 레시피-</option>
+            <option defaultValue="레시피">레시피</option>
+            <option disabled>-칵테일 맛집-</option>
             <option defaultValue="서울/경기">서울/경기</option>
             <option defaultValue="광역시">광역시</option>
             <option defaultValue="그 외">그 외</option>

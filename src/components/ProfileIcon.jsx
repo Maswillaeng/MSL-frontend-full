@@ -11,7 +11,6 @@ import {
 const ProfileIcon = ({ message, type, addStyle }) => {
   return (
     <>
-      {" "}
       <FontAwesomeIcon
         style={{
           height: "25px",
@@ -19,7 +18,7 @@ const ProfileIcon = ({ message, type, addStyle }) => {
           marginBottom: "-5px",
         }}
         icon={
-          message === "좋아요"
+          message === "추천"
             ? type
               ? faThumbsUpS
               : faThumbsUpR
@@ -28,7 +27,7 @@ const ProfileIcon = ({ message, type, addStyle }) => {
             : faBellR
         }
         className="me-1 "
-      />{" "}
+      />
       <span
         style={{
           color: type ? "white" : "black",

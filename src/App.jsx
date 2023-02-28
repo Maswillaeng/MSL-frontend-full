@@ -7,6 +7,7 @@ import Board from "./pages/Board";
 import Nav from "./pages/Nav";
 import BoardCreate from "./pages/BoardCreate";
 import BoardDetail from "./pages/BoardDetail";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/myPage" element={<MyPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/board" element={<Board />} />

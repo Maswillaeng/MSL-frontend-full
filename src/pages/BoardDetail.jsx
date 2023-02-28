@@ -4,9 +4,7 @@ import {
   faArrowLeft,
   faCircle as faCircleS,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faCircle as faCircleR,
-} from "@fortawesome/free-regular-svg-icons";
+import { faCircle as faCircleR } from "@fortawesome/free-regular-svg-icons";
 import React, { useEffect, useRef, useState } from "react";
 import Comment from "../components/Comment";
 import Button from "../components/Button";
@@ -109,18 +107,34 @@ const TopImgBox = ({ data }) => {
 };
 
 const TopProfileBox = ({ data }) => {
+  //추천 관련
+  const [likeCount, setLikeCount] = useState(data.like);
   const [like, setLike] = useState(false);
   const likeHandler = () => {
     setLike(!like);
+    if (like) {
+      setLikeCount(likeCount - 1);
+    } else {
+      setLikeCount(likeCount + 1);
+    }
   };
-  const [subscribe, setSubscribe] = useState(false);
-  const subscribeHandler = () => {
-    setSubscribe(!subscribe);
-  };
+
   const userImgae = members.filter((x) => x.nickname === data.nickname)[0]
     .userImage;
   const userSubscribe = members.filter((x) => x.nickname === data.nickname)[0]
     .subscribeCount;
+
+  //구독 관련
+  const [subscribeCount, setSubscribeCount] = useState(userSubscribe);
+  const [subscribe, setSubscribe] = useState(false);
+  const subscribeHandler = () => {
+    setSubscribe(!subscribe);
+    if (subscribe) {
+      setSubscribeCount(subscribeCount - 1);
+    } else {
+      setSubscribeCount(subscribeCount + 1);
+    }
+  };
   return (
     <div className="w-100 d-flex justify-content-center align-items-center">
       <div className=" mt-5 ">
@@ -136,16 +150,17 @@ const TopProfileBox = ({ data }) => {
       <div className="ms-2 mt-5 me-5">
         <div>{data.nickname}</div>
         <div className="d-flex justify-content-center align-items-center">
-          구독자 {userSubscribe}명
+          구독자 {subscribeCount}명
         </div>
       </div>
       <div className="mx-5 mt-5 d-flex justify-content-start align-items-start flex-column">
         <div className="mb-4" onClick={likeHandler}>
           <ProfileIcon
-            message={"좋아요"}
+            message={"추천"}
             type={like}
             addStyle={like ? "bg-primary border-primary" : "border-primary"}
           />
+          <span className="ms-4">추천 : {likeCount}</span>
         </div>
         <div onClick={subscribeHandler}>
           <ProfileIcon
@@ -195,7 +210,7 @@ const BottomCommentBox = ({ login, data }) => {
   };
   //비회원일때 로그인창으로 이동하게 조건문 달아줘야할듯
   const buttonEvent = () => {
-    if (!getUser('user')) {
+    if (!getUser("user")) {
       return navigate("/login");
     }
     if (commentText === "") {
@@ -203,7 +218,7 @@ const BottomCommentBox = ({ login, data }) => {
     }
     commentData.push({
       post_id: data.post_id,
-      nickname: getUser('user'),
+      nickname: getUser("user"),
       createAt: "2023-02-27",
       content: commentText,
       like: 0,
@@ -227,7 +242,7 @@ const BottomCommentBox = ({ login, data }) => {
         ))}
       </div>
       <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">
-        {getUser('user') ? (
+        {getUser("user") ? (
           <>
             <div className="w-100 d-flex justify-content-center align-items-center flex-column">
               <button
@@ -255,7 +270,7 @@ const BottomCommentBox = ({ login, data }) => {
                       }
                       alt="1"
                     />
-                    <span className="ms-1">{getUser('user')}</span>
+                    <span className="ms-1">{getUser("user")}</span>
                   </label>
                   <textarea
                     value={commentText}

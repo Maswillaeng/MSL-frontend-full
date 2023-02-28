@@ -37,29 +37,20 @@ export default function Login() {
       return targetRefs.current[1].focus();
     }
     axios
-      .post("http://localhost:8080/api/sign", "member", {
+      .post("http://localhost:8080/login", user, {
         headers: {
           "Content-Type": `application/json`,
         },
       })
-      .then((res = "토큰값") => {
-        login(res);
+      .then((res) => {
+        login(user.email);
+        navigate("/");
         console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("실패요");
       });
-
-    if (
-      members.filter(
-        (x) => x.email === user.email && x.password === user.password
-      ).length !== 0
-    ) {
-      login(
-        members.filter(
-          (x) => x.email === user.email && x.password === user.password
-        )[0].nickname
-      );
-      alert("로그인에 성공했습니다.");
-      navigate("/");
-    }
   };
 
   return (
@@ -73,7 +64,7 @@ export default function Login() {
     >
       {userArr.map((data, idx) => (
         <Input
-          key={data}
+          key={data.id}
           data={data}
           setMember={setUser}
           member={user}

@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 
 export default function SignUp() {
+  const navigate = useNavigate()
   //프로필 이미지
   const [imgFile, setImgFile] = useState("");
   const saveImgFile = (num) => {
@@ -109,6 +111,8 @@ export default function SignUp() {
         },
       })
       .then((res) => {
+        alert('회원가입을 축하합니다.')
+        navigate('/')
         console.log(res);
       });
     setFormCheck(true);

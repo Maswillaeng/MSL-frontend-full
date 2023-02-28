@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
 import boardData from "../dummy/boardData";
 import { infinityScroll } from "../function/infinityScroll";
 
 export default function Board() {
+  const location = useLocation();
   //클라이언트의 현재 스크롤 체크
   const [scroll, setScroll] = useState(0);
   window.addEventListener("scroll", () => {
@@ -28,7 +30,14 @@ export default function Board() {
   const [rowCount, setRowCount] = useState(1);
   //api가 생기면 활용할 로딩
   const [loading, setLoading] = useState(false);
+  //카테고리 상태관리
+  const [categori, setCategori] = useState("전체게시글");
   useEffect(() => {
+    if (location.state) {
+      //네비를 통해 들어온다면 그 카테고리에 맞게 재설정
+      window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+      setCategori(location.state.categori);
+    }
     setLoading(true);
     infinityScroll(setRowCount, scroll, rowCount).then(() => {
       setLoading(false);
@@ -42,7 +51,11 @@ export default function Board() {
         minHeight: "85vh",
       }}
     >
-      <BoardTop reloadCardData={reloadCardData} rowCount={rowCount} />
+      <BoardTop
+        reloadCardData={reloadCardData}
+        rowCount={rowCount}
+        categori={categori}
+      />
       <BoardMiddle
         cardData={cardData}
         rowCount={rowCount}
@@ -55,14 +68,14 @@ export default function Board() {
   );
 }
 
-const BoardTop = ({ reloadCardData, rowCount }) => {
+const BoardTop = ({ reloadCardData, rowCount, categori }) => {
   //Board의 useEffect로 스크롤과 rowCount를 같이썼더니 의도치않은 랜더링이 일어나서 BoardTop을 활용해서 변경하기로함
   useEffect(() => {
     reloadCardData(rowCount);
   }, [rowCount]);
   return (
     <div className={`d-flex flex-column justify-content-flex w-100 mt-1 `}>
-      <h1 className="ps-5">자유게시판</h1>
+      <h1 className="ps-5">{categori}</h1>
     </div>
   );
 };

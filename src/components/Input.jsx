@@ -53,7 +53,7 @@ const Input = ({
               minWidth: "165px",
             }}
           >
-            이미지
+            {data.name}
           </label>
           <input
             style={{ display: "none" }}
@@ -112,7 +112,7 @@ const Input = ({
               minWidth: "100px",
             }}
           >
-            자기소개
+            {data.name}
           </label>
           <textarea
             style={{ resize: "none" }}

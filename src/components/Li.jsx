@@ -15,14 +15,28 @@ const Li = ({ data }) => {
     <>
       {Object.keys(data)[0] !== "게시판" ? (
         data[Object.keys(data)[0]].event ? (
-          <li className="nav-item text-light" onClick={data[Object.keys(data)[0]].event}>
-            <a className="nav-link text-light" href="#!">
+          <li
+            className="nav-item text-light me-5"
+            onClick={data[Object.keys(data)[0]].event}
+          >
+            <a
+              className={
+                Object.keys(data)[0] === "로그아웃" ||
+                Object.keys(data)[0] === "마이페이지"
+                  ? "nav-link text-light"
+                  : "nav-link "
+              }
+              href="#!"
+            >
               {Object.keys(data)[0]}
             </a>
           </li>
         ) : (
-          <li className="nav-item ">
-            <a className="nav-link text-light" href={data[Object.keys(data)[0]].href}>
+          <li className="nav-item me-5">
+            <a
+              className="nav-link text-light"
+              href={data[Object.keys(data)[0]].href}
+            >
               {Object.keys(data)[0]}
             </a>
           </li>
@@ -41,17 +55,12 @@ const Li = ({ data }) => {
           <ul className="dropdown-menu">
             <li>
               <a className="dropdown-item" href="/board">
-                자유게시판
+                전체게시글
               </a>
             </li>
             <li>
               <a className="dropdown-item" href="#!" onClick={checkLogin}>
                 글쓰기
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="/">
-                즐겨찾기
               </a>
             </li>
           </ul>

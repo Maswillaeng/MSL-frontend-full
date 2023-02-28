@@ -14,7 +14,7 @@ const Input = ({
     targetRefs.current[idx].click();
   };
 
-  //인풋값 셋팅
+  //인풋 값 변경 이벤트
   const inputChange = (e) => {
     setMember({
       ...member,
@@ -23,54 +23,32 @@ const Input = ({
   };
   return (
     <div className="d-flex p-2 my-2 ">
-      {data !== "userImage" && data !== "introduction" ? (
+      {data.id !== "userImage" && data.id !== "introduction" ? (
         <>
           <label
             className="pt-2"
-            htmlFor={data}
+            htmlFor={data.id}
             style={{
               minWidth: "100px",
             }}
           >
-            {data === "email"
-              ? "이메일"
-              : data === "password"
-              ? "비밀번호"
-              : data === "pwc"
-              ? "비밀번호확인"
-              : data === "nickname"
-              ? "닉네임"
-              : data === "phoneNumber" && "전화번호"}
+            {data.name}
           </label>
           <input
-          id={data}
-            type={
-              data === "email"
-                ? "email"
-                : data === "password" || data === "pwc"
-                ? "password"
-                : "text"
-            }
+            id={data.id}
+            type={data.type}
             ref={(el) => (targetRefs.current[idx] = el)}
-            placeholder={
-              data === "email"
-                ? "이메일을 적어주세요."
-                : data === "password" || data === "pwc"
-                ? "비밀번호를 적어주세요."
-                : data === "nickname"
-                ? "닉네임을 적어주세요."
-                : data === "phoneNumber" && "전화번호를 적어주세요."
-            }
-            name={data}
+            placeholder={data.placeholder}
+            name={data.id}
             onChange={(e) => inputChange(e)}
             className="ms-5 rounded form-control"
           />
         </>
-      ) : data === "userImage" ? (
+      ) : data.id === "userImage" ? (
         <>
           <label
             className="pt-2"
-            htmlFor={data}
+            htmlFor={data.id}
             style={{
               minWidth: "165px",
             }}
@@ -79,11 +57,11 @@ const Input = ({
           </label>
           <input
             style={{ display: "none" }}
-            type="file"
+            type={data.type}
             accept="image/*"
             ref={(el) => (targetRefs.current[idx] = el)}
-            placeholder="이미지를 등록해주세요."
-            name={data}
+            placeholder={data.placeholder}
+            name={data.id}
             onChange={(e) => {
               saveImgFile(idx);
               inputChange(e);
@@ -129,7 +107,7 @@ const Input = ({
         <>
           <label
             className="pt-2"
-            htmlFor={data}
+            htmlFor={data.id}
             style={{
               minWidth: "100px",
             }}
@@ -139,10 +117,10 @@ const Input = ({
           <textarea
             style={{ resize: "none" }}
             rows="4"
-            type="text"
+            type={data.type}
             ref={(el) => (targetRefs.current[idx] = el)}
-            placeholder="자기소개를 적어주세요."
-            name={data}
+            placeholder={data.placeholder}
+            name={data.id}
             onChange={(e) => inputChange(e)}
             className="ms-5 rounded form-control"
           />

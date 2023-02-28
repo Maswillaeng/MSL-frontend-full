@@ -16,13 +16,48 @@ export default function SignUp() {
   };
   //인풋 map 돌리기위한 배열
   const inputArr = [
-    "email",
-    "password",
-    "pwc",
-    "nickname",
-    "phoneNumber",
-    "userImage",
-    "introduction",
+    {
+      id: "email",
+      name: "이메일",
+      placeholder: "이메일을 적어주세요.",
+      type: "email",
+    },
+    {
+      id: "password",
+      name: "비밀번호",
+      placeholder: "비밀번호를 적어주세요.",
+      type: "password",
+    },
+    {
+      id: "pwc",
+      name: "비밀번호확인",
+      placeholder: "비밀번호를 적어주세요.",
+      type: "password",
+    },
+    {
+      id: "nickname",
+      name: "닉네임",
+      placeholder: "닉네임을 적어주세요.",
+      type: "text",
+    },
+    {
+      id: "phoneNumber",
+      name: "전화번호",
+      placeholder: "전화번호를 적어주세요.",
+      type: "tel",
+    },
+    {
+      id: "userImage",
+      name: "이미지",
+      placeholder: "이미지를 등록해주세요.",
+      type: "file",
+    },
+    {
+      id: "introduction",
+      name: "자기소개",
+      placeholder: "자기소개를 적어주세요.",
+      type: "text",
+    },
   ];
   //인풋값 저장용
   const [member, setMember] = useState({
@@ -68,14 +103,14 @@ export default function SignUp() {
       return targetRefs.current[6].focus();
     }
     axios
-        .post('http://localhost:8080/api/sign', member, {
-            headers: {
-                "Content-Type": `application/json`
-            }
-        })
-        .then((res) => {
-            console.log(res);
-        })
+      .post("http://localhost:8080/api/sign", member, {
+        headers: {
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      });
     setFormCheck(true);
   };
 

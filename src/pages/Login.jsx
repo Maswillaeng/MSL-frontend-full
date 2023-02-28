@@ -10,7 +10,20 @@ import getUser from "../function/getUser";
 export default function Login() {
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
-  const userArr = ["email", "password"];
+  const userArr = [
+    {
+      id: "email",
+      name: "이메일",
+      placeholder: "이메일을 적어주세요.",
+      type: "email",
+    },
+    {
+      id: "password",
+      name: "비밀번호",
+      placeholder: "비밀번호를 적어주세요.",
+      type: "password",
+    },
+  ];
   const targetRefs = useRef([]);
   //유효성검사
   const buttonEvent = (e) => {
@@ -24,15 +37,15 @@ export default function Login() {
       return targetRefs.current[1].focus();
     }
     axios
-        .post('http://localhost:8080/api/sign', 'member', {
-            headers: {
-                "Content-Type": `application/json`
-            }
-        })
-        .then((res = '토큰값') => {
-          login(res)
-            console.log(res);
-        })
+      .post("http://localhost:8080/api/sign", "member", {
+        headers: {
+          "Content-Type": `application/json`,
+        },
+      })
+      .then((res = "토큰값") => {
+        login(res);
+        console.log(res);
+      });
 
     if (
       members.filter(

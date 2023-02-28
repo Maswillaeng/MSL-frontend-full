@@ -7,7 +7,6 @@ import Board from "./pages/Board";
 import Nav from "./pages/Nav";
 import BoardCreate from "./pages/BoardCreate";
 import BoardDetail from "./pages/BoardDetail";
-import { useState } from "react";
 
 function App() {
   return (

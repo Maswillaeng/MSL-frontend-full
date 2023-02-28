@@ -43,6 +43,7 @@ const Input = ({
               : data === "phoneNumber" && "전화번호"}
           </label>
           <input
+          id={data}
             type={
               data === "email"
                 ? "email"

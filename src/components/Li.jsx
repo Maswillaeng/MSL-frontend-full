@@ -16,7 +16,7 @@ const Li = ({ data }) => {
       {Object.keys(data)[0] !== "게시판" ? (
         data[Object.keys(data)[0]].event ? (
           <li className="nav-item text-light" onClick={data[Object.keys(data)[0]].event}>
-            <a className="nav-link " href="#!">
+            <a className="nav-link text-light" href="#!">
               {Object.keys(data)[0]}
             </a>
           </li>

@@ -20,8 +20,9 @@ const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
       }
       setImgNum(0);
       setImgFile(reader.result);
-      const data = {};
-      data[`imgSrc${x}`] = reader.result;
+      const data = {
+        [`imgSrc${x}`]:reader.result
+      };
       addImgData(data);
     };
   };

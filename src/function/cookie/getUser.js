@@ -9,5 +9,4 @@ const getUser = (id) => {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 
-
-export default getUser
+export default getUser;

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
 import boardData from "../dummy/boardData";
-import { infinityScroll } from "../function/infinityScroll";
+import { infinityScroll } from "../function/utility/infinityScroll";
 
 export default function Board() {
   const location = useLocation();

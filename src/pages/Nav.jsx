@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Li from "../components/Li";
-import getUser from "../function/getUser";
-import logOut from "../function/logOut";
+import getUser from "../function/cookie/getUser";
+import logOut from "../function/cookie/logOut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 

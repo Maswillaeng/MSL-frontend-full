@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
 import boardData from "../dummy/boardData";
-import getUser from "../function/getUser";
+import getUser from "../function/cookie/getUser";
 
 const Home = () => {
   const navigate = useNavigate();

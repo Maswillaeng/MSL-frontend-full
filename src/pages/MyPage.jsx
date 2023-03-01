@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import members from "../dummy/members";
-import getUser from "../function/getUser";
+import getUser from "../function/cookie/getUser";
 
 const MyPage = () => {
   const [categori, setCategori] = useState("");

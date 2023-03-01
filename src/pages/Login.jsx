@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import login from "../function/login";
+import login from "../function/cookie/login";
 import members from "../dummy/members";
 import { useNavigate } from "react-router-dom";
-import getUser from "../function/getUser";
+import getUser from "../function/cookie/getUser";
 
 export default function Login() {
   const navigate = useNavigate();

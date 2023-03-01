@@ -12,7 +12,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import members from "../dummy/members";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
-import getUser from "../function/getUser";
+import getUser from "../function/cookie/getUser";
 
 export default function BoardDetail() {
   const location = useLocation();

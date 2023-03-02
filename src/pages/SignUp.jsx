@@ -3,9 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import {
+  validationEmail,
+  validationNickname,
+  validationPassword,
+  validationPhone,
+} from "../function/utility/validation";
 
 export default function SignUp() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   //프로필 이미지
   const [imgFile, setImgFile] = useState("");
   const saveImgFile = (num) => {
@@ -17,6 +23,7 @@ export default function SignUp() {
     };
   };
   //인풋 map 돌리기위한 배열
+  const targetRefs = useRef([]);
   const inputArr = [
     {
       id: "email",
@@ -71,38 +78,36 @@ export default function SignUp() {
     userImage: "",
     introduction: "",
   });
-  const targetRefs = useRef([]);
-  //폼 제출 여부 파악용
-  const [formCheck, setFormCheck] = useState(false);
-  //제출되면 다시 false로
+  console.log(member)
   useEffect(() => {
-    setFormCheck(false);
-  }, [formCheck]);
+    setMember({ ...member, userImage: imgFile });
+  }, [imgFile]);
   //유효성검사
   const buttonEvent = (e) => {
     if (Object.values(member).filter((x) => x === "").length > 0) {
       e.preventDefault();
     }
-    if (member.email === "") {
+    //이메일 유효성 검사
+    if (!validationEmail.test(member.email)) {
       return targetRefs.current[0].focus();
     }
-    if (member.password === "") {
+    if (!validationPassword.test(member.password)) {
       return targetRefs.current[1].focus();
     }
-    if (member.pwc === "" || member.password !== member.pwc) {
+    //비번끼리 같거나, 유효성검사 걸리면
+    if (
+      !validationPassword.test(member.pwc) ||
+      member.password !== member.pwc
+    ) {
       return targetRefs.current[2].focus();
     }
-    if (member.nickname === "") {
+    //특문금지
+    if (validationNickname.test(member.nickname) || member.nickname === "") {
       return targetRefs.current[3].focus();
     }
-    if (member.phoneNumber === "") {
+    //휴대폰 번호 유효성검사
+    if (!validationPhone.test(member.phoneNumber)) {
       return targetRefs.current[4].focus();
-    }
-    if (member.userImage === "") {
-      return targetRefs.current[5].focus();
-    }
-    if (member.introduction === "") {
-      return targetRefs.current[6].focus();
     }
     axios
       .post("http://localhost:8080/api/sign", member, {
@@ -111,11 +116,13 @@ export default function SignUp() {
         },
       })
       .then((res) => {
-        alert('회원가입을 축하합니다.')
-        navigate('/')
+        alert("회원가입을 축하합니다.");
+        navigate("/");
         console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    setFormCheck(true);
   };
 
   return (
@@ -129,7 +136,7 @@ export default function SignUp() {
     >
       {inputArr.map((data, idx) => (
         <Input
-          key={data}
+          key={data.id}
           data={data}
           setMember={setMember}
           member={member}

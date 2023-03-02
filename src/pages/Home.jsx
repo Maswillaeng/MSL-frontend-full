@@ -7,6 +7,7 @@ import boardData from "../dummy/boardData";
 import getUser from "../function/cookie/getUser";
 
 const Home = () => {
+
   const navigate = useNavigate();
   return (
     <div
@@ -77,9 +78,9 @@ const TopMainNavBox = ({ navigate }) => {
     <div className="mb-5 w-100 d-flex justify-content-center align-items-center">
       <ul className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
         {getUser("user") && (
-          <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
-            <a className="nav-link active" aria-current="page" href="/myPage">
-              MY페이지
+          <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center ">
+            <a className="nav-link main-bg-color" aria-current="page" href="/myPage">
+            <span className="main-color">MY페이지</span>  
             </a>
           </li>
         )}
@@ -88,18 +89,16 @@ const TopMainNavBox = ({ navigate }) => {
           className="nav-item flex-grow-1 d-flex justify-content-center align-items-center"
         >
           <a className="nav-link" href="/board">
-            칵테일 레시피
+          <span className="main-color">칵테일 레시피</span>  
           </a>
         </li>
-        <li className="nav-item dropdown flex-grow-1 d-flex justify-content-center align-items-center">
+        <li className="nav-item dropdown flex-grow-1 d-flex justify-content-center align-items-center ">
           <a
-            className="nav-link dropdown-toggle"
+            className="nav-link dropdown-toggle main-color"
             data-bs-toggle="dropdown"
             href="#!"
-            role="button"
-            aria-expanded="false"
           >
-            칵테일 맛집
+           <span className="main-color">칵테일 맛집</span>  
           </a>
           <ul className="dropdown-menu ">
             {eventLi.map((x) => (
@@ -114,7 +113,7 @@ const TopMainNavBox = ({ navigate }) => {
             tabIndex="-1"
             aria-disabled="true"
           >
-            미정
+           <span className="main-color">미정</span>  
           </a>
         </li>
       </ul>

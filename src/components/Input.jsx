@@ -13,7 +13,6 @@ const Input = ({
   const uploadClick = () => {
     targetRefs.current[idx].click();
   };
-
   //인풋 값 변경 이벤트
   const inputChange = (e) => {
     setMember({
@@ -59,12 +58,11 @@ const Input = ({
             style={{ display: "none" }}
             type={data.type}
             accept="image/*"
-            ref={(el) => (targetRefs.current[idx] = el)}
             placeholder={data.placeholder}
+            ref={(el) => (targetRefs.current[idx] = el)}
             name={data.id}
-            onChange={(e) => {
+            onChange={() => {
               saveImgFile(idx);
-              inputChange(e);
             }}
             className="ms-5 rounded form-control"
           />
@@ -115,10 +113,10 @@ const Input = ({
             {data.name}
           </label>
           <textarea
+            ref={(el) => (targetRefs.current[idx] = el)}
             style={{ resize: "none" }}
             rows="4"
             type={data.type}
-            ref={(el) => (targetRefs.current[idx] = el)}
             placeholder={data.placeholder}
             name={data.id}
             onChange={(e) => inputChange(e)}

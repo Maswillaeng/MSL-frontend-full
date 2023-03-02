@@ -11,10 +11,13 @@
 }
 
 .main-bg-color {
-  background-color: #AA233C;
+  background-color: #aa233c;
 }
 
 .main-color {
-  color: #AA233C;
+  color: #aa233c;
 }
 
+.nav {
+  --bs-nav-link-hover-color : #aa233c !important;
+}

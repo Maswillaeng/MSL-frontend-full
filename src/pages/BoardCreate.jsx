@@ -9,8 +9,15 @@ import { faCircle as faCircleR } from "@fortawesome/free-regular-svg-icons";
 import AddImg from "../components/AddImg";
 import { useNavigate } from "react-router-dom";
 import Li from "../components/Li";
+import EditorComponent from "../components/EditorComponent";
 
 const BoardCreate = () => {
+  //텍스트에디터용
+  const [desc, setDesc] = useState("");
+  function onEditorChange(value) {
+    setDesc(value);
+  }
+  console.log(desc);
   //처음엔 배열로 넣었다가 객체의 형태로 바꾸게 된 이유는 이미지가 등록순서대로 보이길래 원래 있는 칸 순서대로 보이기 위해 객체로 변경함
   const [imgData, setImgData] = useState({
     imgSrc1: "",
@@ -36,7 +43,6 @@ const BoardCreate = () => {
     });
   };
   const [postData, setPostData] = useState({});
-  console.log(postData);
   return (
     <>
       <BoardCreateNav
@@ -59,7 +65,11 @@ const BoardCreate = () => {
           setImgNum={setImgNum}
           imgData={imgData}
         />
-        <BottomContentBox updateContent={updateContent} />
+        <BottomContentBox
+          updateContent={updateContent}
+          onEditorChange={onEditorChange}
+          desc={desc}
+        />
       </div>
     </>
   );
@@ -234,7 +244,7 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
   );
 };
 
-const BottomContentBox = ({ updateContent }) => {
+const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column my-5">
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
@@ -275,7 +285,8 @@ const BottomContentBox = ({ updateContent }) => {
       </div>
       <div className=" mb-5 w-50">
         <div>
-          <textarea
+          <EditorComponent value={desc} onChange={onEditorChange} />
+          {/* <textarea
             onChange={updateContent}
             placeholder="레시피에 대한 설명을 적어주세요."
             className="form-control"
@@ -284,7 +295,7 @@ const BottomContentBox = ({ updateContent }) => {
             }}
             name="content"
             rows="8"
-          ></textarea>
+          ></textarea> */}
         </div>
       </div>
     </div>

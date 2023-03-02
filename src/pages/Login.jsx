@@ -6,6 +6,7 @@ import login from "../function/cookie/login";
 import members from "../dummy/members";
 import { useNavigate } from "react-router-dom";
 import getUser from "../function/cookie/getUser";
+import { validationEmail, validationPassword } from "../function/utility/validation";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -30,10 +31,10 @@ export default function Login() {
     if (Object.values(user).filter((x) => x === "").length > 0) {
       e.preventDefault();
     }
-    if (user.email === "") {
+    if (!validationEmail.test(user.email)) {
       return targetRefs.current[0].focus();
     }
-    if (user.password === "") {
+    if (!validationPassword.test(user.password)) {
       return targetRefs.current[1].focus();
     }
     axios

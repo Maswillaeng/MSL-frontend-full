@@ -8,7 +8,10 @@ import {
   faThumbsDown as faThumbsDownR,
 } from "@fortawesome/free-regular-svg-icons";
 import members from "../dummy/members";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Button from "./Button";
+import Reply from "./Reply";
+import replyData from "../dummy/replyData";
 
 const Comment = ({ data }) => {
   //댓글 up
@@ -41,6 +44,56 @@ const Comment = ({ data }) => {
   const [likeCount, setLikeCount] = useState(Number(data.like));
   // 싫어요 상태
   const [dislikeCount, setDislikeCount] = useState(Number(data.dislike));
+  //답글달기
+  const [writeReply, setWriteReply] = useState(false);
+  const writeReplyHandler = () => {
+    setWriteReply(!writeReply);
+  };
+  //답글value
+  const [replyVal, setReplyVal] = useState("");
+  const changeReplyVal = (e) => {
+    setReplyVal(e.target.value);
+  };
+  //답글보기
+  const [readReply, setReadReply] = useState(false);
+  const readReplyHandler = () => {
+    setReadReply(!readReply);
+  };
+  //답글등록
+  const submitReply = () => {
+    if (replyVal === "") {
+      return alert("답글을 적어주세요.");
+    }
+    replyData.push({
+      post_id: data.post_id,
+      comment_id: data.comment_id,
+      reply_id: replyList.length + 1,
+      nickname: "shdomi8599",
+      content: replyVal,
+      createAt: "방금 전",
+      like: 0,
+      dislike: 0,
+    });
+    setCheckReply(true);
+    setWriteReply(false);
+  };
+  //답글 데이터
+  const [replyList, setReplyList] = useState(
+    replyData.filter(
+      (x) => x.post_id === data.post_id && x.comment_id === data.comment_id
+    )
+  );
+  //답글 제출 체크용
+  const [checkReply, setCheckReply] = useState(false);
+  //답글 제출이 확인되면 새로운 데이터를 가져옴
+  useEffect(() => {
+    setReplyList(
+      replyData.filter(
+        (x) => x.post_id === data.post_id && x.comment_id === data.comment_id
+      )
+    );
+    setCheckReply(false);
+  }, [checkReply]);
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <div
@@ -59,12 +112,12 @@ const Comment = ({ data }) => {
             src={
               members.filter((x) => x.nickname === data.nickname)[0].userImage
             }
-            alt="1"
+            alt=""
           />
         </div>
         <div className="ms-2 me-5 w-100 ">
           <div>{data.nickname}</div>
-          <div>{data.createAt}</div>
+          <div className="opacity-75">{data.createAt}</div>
         </div>
         <div
           className="w-75 d-flex justify-content-start align-items-start ms-5 flex-column"
@@ -100,8 +153,63 @@ const Comment = ({ data }) => {
           </div>
         </div>
       </div>
-      <div className="w-100 d-flex justify-content-start align-items-center p-5">
+      <div className="w-100 d-flex justify-content-start align-items-center px-5 py-2">
         {data.content}
+      </div>
+      <div className="w-100 d-flex justify-content-start align-items-center px-5 mt-3 pb-1">
+        {replyList.length !== 0 && (
+          <div
+            className="me-4"
+            style={{ cursor: "pointer" }}
+            onClick={readReplyHandler}
+          >
+            <span className="text-primary">답글 {replyList.length}개</span>
+          </div>
+        )}
+        <div style={{ cursor: "pointer" }} onClick={writeReplyHandler}>
+          <span className="text-primary">답글달기</span>
+        </div>
+      </div>
+      <div className="w-100 d-flex justify-content-start align-items-center flex-column">
+        {writeReply && (
+          <div
+            aria-label={"답글달기"}
+            className="d-flex justify-content-center align-items-center w-100"
+          >
+            <img
+              className="rounded-circle me-3"
+              style={{
+                height: "25px",
+              }}
+              src={
+                members.filter((x) => x.nickname === "shdomi8599")[0].userImage
+              }
+              alt=""
+            />
+            <input
+              type="text"
+              className="form-control me-3"
+              placeholder="답글을 적어주세요."
+              onChange={changeReplyVal}
+              style={{ width: "50%" }}
+            />
+            <Button
+              message={"취소"}
+              buttonEvent={() => {
+                setWriteReply(false);
+              }}
+              addStyle={"me-2"}
+            />
+            <Button message={"등록"} buttonEvent={submitReply} />
+          </div>
+        )}
+        {readReply && (
+          <ul className="d-flex align-items-start w-100 flex-column">
+            {replyList.map((x) => (
+              <Reply data={x} key={x.reply_id} />
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

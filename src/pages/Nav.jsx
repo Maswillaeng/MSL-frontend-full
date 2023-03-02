@@ -67,6 +67,7 @@ const MainNav = () => {
       },
     },
   ];
+  
   return (
     <nav className="navbar navbar-expand-lg main-bg-color py-2 fs-3 ">
       <div className="container-fluid px-5  main-bg-color">

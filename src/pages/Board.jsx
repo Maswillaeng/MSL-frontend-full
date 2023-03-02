@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
 import boardData from "../dummy/boardData";
 import { infinityScroll } from "../function/utility/infinityScroll";
+import useIntersectionObserver from "../hook/useIntersectionObserver";
 
 export default function Board() {
   const location = useLocation();
-  //클라이언트의 현재 스크롤 체크
-  const [scroll, setScroll] = useState(0);
-  window.addEventListener("scroll", () => {
-    setScroll(document.documentElement.scrollTop);
-  });
   //카드 카운트
   const [cardData, setCardData] = useState(boardData.slice(0, 4));
-
   //rowCount를 전달받아서 활용하면 될듯?
-  const reloadCardData = (number) => {
+  const reloadCardData = async (number) => {
     setCardData(boardData.slice(4 * (number - 1), 4 * number));
+    return boardData.slice(4 * (number - 1), 4 * number);
   };
   //cardData를 전달받아서 데이터를 추가
   const [rowData, setRowData] = useState([cardData]);
@@ -39,41 +35,49 @@ export default function Board() {
       setCategori(location.state.categori);
       location.state = undefined;
     }
-    setLoading(true);
-    infinityScroll(setRowCount, scroll, rowCount).then(() => {
-      setLoading(false);
-    });
-  }, [scroll]);
+  }, []);
+  //무한스크롤
+  const target = useRef(null);
+  //커스텀훅 사용
+  const [observe, unobserve] = useIntersectionObserver(() => {
+    setRowCount((rowCount) => rowCount + 1);
+  });
+  useEffect(() => {
+    // 타겟 설정
+    if (rowCount === 1) {
+      observe(target.current);
+    }
+    //마지막 데이터라면 타겟 해제
+    if (cardData.length !== 4) {
+      unobserve(target.current);
+    }
+    //카운트 1증가하면 리로드해서 데이터 추가
+    if (rowCount > 1) {
+      setLoading(true);
+      reloadCardData(rowCount)
+        .then((data) => {
+          addRowData(data);
+        })
+        .then(() => setLoading(false));
+    }
+  }, [rowCount]);
+
   return (
     <div
       className="container rounded d-flex flex-column justify-content-center align-items-center my-5"
       style={{
         maxWidth: "90vw",
-        minHeight: "85vh",
+        minHeight: "100vh",
       }}
     >
-      <BoardTop
-        reloadCardData={reloadCardData}
-        rowCount={rowCount}
-        categori={categori}
-      />
-      <BoardMiddle
-        cardData={cardData}
-        rowCount={rowCount}
-        rowData={rowData}
-        reloadCardData={reloadCardData}
-        addRowData={addRowData}
-      />
-      <BoardBottom loading={loading} />
+      <BoardTop categori={categori} />
+      <BoardMiddle rowData={rowData} />
+      <BoardBottom target={target} loading={loading} />
     </div>
   );
 }
 
-const BoardTop = ({ reloadCardData, rowCount, categori }) => {
-  //Board의 useEffect로 스크롤과 rowCount를 같이썼더니 의도치않은 랜더링이 일어나서 BoardTop을 활용해서 변경하기로함
-  useEffect(() => {
-    reloadCardData(rowCount);
-  }, [rowCount]);
+const BoardTop = ({ categori }) => {
   return (
     <div className={`d-flex flex-column justify-content-flex w-100 mt-1 `}>
       <h1 className="ps-5">{categori}</h1>
@@ -81,14 +85,7 @@ const BoardTop = ({ reloadCardData, rowCount, categori }) => {
   );
 };
 
-const BoardMiddle = ({ rowCount, cardData, rowData, addRowData }) => {
-  //cardData가 변경되면 CardRow 추가
-  useEffect(() => {
-    if (rowCount > 1) {
-      addRowData(cardData);
-    }
-  }, [cardData]);
-
+const BoardMiddle = ({ rowData }) => {
   return (
     <div
       className={`d-flex flex-column justify-content-start align-items-center w-100 flex-grow-1 mt-5`}
@@ -102,10 +99,11 @@ const BoardMiddle = ({ rowCount, cardData, rowData, addRowData }) => {
   );
 };
 
-const BoardBottom = ({ loading }) => {
+const BoardBottom = ({ loading, target }) => {
   const loadingArr = Array(3).fill(1);
   return (
     <div
+      ref={target}
       className={`d-flex justify-content-center align-items-center w-100 mt-5 mb-5 fs-3`}
     >
       {loading &&

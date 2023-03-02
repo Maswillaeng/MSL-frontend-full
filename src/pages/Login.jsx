@@ -6,7 +6,10 @@ import login from "../function/cookie/login";
 import members from "../dummy/members";
 import { useNavigate } from "react-router-dom";
 import getUser from "../function/cookie/getUser";
-import { validationEmail, validationPassword } from "../function/utility/validation";
+import {
+  validationEmail,
+  validationPassword,
+} from "../function/utility/validation";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -50,7 +53,7 @@ export default function Login() {
       })
       .catch((err) => {
         console.log(err);
-        alert("실패요");
+        alert("비밀번호를 확인해주세요.");
       });
   };
 

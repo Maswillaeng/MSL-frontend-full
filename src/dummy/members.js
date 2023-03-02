@@ -51,7 +51,7 @@ module.exports = [
     phoneNumber: "01045976295",
     userImage: "https://avatars.githubusercontent.com/u/124851022?v=4",
     introduction: "칵테일은 관심없다.",
-    subscribeCount: 7975,
+    subscribeCount: 75,
   },
   {
     email: "shdomi8599@naver.com",
@@ -59,7 +59,7 @@ module.exports = [
     nickname: "shdomi8599",
     phoneNumber: "01067496238",
     userImage: "https://avatars.githubusercontent.com/u/117655658?v=4",
-    introduction: "칵테일은 관심없다.",
+    introduction: "칵테일 잘모름 ㅠ",
     subscribeCount: 7975,
   },
 ];

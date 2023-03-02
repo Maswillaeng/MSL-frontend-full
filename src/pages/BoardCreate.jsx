@@ -286,16 +286,6 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
       <div className=" mb-5 w-50">
         <div>
           <EditorComponent value={desc} onChange={onEditorChange} />
-          {/* <textarea
-            onChange={updateContent}
-            placeholder="레시피에 대한 설명을 적어주세요."
-            className="form-control"
-            style={{
-              resize: "none",
-            }}
-            name="content"
-            rows="8"
-          ></textarea> */}
         </div>
       </div>
     </div>

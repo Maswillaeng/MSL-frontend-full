@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import Button from "../components/Button";
 import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
@@ -7,20 +8,20 @@ import boardData from "../dummy/boardData";
 import getUser from "../function/cookie/getUser";
 
 const Home = () => {
-
   const navigate = useNavigate();
+  const HomeBox = styled.div.attrs({
+    className:
+      "container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0",
+  })`
+    max-width: 100vw;
+  `;
   return (
-    <div
-      className="container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0"
-      style={{
-        maxWidth: "100vw",
-      }}
-    >
+    <HomeBox>
       <TopSearchBox navigate={navigate} />
       <TopMainNavBox navigate={navigate} />
       <TopImgBox />
       <BottomHotBox />
-    </div>
+    </HomeBox>
   );
 };
 
@@ -79,8 +80,12 @@ const TopMainNavBox = ({ navigate }) => {
       <ul className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
         {getUser("user") && (
           <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center ">
-            <a className="nav-link main-bg-color" aria-current="page" href="/myPage">
-            <span className="main-color">MY페이지</span>  
+            <a
+              className="nav-link main-bg-color"
+              aria-current="page"
+              href="/myPage"
+            >
+              <span className="main-color">MY페이지</span>
             </a>
           </li>
         )}
@@ -89,7 +94,7 @@ const TopMainNavBox = ({ navigate }) => {
           className="nav-item flex-grow-1 d-flex justify-content-center align-items-center"
         >
           <a className="nav-link" href="/board">
-          <span className="main-color">칵테일 레시피</span>  
+            <span className="main-color">칵테일 레시피</span>
           </a>
         </li>
         <li className="nav-item dropdown flex-grow-1 d-flex justify-content-center align-items-center ">
@@ -98,7 +103,7 @@ const TopMainNavBox = ({ navigate }) => {
             data-bs-toggle="dropdown"
             href="#!"
           >
-           <span className="main-color">칵테일 맛집</span>  
+            <span className="main-color">칵테일 맛집</span>
           </a>
           <ul className="dropdown-menu ">
             {eventLi.map((x) => (
@@ -113,7 +118,7 @@ const TopMainNavBox = ({ navigate }) => {
             tabIndex="-1"
             aria-disabled="true"
           >
-           <span className="main-color">미정</span>  
+            <span className="main-color">미정</span>
           </a>
         </li>
       </ul>
@@ -127,7 +132,7 @@ const TopImgBox = () => {
       <img
         className="w-100 "
         src={"img/KakaoTalk_20230225_174505991.png"}
-        alt="1"
+        alt="mainImg"
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import {
@@ -78,7 +79,7 @@ export default function SignUp() {
     userImage: "",
     introduction: "",
   });
-  console.log(member)
+  console.log(member);
   useEffect(() => {
     setMember({ ...member, userImage: imgFile });
   }, [imgFile]);
@@ -125,15 +126,17 @@ export default function SignUp() {
       });
   };
 
+  const SignUpForm = styled.form.attrs({
+    className:
+      "container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4",
+    action: "",
+  })`
+    max-width: 500px;
+    min-height: 400px;
+  `;
+
   return (
-    <form
-      className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"
-      style={{
-        maxWidth: "500px",
-        minHeight: "400px",
-      }}
-      action=""
-    >
+    <SignUpForm>
       {inputArr.map((data, idx) => (
         <Input
           key={data.id}
@@ -147,6 +150,6 @@ export default function SignUp() {
         />
       ))}
       <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />
-    </form>
+    </SignUpForm>
   );
 }

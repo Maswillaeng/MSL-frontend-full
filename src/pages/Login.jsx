@@ -10,6 +10,7 @@ import {
   validationEmail,
   validationPassword,
 } from "../function/utility/validation";
+import styled from "styled-components";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -57,15 +58,17 @@ export default function Login() {
       });
   };
 
+  const LoginForm = styled.form.attrs({
+    className:
+      "container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4",
+    action: "/",
+  })`
+    max-width: 500px;
+    min-height: 200px;
+  `;
+
   return (
-    <form
-      className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"
-      action="/"
-      style={{
-        maxWidth: "500px",
-        minHeight: "200px",
-      }}
-    >
+    <LoginForm>
       {userArr.map((data, idx) => (
         <Input
           key={data.id}
@@ -84,23 +87,10 @@ export default function Login() {
           </a>
         </div>
         <div className="my-3">
-          <span
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            이메일
-          </span>
-          /
-          <span
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            비밀번호 찾기
-          </span>
+          <span className="pointer">이메일</span>
+          <span className="pointer">비밀번호 찾기</span>
         </div>
       </div>
-    </form>
+    </LoginForm>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styled from "styled-components";
 import Button from "../components/Button";
 import members from "../dummy/members";
 import getUser from "../function/cookie/getUser";
@@ -19,19 +20,20 @@ const MyPage = () => {
 };
 
 const TopProfileTop = () => {
+  const UserImg = styled.img.attrs({
+    className: "rounded-circle",
+    alt: "",
+  })`
+    height: 150px;
+  `;
   return (
     <div className="mb-5 d-flex px-5">
       <div className="me-5">
-        <img
-          className="rounded-circle"
-          style={{
-            height: "150px",
-          }}
+        <UserImg
           src={
             members.filter((x) => x.email === "shdomi8599@naver.com")[0]
               .userImage
           }
-          alt=""
         />
       </div>
       <div className="d-flex flex-column">
@@ -48,18 +50,23 @@ const TopProfileTop = () => {
 };
 
 const TopProfileBottom = () => {
+  const AccessBox = styled.div.attrs({
+    className: "d-flex  justify-content-center align-items-center w-100",
+  })`
+    margin-bottom: -15px;
+  `;
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">
       <div>
         <span className="me-3">팔로우 30</span>
         <span>팔로워 30</span>
       </div>
-      <div style={{ marginBottom: "-15px" }}>
+      <AccessBox>
         <Button addStyle={"px-5"} message={"팔로우"} />
-      </div>
-      <div>
+      </AccessBox>
+      <AccessBox>
         <Button addStyle={"px-4"} message={"메세지 보내기"} />
-      </div>
+      </AccessBox>
     </div>
   );
 };
@@ -76,16 +83,14 @@ const BottomCategori = ({ setCategori, categori }) => {
   return (
     <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100 ">
       <div
-        className={`flex-grow-1 d-flex justify-content-center align-items-center py-3 border border-dark ${writeStyle}`}
+        className={`flex-grow-1 d-flex justify-content-center align-items-center py-3 border border-dark ${writeStyle} pointer`}
         onClick={writeCategori}
-        style={{ cursor: "pointer" }}
       >
         내가 작성한 글
       </div>
       <div
-        className={`flex-grow-1 d-flex justify-content-center align-items-center py-3 border-top border-bottom border-end border-dark ${recommendStyle}`}
+        className={`flex-grow-1 d-flex justify-content-center align-items-center py-3 border-top border-bottom border-end border-dark ${recommendStyle} pointer`}
         onClick={recommendCategori}
-        style={{ cursor: "pointer" }}
       >
         내가 추천한 글
       </div>

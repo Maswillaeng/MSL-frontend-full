@@ -13,6 +13,7 @@ import members from "../dummy/members";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
 import getUser from "../function/cookie/getUser";
+import styled from "styled-components";
 
 export default function BoardDetail() {
   const location = useLocation();
@@ -50,48 +51,43 @@ const TopImgBox = ({ data }) => {
       setCurrentImg(currentImg - 1);
     }
   };
+  const IconBox = styled.div`
+    min-width: 70px;
+  `;
+
+  const ThumbnailImg = styled.img.attrs({
+    className: "img-thumbnail",
+    alt: "",
+  })`
+    min-height: 350px;
+    max-height: 350px;
+    min-width: 500px;
+    max-width: 500px;
+  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <div className="d-flex justify-content-center align-items-center">
-        <div style={{ minWidth: "70px" }}>
+        <IconBox>
           {currentImg !== 0 && (
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={downCurrentImg}
-              className="mx-3 "
-              style={{
-                height: "40px",
-                cursor: "pointer",
-              }}
+              className="mx-3  pointer board-detail-icon"
             />
           )}
-        </div>
+        </IconBox>
         <div>
-          <img
-            className="img-thumbnail"
-            style={{
-              minHeight: "350px",
-              maxHeight: "350px",
-              minWidth: "500px",
-              maxWidth: "500px",
-            }}
-            src={data.imgSrc[currentImg]}
-            alt="1"
-          />
+          <ThumbnailImg src={data.imgSrc[currentImg]} />
         </div>
-        <div style={{ minWidth: "70px" }}>
+        <IconBox>
           {currentImg < data.imgSrc.length - 1 && (
             <FontAwesomeIcon
               icon={faArrowRight}
               onClick={upCurrentImg}
-              className="mx-3 "
-              style={{
-                height: "40px",
-                cursor: "pointer",
-              }}
+              className="mx-3 pointer board-detail-icon"
             />
           )}
-        </div>
+        </IconBox>
       </div>
       <div>
         {circleArr.map((x, i) =>
@@ -135,17 +131,16 @@ const TopProfileBox = ({ data }) => {
       setSubscribeCount(subscribeCount + 1);
     }
   };
+  const UserImg = styled.img.attrs({
+    className: "rounded-circle",
+    alt: "userImg",
+  })`
+    height: 70px;
+  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center">
       <div className=" mt-5 ">
-        <img
-          className="rounded-circle"
-          style={{
-            height: "70px",
-          }}
-          src={userImgae}
-          alt="detailThumbnail"
-        />
+        <UserImg src={userImgae} />
       </div>
       <div className="ms-2 mt-5 me-5">
         <div>{data.nickname}</div>
@@ -231,6 +226,12 @@ const BottomCommentBox = ({ login, data }) => {
   useEffect(() => {
     setCommentArr(commentData.filter((x) => x.post_id === data.post_id));
   }, [commentText]);
+  const UserImg = styled.img.attrs({
+    className: "rounded-circle",
+    alt: "userImg",
+  })`
+    height: 30px;
+  `;
   return (
     <>
       <div className="w-50 d-flex flex-column justify-content-start align-items-center">
@@ -260,27 +261,19 @@ const BottomCommentBox = ({ login, data }) => {
               <div className="collapse mt-3 w-100" id="collapseExample">
                 <div className="mb-3 w-100">
                   <label htmlFor="comment" className="form-label ">
-                    <img
-                      className="rounded-circle"
-                      style={{
-                        height: "30px",
-                      }}
+                    <UserImg
                       src={
                         "https://avatars.githubusercontent.com/u/117655658?v=4"
                       }
-                      alt="1"
                     />
                     <span className="ms-1">{getUser("user")}</span>
                   </label>
                   <textarea
                     value={commentText}
                     onChange={detectCommentText}
-                    className="form-control"
+                    className="form-control non-resize"
                     id="comment"
                     rows="5"
-                    style={{
-                      resize: "none",
-                    }}
                   ></textarea>
                 </div>
                 <div className="w-100 d-flex justify-content-between align-items-center">

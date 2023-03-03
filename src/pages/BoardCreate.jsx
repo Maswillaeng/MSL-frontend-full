@@ -10,6 +10,7 @@ import AddImg from "../components/AddImg";
 import { useNavigate } from "react-router-dom";
 import Li from "../components/Li";
 import EditorComponent from "../components/EditorComponent";
+import styled from "styled-components";
 
 const BoardCreate = () => {
   //텍스트에디터용
@@ -43,6 +44,15 @@ const BoardCreate = () => {
     });
   };
   const [postData, setPostData] = useState({});
+
+  const BoardCreateBox = styled.div.attrs({
+    className:
+      "container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5 ",
+  })`
+    max-width: 70vw;
+    min-height: 100vh;
+  `;
+
   return (
     <>
       <BoardCreateNav
@@ -52,13 +62,7 @@ const BoardCreate = () => {
         setPostData={setPostData}
         postData={postData}
       />
-      <div
-        className="container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5 "
-        style={{
-          maxWidth: "70vw",
-          minHeight: "100vh",
-        }}
-      >
+      <BoardCreateBox>
         <TopImgBox imgData={imgData} imgNum={imgNum} setImgNum={setImgNum} />
         <TopAddImg
           addImgData={addImgData}
@@ -70,7 +74,7 @@ const BoardCreate = () => {
           onEditorChange={onEditorChange}
           desc={desc}
         />
-      </div>
+      </BoardCreateBox>
     </>
   );
 };
@@ -143,76 +147,66 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
   const downImgNum = () => {
     setImgNum(imgNum - 1);
   };
+  const IconBox = styled.div`
+    max-width: 70px;
+    min-width: 70px;
+  `;
+  const AddImgBox = styled.div.attrs({
+    className:
+      "w-25 d-flex justify-content-center align-items-center card shadow fs-5 mx-3",
+  })`
+    min-height: 280px;
+  `;
+  const AddImg = styled.div.attrs({
+    alt: "",
+  })`
+    max-height: 270px;
+    min-height: 270px;
+    min-width: 300px;
+    max-width: 300px;
+  `;
+  const PlusIconBox = styled.div`
+    max-width: 70px;
+    min-width: 70px;
+  `;
+  const ImgListBox = styled.div`
+    min-height: 20px;
+    max-height: 20px;
+  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <div className="w-100 d-flex justify-content-center align-items-center mb-3">
-        <div
-          style={{
-            maxWidth: "70px",
-            minWidth: "70px",
-          }}
-        >
+        <IconBox>
           {imgNum > 0 && (
             <FontAwesomeIcon
               onClick={downImgNum}
               icon={faArrowLeft}
-              className="mx-3 "
-              style={{
-                height: "40px",
-                cursor: "pointer",
-              }}
+              className="mx-3 pointer board-create-icon"
             />
           )}
-        </div>
-        <div
-          className="w-25 d-flex justify-content-center align-items-center card shadow fs-5 mx-3"
-          style={{
-            minHeight: "280px",
-          }}
-        >
+        </IconBox>
+        <AddImgBox>
           {Object.values(imgData).filter((x) => x !== "").length === 0 ? (
             "이미지를 등록해주세요."
           ) : (
-            <img
-              className=""
-              style={{
-                maxHeight: "270px",
-                minHeight: "270px",
-                minWidth: "300px",
-                maxWidth: "300px",
-              }}
+            <AddImg
               src={Object.values(imgData).filter((x) => x !== "")[imgNum]}
-              alt=""
             />
           )}
-        </div>
-        <div
-          style={{
-            maxWidth: "70px",
-            minWidth: "70px",
-          }}
-        >
+        </AddImgBox>
+        <PlusIconBox>
           {Object.values(imgData).filter((x) => x !== "").length > 1 &&
             imgNum <
               Object.values(imgData).filter((x) => x !== "").length - 1 && (
               <FontAwesomeIcon
                 onClick={upImgNum}
                 icon={faArrowRight}
-                className="mx-3"
-                style={{
-                  height: "40px",
-                  cursor: "pointer",
-                }}
+                className="mx-3 pointer board-create-icon"
               />
             )}
-        </div>
+        </PlusIconBox>
       </div>
-      <div
-        style={{
-          minHeight: "20px",
-          maxHeight: "20px",
-        }}
-      >
+      <ImgListBox>
         {imgCountArr.map((x, i) =>
           i === imgNum ? (
             <FontAwesomeIcon icon={faCircleS} className="mx-2 mt-2" />
@@ -220,7 +214,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
             <FontAwesomeIcon icon={faCircleR} className="mx-2 mt-2" />
           )
         )}
-      </div>
+      </ImgListBox>
     </div>
   );
 };
@@ -245,15 +239,18 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
 };
 
 const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
+  const TitleBox = styled.div.attrs({
+    className: "me-5",
+  })`
+    flex: 0.7;
+  `;
+  const CategoriBox = styled.div`
+    flex: 0.3;
+  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column my-5">
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
-        <div
-          className="me-5"
-          style={{
-            flex: "0.7",
-          }}
-        >
+        <TitleBox>
           <div>
             <input
               onChange={updateContent}
@@ -263,12 +260,8 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
               placeholder="제목을 적어주세요."
             />
           </div>
-        </div>
-        <div
-          style={{
-            flex: "0.3",
-          }}
-        >
+        </TitleBox>
+        <CategoriBox>
           <select
             className="form-select"
             name="categori"
@@ -281,7 +274,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
             <option defaultValue="광역시">광역시</option>
             <option defaultValue="그 외">그 외</option>
           </select>
-        </div>
+        </CategoriBox>
       </div>
       <div className=" mb-5 w-50">
         <div>

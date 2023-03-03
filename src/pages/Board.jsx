@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
 import boardData from "../dummy/boardData";
@@ -62,18 +63,20 @@ const Board = () => {
     }
   }, [rowCount]);
 
+  const BoardBox = styled.div.attrs({
+    className:
+      "container rounded d-flex flex-column justify-content-center align-items-center my-5",
+  })`
+    max-width: 90vw;
+    min-height: 100vh;
+  `;
+
   return (
-    <div
-      className="container rounded d-flex flex-column justify-content-center align-items-center my-5"
-      style={{
-        maxWidth: "90vw",
-        minHeight: "100vh",
-      }}
-    >
+    <BoardBox>
       <BoardTop categori={categori} />
       <BoardMiddle rowData={rowData} />
       <BoardBottom target={target} loading={loading} />
-    </div>
+    </BoardBox>
   );
 };
 

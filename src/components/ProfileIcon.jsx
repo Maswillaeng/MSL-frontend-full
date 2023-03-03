@@ -7,16 +7,17 @@ import {
   faThumbsUp as faThumbsUpR,
   faBell as faBellR,
 } from "@fortawesome/free-regular-svg-icons";
+import styled from "styled-components";
 
 const ProfileIcon = ({ message, type, addStyle }) => {
+  const MessageSpan = styled.span.attrs({
+    className: `border border-2  p-2 rounded ${addStyle} pointer`,
+  })`
+    color: ${(props) => (props.type ? "white" : "black")};
+  `;
   return (
     <>
       <FontAwesomeIcon
-        style={{
-          height: "25px",
-          cursor: "pointer",
-          marginBottom: "-5px",
-        }}
         icon={
           message === "추천"
             ? type
@@ -26,17 +27,9 @@ const ProfileIcon = ({ message, type, addStyle }) => {
             ? faBellS
             : faBellR
         }
-        className="me-1 "
+        className="me-1 profile-icon pointer"
       />
-      <span
-        style={{
-          color: type ? "white" : "black",
-          cursor: "pointer",
-        }}
-        className={`border border-2  p-2 rounded ${addStyle}`}
-      >
-        {message}
-      </span>
+      <MessageSpan type={type}>{message}</MessageSpan>
     </>
   );
 };

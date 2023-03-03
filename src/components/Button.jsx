@@ -5,8 +5,7 @@ const Button = ({ size, buttonEvent, message, addStyle = "" }) => {
         type="button"
         onClick={buttonEvent}
         className={`btn btn-${size} ${addStyle}  text-light`}
-        style={{backgroundColor:'#AA233C'}}
-
+        id="btn-bg-color"
       >
         {message}
       </button>

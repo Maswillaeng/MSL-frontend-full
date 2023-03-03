@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Button from "./Button";
 import Reply from "./Reply";
 import replyData from "../dummy/replyData";
+import styled from "styled-components";
 
 const Comment = ({ data }) => {
   //댓글 up
@@ -94,79 +95,76 @@ const Comment = ({ data }) => {
     );
     setCheckReply(false);
   }, [checkReply]);
+
+  const TopCommentBox = styled.div.attrs({
+    className: "w-75 d-flex justify-content-start align-items-center mb-2",
+  })`
+    margin-left: -50px;
+    margin-bottom: -35px;
+  `;
+
+  const ProfileImg = styled.img.attrs({
+    className: "rounded-circle",
+    alt: "",
+  })`
+    height: 50px;
+  `;
+  const IconBox = styled.div.attrs({
+    className:
+      "w-75 d-flex justify-content-start align-items-start ms-5 flex-column",
+  })`
+    margin-right: -150px;
+  `;
+  const ReplyImg = styled.img.attrs({
+    className: "rounded-circle me-3",
+    alt: "",
+  })`
+    height: 25px;
+  `;
+
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
-      <div
-        className="w-75 d-flex justify-content-start align-items-center mb-2"
-        style={{
-          marginLeft: "-50px",
-          marginBottom: "-35px",
-        }}
-      >
+      <TopCommentBox>
         <div>
-          <img
-            className="rounded-circle"
-            style={{
-              height: "50px",
-            }}
+          <ProfileImg
             src={
               members.filter((x) => x.nickname === data.nickname)[0].userImage
             }
-            alt=""
           />
         </div>
         <div className="ms-2 me-5 w-100 ">
           <div>{data.nickname}</div>
           <div className="opacity-75">{data.createAt}</div>
         </div>
-        <div
-          className="w-75 d-flex justify-content-start align-items-start ms-5 flex-column"
-          style={{
-            marginRight: "-150px",
-          }}
-        >
+        <IconBox>
           <div className="mb-2">
             <FontAwesomeIcon
               onClick={commentLikeHandler}
-              style={{
-                height: "25px",
-                cursor: "pointer",
-                marginBottom: "-5px",
-              }}
               icon={commentLike ? faThumbsUpS : faThumbsUpR}
-              className="me-2 "
+              className="me-2 comment-icon"
             />
             {likeCount}
           </div>
           <div>
             <FontAwesomeIcon
               onClick={commentDislikeHandler}
-              style={{
-                height: "25px",
-                cursor: "pointer",
-                marginBottom: "-5px",
-              }}
               icon={commentDislike ? faThumbsDownS : faThumbsDownR}
-              className="me-2"
+              className="me-2 comment-icon"
             />
             {dislikeCount}
           </div>
-        </div>
-      </div>
+        </IconBox>
+      </TopCommentBox>
       <div className="w-100 d-flex justify-content-start align-items-center px-5 py-2">
         {data.content}
       </div>
-      <div className="w-100 d-flex justify-content-start align-items-center px-5 mt-3 pb-1">
+      <div className="w-100 d-flex justify-content-start align-items-center px-5 mt-3 pb-1 pointer">
         {replyList.length !== 0 && (
-          <div
-            className="me-4"
-            style={{ cursor: "pointer" }}
-            onClick={readReplyHandler}
-          >
+          <div className="me-4" onClick={readReplyHandler}>
             <span className="text-primary">답글 {replyList.length}개</span>
           </div>
         )}
-        <div style={{ cursor: "pointer" }} onClick={writeReplyHandler}>
+        <div className="pointer" onClick={writeReplyHandler}>
           <span className="text-primary">답글달기</span>
         </div>
       </div>
@@ -176,22 +174,16 @@ const Comment = ({ data }) => {
             aria-label={"답글달기"}
             className="d-flex justify-content-center align-items-center w-100"
           >
-            <img
-              className="rounded-circle me-3"
-              style={{
-                height: "25px",
-              }}
+            <ReplyImg
               src={
                 members.filter((x) => x.nickname === "shdomi8599")[0].userImage
               }
-              alt=""
             />
             <input
               type="text"
-              className="form-control me-3"
+              className="form-control me-3 w-50"
               placeholder="답글을 적어주세요."
               onChange={changeReplyVal}
-              style={{ width: "50%" }}
             />
             <Button
               message={"취소"}

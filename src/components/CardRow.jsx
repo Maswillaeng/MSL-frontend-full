@@ -1,18 +1,18 @@
 import Card from "./Card";
-
+import styled from "styled-components";
 const CardRow = ({ cardList }) => {
+  const CardRowBox = styled.div.attrs({
+    className: "row g-5 mt-3 mb-5",
+  })`
+    min-height: 450px;
+    max-height: 450px;
+  `;
   return (
-    <div
-      className="row g-5 mt-3 mb-5"
-      style={{
-        minHeight: "450px",
-        maxHeight: "450px",
-      }}
-    >
+    <CardRowBox>
       {cardList.map((x) => (
         <Card data={x} key={x.post_id} />
       ))}
-    </div>
+    </CardRowBox>
   );
 };
 

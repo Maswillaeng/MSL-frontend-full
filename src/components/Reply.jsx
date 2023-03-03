@@ -9,6 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import members from "../dummy/members";
 import { useState } from "react";
+import styled from "styled-components";
 
 const Reply = ({ data }) => {
   //답글 좋아요
@@ -47,16 +48,17 @@ const Reply = ({ data }) => {
     dislikeHandler();
     setDislikeCount(dislikeCount + 1);
   };
+  const UserImg = styled.img.attrs({
+    className: "rounded-circle me-2 mb-1 pt-1",
+    alt: "",
+  })`
+    height: 24px;
+  `;
   return (
     <li className="mb-2" style={{ listStyle: "none" }}>
       <div>
-        <img
-          className="rounded-circle me-2 mb-1 pt-1"
-          style={{
-            height: "24px",
-          }}
+        <UserImg
           src={members.filter((x) => x.nickname === data.nickname)[0].userImage}
-          alt="1"
         />
         {/* 글 주인이 댓글을 쓰면 "rounded main-bg-color p-1 text-light" 속성을 주자 */}
         <span className="me-2">{data.nickname}</span>
@@ -69,24 +71,16 @@ const Reply = ({ data }) => {
         <div className="me-3">
           <FontAwesomeIcon
             onClick={changeLikeCount}
-            style={{
-              height: "20px",
-              cursor: "pointer",
-            }}
             icon={like ? faThumbsUpS : faThumbsUpR}
-            className="me-2 "
+            className="me-2 pointer reply-icon"
           />
           <span>{likeCount}</span>
         </div>
         <div>
           <FontAwesomeIcon
             onClick={changeDislikeCount}
-            style={{
-              height: "20px",
-              cursor: "pointer",
-            }}
             icon={dislike ? faThumbsDownS : faThumbsDownR}
-            className="me-2 "
+            className="me-2 pointer reply-icon"
           />
           <span> {dislikeCount}</span>
         </div>

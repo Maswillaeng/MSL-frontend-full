@@ -19,5 +19,66 @@
 }
 
 .nav {
-  --bs-nav-link-hover-color : #aa233c !important;
+  --bs-nav-link-hover-color: #aa233c !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.non-resize {
+  resize: none;
+}
+
+/* Button 컴포넌트 */
+#btn-bg-color {
+  background-color: #aa233c;
+}
+
+/* AddImg 컴포넌트 */
+.add-img-icon {
+  height: 50px;
+  width: 50px;
+}
+
+/* Card 컴포넌트 */
+.card-icon {
+  height: 20px;
+}
+
+/* Comment 컴포넌트 */
+.comment-icon {
+  height: 25px;
+  cursor: pointer;
+  margin-bottom: -5px;
+}
+
+/*  EditorComponent 컴포넌트 */
+.react-quill-box {
+  height: 650px;
+}
+.react-quill {
+  height: 600px;
+}
+
+/* Input 컴포넌트 */
+
+.input-icon {
+  height: 50px;
+  width: 50px;
+}
+
+/* ProfileIcon 컴포넌트 */
+.profile-icon {
+  height: 25px;
+  margin-bottom: -5px;
+}
+
+/* Reply 컴포넌트 */
+.reply-icon {
+  height: 20px;
 }

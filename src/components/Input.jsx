@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
 
 const Input = ({
   setMember,
@@ -20,19 +21,39 @@ const Input = ({
       [e.target.name]: e.target.value,
     });
   };
+  const DafaultLabel = styled.label.attrs({
+    className: "pt-2",
+  })`
+    min-width: 100px;
+  `;
+  const ImgLabel = styled.label.attrs({
+    className: "pt-2",
+  })`
+    min-width: 165px;
+  `;
+  const ImgBox = styled.div.attrs({
+    className:
+      "border border-3 mx-5 d-flex justify-content-center align-items-center pointer",
+  })`
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 100px;
+    max-height: 100px;
+  `;
+  const UserImg = styled.img.attrs({
+    className: "rounded",
+    alt: "",
+  })`
+    max-width: 90px;
+    min-width: 90px;
+    max-height: 90px;
+    min-height: 90px;
+  `;
   return (
     <div className="d-flex p-2 my-2 ">
       {data.id !== "userImage" && data.id !== "introduction" ? (
         <>
-          <label
-            className="pt-2"
-            htmlFor={data.id}
-            style={{
-              minWidth: "100px",
-            }}
-          >
-            {data.name}
-          </label>
+          <DafaultLabel htmlFor={data.id}>{data.name}</DafaultLabel>
           <input
             id={data.id}
             type={data.type}
@@ -45,17 +66,8 @@ const Input = ({
         </>
       ) : data.id === "userImage" ? (
         <>
-          <label
-            className="pt-2"
-            htmlFor={data.id}
-            style={{
-              minWidth: "165px",
-            }}
-          >
-            {data.name}
-          </label>
+          <ImgLabel htmlFor={data.id}>{data.name}</ImgLabel>
           <input
-            style={{ display: "none" }}
             type={data.type}
             accept="image/*"
             placeholder={data.placeholder}
@@ -64,63 +76,26 @@ const Input = ({
             onChange={() => {
               saveImgFile(idx);
             }}
-            className="ms-5 rounded form-control"
+            className="ms-5 rounded form-control hidden"
           />
-          <div
-            className="border border-3 mx-5 d-flex justify-content-center align-items-center"
-            onClick={uploadClick}
-            style={{
-              minWidth: "100px",
-              maxWidth: "100px",
-              maxHeight: "100px",
-              minHeight: "100px",
-              cursor: "pointer",
-            }}
-          >
+          <ImgBox onClick={uploadClick}>
             {!imgFile && (
-              <FontAwesomeIcon
-                icon={faPlus}
-                style={{
-                  height: "50px",
-                  width: "50px",
-                }}
-              />
+              <FontAwesomeIcon icon={faPlus} className="input-icon" />
             )}
-            {imgFile && (
-              <img
-                className="rounded"
-                style={{
-                  maxHeight: "90px",
-                  minHeight: "90px",
-                  minWidth: "90px",
-                  maxWidth: "90px",
-                }}
-                src={imgFile}
-                alt=""
-              />
-            )}
-          </div>
+            {imgFile && <UserImg src={imgFile} />}
+          </ImgBox>
         </>
       ) : (
         <>
-          <label
-            className="pt-2"
-            htmlFor={data.id}
-            style={{
-              minWidth: "100px",
-            }}
-          >
-            {data.name}
-          </label>
+          <DafaultLabel htmlFor={data.id}>{data.name}</DafaultLabel>
           <textarea
             ref={(el) => (targetRefs.current[idx] = el)}
-            style={{ resize: "none" }}
             rows="4"
             type={data.type}
             placeholder={data.placeholder}
             name={data.id}
             onChange={(e) => inputChange(e)}
-            className="ms-5 rounded form-control"
+            className="ms-5 rounded form-control non-resize"
           />
         </>
       )}

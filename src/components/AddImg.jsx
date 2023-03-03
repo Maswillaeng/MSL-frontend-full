@@ -27,7 +27,10 @@ const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
     };
   };
 
-  const ImgBox = styled.div`
+  const ImgBox = styled.div.attrs({
+    className:
+      "flex-grow-1 d-flex justify-content-center align-items-center card m-3 w-100",
+  })`
     max-height: 210px;
     min-height: 210px;
     min-width: 210px;
@@ -35,42 +38,28 @@ const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
     cursor: pointer;
   `;
 
+  const ImgFile = styled.img.attrs({
+    alt: "",
+  })`
+    max-height: 190px;
+    min-height: 190px;
+    min-width: 190px;
+    max-width: 190px;
+  `;
+
+  const ImgInput = styled.input.attrs({
+    type: "file",
+    accept: "image/*",
+  })`
+    display: none;
+  `;
+
   return (
-    <ImgBox
-      onClick={uploadClick}
-      className="flex-grow-1 d-flex justify-content-center align-items-center card m-3 w-100"
-    >
-      {imgFile && (
-        <img
-          style={{
-            maxHeight: "190px",
-            minHeight: "190px",
-            minWidth: "190px",
-            maxWidth: "190px",
-          }}
-          src={imgFile}
-          alt=""
-        />
-      )}
-      <input
-        ref={target}
-        type="file"
-        accept="image/*"
-        style={{
-          display: "none",
-        }}
-        onChange={saveImgFile}
-      />
+    <ImgBox onClick={uploadClick}>
+      {imgFile && <ImgFile src={imgFile} />}
+      <ImgInput ref={target} onChange={saveImgFile} />
       <div className="p-1 w-100 d-flex justify-content-center align-items-center">
-        {!imgFile && (
-          <FontAwesomeIcon
-            icon={faPlus}
-            style={{
-              height: "50px",
-              width: "50px",
-            }}
-          />
-        )}
+        {!imgFile && <FontAwesomeIcon icon={faPlus} className="add-img-icon" />}
       </div>
     </ImgBox>
   );

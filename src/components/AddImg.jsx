@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
+import styled from "styled-components";
 
 const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
   const [imgFile, setImgFile] = useState("");
@@ -25,21 +26,22 @@ const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
       });
     };
   };
+
+  const ImgBox = styled.div`
+    max-height: 210px;
+    min-height: 210px;
+    min-width: 210px;
+    max-width: 210px;
+    cursor: pointer;
+  `;
+
   return (
-    <div
+    <ImgBox
       onClick={uploadClick}
       className="flex-grow-1 d-flex justify-content-center align-items-center card m-3 w-100"
-      style={{
-        maxHeight: "210px",
-        minHeight: "210px",
-        minWidth: "210px",
-        maxWidth: "210px",
-        cursor: "pointer",
-      }}
     >
       {imgFile && (
         <img
-          className=""
           style={{
             maxHeight: "190px",
             minHeight: "190px",
@@ -70,7 +72,7 @@ const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
           />
         )}
       </div>
-    </div>
+    </ImgBox>
   );
 };
 

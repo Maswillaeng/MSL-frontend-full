@@ -3,17 +3,17 @@ import { useLocation } from "react-router-dom";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
 import boardData from "../dummy/boardData";
-import { infinityScroll } from "../function/utility/infinityScroll";
 import useIntersectionObserver from "../hook/useIntersectionObserver";
 
-export default function Board() {
+const Board = () => {
   const location = useLocation();
   //카드 카운트
   const [cardData, setCardData] = useState(boardData.slice(0, 4));
-  //rowCount를 전달받아서 활용하면 될듯?
+  //rowCount를 전달받아서 데이터를 셋팅하고 리턴
   const reloadCardData = async (number) => {
-    setCardData(boardData.slice(4 * (number - 1), 4 * number));
-    return boardData.slice(4 * (number - 1), 4 * number);
+    const data = boardData.slice(4 * (number - 1), 4 * number);
+    setCardData(data);
+    return data;
   };
   //cardData를 전달받아서 데이터를 추가
   const [rowData, setRowData] = useState([cardData]);
@@ -75,7 +75,7 @@ export default function Board() {
       <BoardBottom target={target} loading={loading} />
     </div>
   );
-}
+};
 
 const BoardTop = ({ categori }) => {
   return (
@@ -111,3 +111,5 @@ const BoardBottom = ({ loading, target }) => {
     </div>
   );
 };
+
+export default Board;

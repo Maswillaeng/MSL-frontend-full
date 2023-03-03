@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export default function useIntersectionObserver(callback) {
+const useIntersectionObserver = (callback) => {
   const observer = useRef(
     new IntersectionObserver(
       (entries, observer) => {
@@ -23,4 +23,6 @@ export default function useIntersectionObserver(callback) {
   };
 
   return [observe, unobserve];
-}
+};
+
+export default useIntersectionObserver;

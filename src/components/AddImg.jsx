@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import styled from "styled-components";
+
 const ImgBox = styled.div.attrs({
   className:
     "flex-grow-1 d-flex justify-content-center align-items-center card m-3 w-100",

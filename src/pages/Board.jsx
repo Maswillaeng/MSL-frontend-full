@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
+import SkeletonUi from "../components/SkeletonUi";
 import boardData from "../dummy/boardData";
-import useIntersectionObserver from "../hook/useIntersectionObserver";
+import useIntersectionObserver from "../function/hook/useIntersectionObserver";
 
 const Board = () => {
   // axios
@@ -128,15 +130,24 @@ const BoardMiddle = ({ rowData }) => {
 };
 
 const BoardBottom = ({ loading, target }) => {
-  const loadingArr = Array(3).fill(1);
+  const loadingArr = Array(4).fill(1);
   return (
-    <div
-      ref={target}
-      className={`d-flex justify-content-center align-items-center w-100 mt-5 mb-5 fs-3`}
-    >
-      {loading &&
-        loadingArr.map((x, i) => <Loading key={i} addStyle={"mx-5"} />)}
-    </div>
+    <>
+      <div className="d-flex justify-content-start align-items-start w-100 mb-5 fs-3 pb-5 blink">
+        {loading && (
+          <div className="d-flex flex-column justify-content-start align-items-start w-100 ">
+            <div className="container text-center">
+              <div className="row g-5 mt-3 mb-5">
+                {loadingArr.map((x, i) => (
+                  <SkeletonUi key={i} />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      <div ref={target}></div>
+    </>
   );
 };
 

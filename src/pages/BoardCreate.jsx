@@ -14,7 +14,7 @@ import styled from "styled-components";
 import axios from "axios";
 
 const BoardCreate = () => {
-  //텍스트에디터용
+  //텍스트 에디터용 상태와 이벤트
   const [desc, setDesc] = useState("");
   const onEditorChange = (value) => {
     setDesc(value);
@@ -23,6 +23,7 @@ const BoardCreate = () => {
       content: value,
     });
   };
+
   //처음엔 배열로 넣었다가 객체의 형태로 바꾸게 된 이유는 이미지가 등록순서대로 보이길래 원래 있는 칸 순서대로 보이기 위해 객체로 변경함
   const [imgData, setImgData] = useState({
     imgSrc1: "",
@@ -31,14 +32,22 @@ const BoardCreate = () => {
     imgSrc4: "",
     imgSrc5: "",
   });
+
+  //이미지 데이터를 저장하기 위한 이벤트
   const addImgData = (data) => {
     setImgData({
       ...imgData,
       ...data,
     });
   };
+
+  //썸네일 이벤트를 보여주기 위한 상태
   const [imgNum, setImgNum] = useState(0);
+
+  //카테고리 상태, 최초 값은 레시피로 설정
   const [content, setContent] = useState({ categori: "레시피" });
+
+  //작성된 내용을 반영하기 위한 이벤트
   const updateContent = (e) => {
     setContent({
       ...content,
@@ -47,6 +56,7 @@ const BoardCreate = () => {
       },
     });
   };
+
   return (
     <>
       <BoardCreateNav content={content} imgData={imgData} imgNum={imgNum} />
@@ -69,6 +79,7 @@ const BoardCreate = () => {
 
 const BoardCreateNav = ({ content, imgData, imgNum }) => {
   const navigate = useNavigate();
+
   //글 작성 이벤트
   const successEvent = () => {
     if (!content.title) {
@@ -105,9 +116,12 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
       });
   };
 
+  //뒤로가기 이벤트를 위한 함수 navigate가 콜백안에서 직접 작성이 불가하길래 따로 빼서 작성함
   const backPage = () => {
     navigate(-2);
   };
+
+  //네비를 구성하는 배열
   const navArr = [
     {
       뒤로가기: {
@@ -125,6 +139,7 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
       },
     },
   ];
+
   return (
     <nav className="navbar navbar-expand-lg bg-light py-2 fs-3 w-100">
       <div className="container-fluid w-100">
@@ -168,9 +183,12 @@ const ImgListBox = styled.div`
 `;
 
 const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
+  //이미지 개수를 아이콘으로 보여주기 위한 배열
   const imgCountArr = Array(
     Object.values(imgData).filter((x) => x !== "").length
   ).fill(1);
+
+  //썸네일 이미지 변경용 이벤트들
   const upImgNum = () => {
     setImgNum(imgNum + 1);
   };
@@ -225,6 +243,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
 };
 
 export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
+  //총 5개의 이미지를 등록할 수 있도록 박스 5개를 배치하는 배열
   const imgBox = Array(5)
     .fill(1)
     .map((x, i) => (x = x + i));

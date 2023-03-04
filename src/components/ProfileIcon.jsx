@@ -12,6 +12,7 @@ import styled from "styled-components";
 const MessageSpan = styled.span`
   color: ${(props) => (props.state ? "white" : "black")};
 `;
+
 const ProfileIcon = ({ message, state, addStyle }) => {
   return (
     <>

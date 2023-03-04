@@ -12,7 +12,7 @@ const HomeBox = styled.div.attrs({
     "container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0",
 })`
   max-width: 100vw;
-  max-height:200vh;
+  max-height: 200vh;
 `;
 
 const Home = () => {
@@ -28,15 +28,21 @@ const Home = () => {
 };
 
 const TopSearchBox = ({ navigate }) => {
+  //검색 값 상태
   const [inputVal, setInputVal] = useState("");
+
+  //검색 값 change 이벤트
   const changeVal = (e) => {
     setInputVal(e.target.value);
   };
+
+  //검색 버튼 이벤트
   const buttonEvent = () => {
     navigate("/board", {
       state: { categori: `${inputVal}에 대한 검색결과입니다.` },
     });
   };
+
   return (
     <div className="mb-3 w-100 d-flex justify-content-center align-items-center">
       <form className="my-2 d-flex justify-content-center align-items-center">
@@ -54,9 +60,12 @@ const TopSearchBox = ({ navigate }) => {
 };
 
 const TopMainNavBox = ({ navigate }) => {
+  //칵테일 레시피 카테고리로 이동하기 위한 이벤트
   const moveRecipe = () => {
     navigate("/board", { state: { categori: "칵테일 레시피" } });
   };
+
+  //nav값을 셋팅하기 위한 배열
   const eventLi = [
     {
       name: "서울/경기",
@@ -77,6 +86,7 @@ const TopMainNavBox = ({ navigate }) => {
       },
     },
   ];
+
   return (
     <div className="mb-5 w-100 d-flex justify-content-center align-items-center">
       <ul className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
@@ -141,21 +151,31 @@ const TopImgBox = () => {
 };
 
 const BottomHotBox = () => {
+  //1줄의 카드 데이터들을 보관하는 상태
   const [rowData, setRowData] = useState([boardData.slice(0, 4)]);
+
+  //새로운 1줄의 카드 데이터들을 가져오기 위한 이벤트
   const addRowData = (count) => {
     if (boardData.slice(4 * (count - 1), 4 * count).length !== 0) {
       setRowData([...rowData, boardData.slice(4 * (count - 1), 4 * count)]);
     }
   };
+
+  //카드 줄 카운트를 위한 상태
   const [rowCount, setRowCount] = useState(1);
+
+  //카드 줄을 늘려주는 이벤트
   const upRowCount = () => {
     setRowCount(rowCount + 1);
   };
+
+  //카드 줄이 늘어난다면 새로운 카드 데이터들을 갖고오도록 도와주는 이펙트
   useEffect(() => {
     if (rowCount > 1) {
       addRowData(rowCount);
     }
   }, [rowCount]);
+
   return (
     <div className="w-75 my-5">
       <div className="ps-3 fs-1 ">인기레시피</div>

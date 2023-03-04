@@ -26,41 +26,53 @@ const Board = () => {
   //   console.log(err);
   // });
   const location = useLocation();
-  //카드 카운트
+
+  //1줄의 카드 데이터 상태
   const [cardData, setCardData] = useState(boardData.slice(0, 4));
-  //rowCount를 전달받아서 데이터를 셋팅하고 리턴
+
+  //1줄의 카드 데이터를 셋팅하고 리턴
   const reloadCardData = async (number) => {
     const data = boardData.slice(4 * (number - 1), 4 * number);
     setCardData(data);
     return data;
   };
-  //cardData를 전달받아서 데이터를 추가
+
+  //전체 데이터를 보관하는 상태
   const [rowData, setRowData] = useState([cardData]);
+
+  //cardData를 전달받아서 데이터를 추가
   const addRowData = (data) => {
     if (data.length !== 0) {
       setRowData([...rowData, data]);
     }
   };
-  //카드 줄 카운트
+
+  //카드 줄 카운트 상태
   const [rowCount, setRowCount] = useState(1);
-  //api가 생기면 활용할 로딩
+
+  //로딩 상태
   const [loading, setLoading] = useState(false);
-  //카테고리 상태관리
+
+  //카테고리 상태
   const [categori, setCategori] = useState("전체게시글");
+
+  //네비를 통해 들어온다면 최초 1회만 그 카테고리에 맞게 재설정
   useEffect(() => {
     if (location.state) {
-      //네비를 통해 들어온다면 그 카테고리에 맞게 재설정
       window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
       setCategori(location.state.categori);
       location.state = undefined;
     }
   }, []);
-  //무한스크롤
+
+  //무한스크롤 observe 타겟
   const target = useRef(null);
+
   //커스텀훅 사용
   const [observe, unobserve] = useIntersectionObserver(() => {
     setRowCount((rowCount) => rowCount + 1);
   });
+
   useEffect(() => {
     // 타겟 설정
     if (rowCount === 1) {

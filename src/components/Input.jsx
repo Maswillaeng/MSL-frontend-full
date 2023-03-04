@@ -51,6 +51,7 @@ const Input = ({
   const uploadClick = () => {
     targetRefs.current[idx].click();
   };
+
   //인풋 값 변경 이벤트
   const inputChange = (e) => {
     setMember({
@@ -58,6 +59,7 @@ const Input = ({
       [e.target.name]: e.target.value,
     });
   };
+
   return (
     <div className="d-flex mt-2 mb-1">
       {data.id !== "userImage" && data.id !== "introduction" ? (
@@ -98,7 +100,7 @@ const Input = ({
             onChange={() => {
               saveImgFile(idx);
             }}
-            className="ms-5 rounded form-control hidden"
+            className="hidden"
           />
           <ImgBox onClick={uploadClick}>
             {!imgFile && (

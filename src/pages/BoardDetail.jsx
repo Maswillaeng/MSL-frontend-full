@@ -21,11 +21,15 @@ const BoardDetailBox = styled.div.attrs({
 })`
   max-width: 60vw;
 `;
-export default function BoardDetail() {
+
+const BoardDetail = () => {
   const location = useLocation();
+
+  //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
   return (
     <BoardDetailBox>
       <div className="w-100 mb-5">
@@ -36,7 +40,7 @@ export default function BoardDetail() {
       <BottomCommentBox data={location.state.data} />
     </BoardDetailBox>
   );
-}
+};
 
 const IconBox = styled.div`
   min-width: 70px;
@@ -53,9 +57,13 @@ const ThumbnailImg = styled.img.attrs({
 `;
 
 const TopImgBox = ({ data }) => {
-  //이미지 개수만큼 생성할 state만들어야할듯
+  //글에 등록된 이미지 개수의 상태를 보여주기 위한 배열
   const circleArr = Array(data.imgSrc.length).fill(1);
+
+  //현재 선택된 이미지를 보여주기 위한 상태
   const [currentImg, setCurrentImg] = useState(0);
+
+  //현재 보여지는 이미지를 바꾸기 위한 이벤트들
   const upCurrentImg = () => {
     if (currentImg < data.imgSrc.length - 1) {
       setCurrentImg(currentImg + 1);
@@ -113,9 +121,13 @@ const ProfileUserImg = styled.img.attrs({
 `;
 
 const TopProfileBox = ({ data }) => {
-  //추천 관련
+  //추천 숫자
   const [likeCount, setLikeCount] = useState(data.like);
+
+  //추천 상태
   const [like, setLike] = useState(false);
+
+  //추천 상태와 카운트를 바꿔주는 이벤트
   const likeHandler = () => {
     setLike(!like);
     if (like) {
@@ -130,9 +142,13 @@ const TopProfileBox = ({ data }) => {
   const userSubscribe = members.filter((x) => x.nickname === data.nickname)[0]
     .subscribeCount;
 
-  //구독 관련
+  //구독 숫자
   const [subscribeCount, setSubscribeCount] = useState(userSubscribe);
+
+  //구독 상태
   const [subscribe, setSubscribe] = useState(false);
+
+  //구독 상태와 카운트를 바꿔주는 이벤트
   const subscribeHandler = () => {
     setSubscribe(!subscribe);
     if (subscribe) {
@@ -141,6 +157,7 @@ const TopProfileBox = ({ data }) => {
       setSubscribeCount(subscribeCount + 1);
     }
   };
+
   return (
     <div className="w-100 d-flex justify-content-center align-items-center">
       <div className=" mt-5 ">
@@ -199,22 +216,32 @@ const CommentUserImg = styled.img.attrs({
 
 const BottomCommentBox = ({ login, data }) => {
   const navigate = useNavigate();
-  //버튼 타겟
-  const target = useRef(null);
-  //코멘트 필터로 나누기
+
+  //현재 글에 작성된 댓글들을 위한 상태
   const [commentArr, setCommentArr] = useState(
     commentData.filter((x) => x.post_id === data.post_id)
   );
-  //댓글 핸들러
+
+  //댓글 버튼 상태
   const [onComment, setOnComment] = useState(false);
+
+  //댓글 핸들러
   const onCommentHandeler = () => {
     setOnComment(!onComment);
   };
+
+  //댓글 text 상태
   const [commentText, setCommentText] = useState("");
-  const detectCommentText = (e) => {
+
+  //댓글 text change 이벤트
+  const changeCommentText = (e) => {
     setCommentText(e.target.value);
   };
-  //비회원일때 로그인창으로 이동하게 조건문 달아줘야할듯
+
+  //버튼 타겟, 버튼을 클릭하기 위해 생성
+  const target = useRef(null);
+
+  //비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
   const buttonEvent = () => {
     if (!getUser("user")) {
       return navigate("/login");
@@ -234,9 +261,11 @@ const BottomCommentBox = ({ login, data }) => {
     setCommentText("");
     setOnComment(false);
   };
+
+  //제출 상태가 변화할 때, 새로운 댓글을 등록해주기 위한 이펙트
   useEffect(() => {
     setCommentArr(commentData.filter((x) => x.post_id === data.post_id));
-  }, [commentText]);
+  }, [onComment]);
 
   return (
     <>
@@ -276,7 +305,7 @@ const BottomCommentBox = ({ login, data }) => {
                   </label>
                   <textarea
                     value={commentText}
-                    onChange={detectCommentText}
+                    onChange={changeCommentText}
                     className="form-control non-resize"
                     id="comment"
                     rows="5"
@@ -307,3 +336,5 @@ const BottomCommentBox = ({ login, data }) => {
     </>
   );
 };
+
+export default BoardDetail;

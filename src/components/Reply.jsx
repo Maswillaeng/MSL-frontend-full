@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import members from "../dummy/members";
 import { useState } from "react";
 import styled from "styled-components";
+
 const UserImg = styled.img.attrs({
   className: "rounded-circle me-2 mb-1 pt-1",
   alt: "",
@@ -18,12 +19,18 @@ const UserImg = styled.img.attrs({
 `;
 
 const Reply = ({ data }) => {
-  //답글 좋아요
+  //답글 좋아요 상태
   const [like, setLike] = useState(false);
+
+  //답글 좋아요 상태 이벤트
   const likeHandler = () => {
     setLike(!like);
   };
+
+  //답글 좋아요 카운트
   const [likeCount, setLikeCount] = useState(Number(data.like));
+
+  //답글 좋아요 상태와 카운트를 바꿔주는 이벤트
   const changeLikeCount = () => {
     if (like) {
       likeHandler();
@@ -36,12 +43,19 @@ const Reply = ({ data }) => {
     likeHandler();
     setLikeCount(likeCount + 1);
   };
-  //답글 싫어요
+
+  //답글 싫어요 상태
   const [dislike, setDislike] = useState(false);
+
+  //답글 싫어요 상태 이벤트
   const dislikeHandler = () => {
     setDislike(!dislike);
   };
+
+  //답글 싫어요 카운트
   const [dislikeCount, setDislikeCount] = useState(Number(data.dislike));
+
+  //답글 싫어요 상태와 카운트를 바꿔주는 이벤트
   const changeDislikeCount = () => {
     if (dislike) {
       dislikeHandler();
@@ -54,6 +68,7 @@ const Reply = ({ data }) => {
     dislikeHandler();
     setDislikeCount(dislikeCount + 1);
   };
+
   return (
     <li className="mb-2" style={{ listStyle: "none" }}>
       <div>

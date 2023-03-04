@@ -15,8 +15,10 @@ import { realTimeValidation } from "../function/utility/realTimeValidation";
 const SignUp = () => {
   const navigate = useNavigate();
 
-  //프로필 이미지
+  //프로필 이미지 상태
   const [imgFile, setImgFile] = useState("");
+
+  //프로필 이미지를 저장하기 위한 이벤트
   const saveImgFile = (num) => {
     const file = targetRefs.current[num].files[0];
     const reader = new FileReader();
@@ -27,8 +29,10 @@ const SignUp = () => {
     };
   };
 
-  //인풋 map 돌리기위한 배열
+  //input들을 target 설정해주기 위한 ref
   const targetRefs = useRef([]);
+
+  //input 데이터들을 가진 배열
   const inputArr = [
     {
       id: "email",
@@ -74,7 +78,7 @@ const SignUp = () => {
     },
   ];
 
-  //인풋값 저장용
+  //인풋값 저장용 상태
   const [member, setMember] = useState({
     email: "",
     password: "",
@@ -88,11 +92,12 @@ const SignUp = () => {
   //실시간 유효성 검사 메세지
   const [warning, setWarning] = useState({});
   useEffect(() => {
-   const debounceTimer = setTimeout(() => {
+    const debounceTimer = setTimeout(() => {
       console.log("디바운싱");
+      //서버에 api 요청을 모아서 1번만 해야하기때문에 입력을 멈췄을 때, realTimeValidation 함수만 1번 실행되면 된다.
       setWarning(realTimeValidation(member));
     }, 500);
-    return () => clearTimeout(debounceTimer)
+    return () => clearTimeout(debounceTimer);
   }, [member]);
 
   //폼 제출 시, 마지막 유효성 검사
@@ -135,25 +140,24 @@ const SignUp = () => {
   };
 
   return (
-    <form
-      className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"
-      id="sign-up-form"
-    >
-      {inputArr.map((data, idx) => (
-        <Input
-          key={data.id}
-          data={data}
-          setMember={setMember}
-          member={member}
-          targetRefs={targetRefs}
-          idx={idx}
-          saveImgFile={saveImgFile}
-          imgFile={imgFile}
-          warning={warning}
-        />
-      ))}
-      <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />
-    </form>
+    <div className="container d-flex justify-content-center align-items-center w-50">
+      <form className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3">
+        {inputArr.map((data, idx) => (
+          <Input
+            key={data.id}
+            data={data}
+            setMember={setMember}
+            member={member}
+            targetRefs={targetRefs}
+            idx={idx}
+            saveImgFile={saveImgFile}
+            imgFile={imgFile}
+            warning={warning}
+          />
+        ))}
+        <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />
+      </form>
+    </div>
   );
 };
 

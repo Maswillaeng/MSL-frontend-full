@@ -11,8 +11,14 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
+
+  //유저 데이터 상태
   const [user, setUser] = useState({ email: "", password: "" });
+
+  //경고 메세지 상태
   const [warning, setWarning] = useState([false, false]);
+
+  //input 데이터 배열
   const userArr = [
     {
       id: "email",
@@ -32,7 +38,8 @@ const Login = () => {
 
   //타겟들을 설정하기 위한 useRef 배열
   const targetRefs = useRef([]);
-  //유효성검사
+
+  //로그인 버튼 이벤트, 유효성검사
   const buttonEvent = (e) => {
     if (!validationEmail.test(user.email)) {
       setWarning([true, false]);
@@ -61,34 +68,33 @@ const Login = () => {
   };
 
   return (
-    <form
-      className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"
-      id="form-login"
-    >
-      {userArr.map((data, idx) => (
-        <Input
-          key={data.id}
-          data={data}
-          setMember={setUser}
-          member={user}
-          targetRefs={targetRefs}
-          idx={idx}
-          warning={warning}
-        />
-      ))}
-      <Button size={"lg"} buttonEvent={buttonEvent} message={"로그인"} />
-      <div className="d-flex justify-content-center align-items-center w-100">
-        <div className="mx-5">
-          <a className="nav-link" href="/signUp">
-            회원가입
-          </a>
+    <div className="container d-flex justify-content-center align-items-center w-50">
+      <form className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3">
+        {userArr.map((data, idx) => (
+          <Input
+            key={data.id}
+            data={data}
+            setMember={setUser}
+            member={user}
+            targetRefs={targetRefs}
+            idx={idx}
+            warning={warning}
+          />
+        ))}
+        <Button size={"lg"} buttonEvent={buttonEvent} message={"로그인"} />
+        <div className="d-flex justify-content-center align-items-center w-100">
+          <div className="mx-5">
+            <a className="nav-link" href="/signUp">
+              회원가입
+            </a>
+          </div>
+          <div className="my-3">
+            <span className="pointer">이메일</span>
+            <span className="pointer">비밀번호 찾기</span>
+          </div>
         </div>
-        <div className="my-3">
-          <span className="pointer">이메일</span>
-          <span className="pointer">비밀번호 찾기</span>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

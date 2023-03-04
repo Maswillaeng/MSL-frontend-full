@@ -3,6 +3,8 @@ import getUser from "../function/cookie/getUser";
 
 const Li = ({ data }) => {
   const navigate = useNavigate();
+
+  //로그인 유저라면 boardCreate로 이동, 아니라면 로그인 페이지로 이동하는 이벤트
   const checkLogin = () => {
     if (getUser("user")) {
       navigate("/boardCreate");
@@ -11,6 +13,7 @@ const Li = ({ data }) => {
       navigate("/login");
     }
   };
+
   return (
     <>
       {Object.keys(data)[0] !== "게시판" ? (

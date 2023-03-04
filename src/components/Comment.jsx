@@ -40,8 +40,13 @@ const ReplyImg = styled.img.attrs({
 `;
 
 const Comment = ({ data }) => {
-  //댓글 up
+  //댓글 좋아요 상태
   const [commentLike, setCommentLike] = useState(false);
+
+  // 댓글 좋아요 카운트
+  const [likeCount, setLikeCount] = useState(Number(data.like));
+
+  // 댓글 좋아요 상태와 카운트를 관리하는 이벤트
   const commentLikeHandler = () => {
     setCommentLike(!commentLike);
     if (commentLike) {
@@ -53,8 +58,14 @@ const Comment = ({ data }) => {
       setLikeCount(likeCount + 1);
     }
   };
-  //댓글 down
+
+  //댓글 싫어요 상태
   const [commentDislike, setCommentDislike] = useState(false);
+
+  //댓글 싫어요 카운트
+  const [dislikeCount, setDislikeCount] = useState(Number(data.dislike));
+
+  // 댓글 싫어요 상태와 카운트를 관리하는 이벤트
   const commentDislikeHandler = () => {
     setCommentDislike(!commentDislike);
     if (commentDislike) {
@@ -66,26 +77,32 @@ const Comment = ({ data }) => {
       setDislikeCount(dislikeCount + 1);
     }
   };
-  // 좋아요 상태
-  const [likeCount, setLikeCount] = useState(Number(data.like));
-  // 싫어요 상태
-  const [dislikeCount, setDislikeCount] = useState(Number(data.dislike));
-  //답글달기
-  const [writeReply, setWriteReply] = useState(false);
-  const writeReplyHandler = () => {
-    setWriteReply(!writeReply);
-  };
-  //답글value
+
+  //답글 value 상태
   const [replyVal, setReplyVal] = useState("");
+
+  //답글 value change 이벤트
   const changeReplyVal = (e) => {
     setReplyVal(e.target.value);
   };
-  //답글보기
+
+  //답글 쓰기 버튼의 상태
+  const [writeReply, setWriteReply] = useState(false);
+
+  //답글 버튼 상태를 바꿔주는 이벤트
+  const writeReplyHandler = () => {
+    setWriteReply(!writeReply);
+  };
+
+  //답글 보기 버튼의 상태
   const [readReply, setReadReply] = useState(false);
+
+  //답글 보기 상태를 바꿔주는 이벤트
   const readReplyHandler = () => {
     setReadReply(!readReply);
   };
-  //답글등록
+
+  //답글 등록 이벤트
   const submitReply = () => {
     if (replyVal === "") {
       return alert("답글을 적어주세요.");
@@ -103,15 +120,18 @@ const Comment = ({ data }) => {
     setCheckReply(true);
     setWriteReply(false);
   };
-  //답글 데이터
+
+  //모든 답글 데이터의 상태
   const [replyList, setReplyList] = useState(
     replyData.filter(
       (x) => x.post_id === data.post_id && x.comment_id === data.comment_id
     )
   );
+
   //답글 제출 체크용
   const [checkReply, setCheckReply] = useState(false);
-  //답글 제출이 확인되면 새로운 데이터를 가져옴
+
+  //답글 제출이 확인되면 새로운 데이터를 가져오는 이펙트
   useEffect(() => {
     setReplyList(
       replyData.filter(

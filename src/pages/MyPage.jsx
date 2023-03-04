@@ -5,6 +5,7 @@ import members from "../dummy/members";
 import getUser from "../function/cookie/getUser";
 
 const MyPage = () => {
+  //카테고리 상태
   const [categori, setCategori] = useState("");
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
@@ -73,6 +74,7 @@ const TopProfileBottom = () => {
 };
 
 const BottomCategori = ({ setCategori, categori }) => {
+  //카테고리를 변경하기 위한 이벤트들
   const writeCategori = () => {
     setCategori("작성");
   };

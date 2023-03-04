@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 
 const Nav = () => {
-  //서버로부터 쿠키를 받을때 얘가 없으면 쿠키가 저장이안되고 쿠키를 활용하지못함
+  //boardCreate만 다른 네비바를 갖기 위해 작성
   const location = useLocation();
   return <>{location.pathname !== "/boardCreate" && <MainNav />}</>;
 };
 
 const MainNav = () => {
   const navigate = useNavigate();
+
+  //로그아웃했을 때, li 데이터들을 가진 배열
   const navArr = [
     {
       회원가입: {
@@ -31,6 +33,8 @@ const MainNav = () => {
       },
     },
   ];
+
+  //로그인했을 때, li 데이터들을 가진 배열
   const loginNavArr = [
     {
       로그아웃: {
@@ -72,7 +76,7 @@ const MainNav = () => {
       },
     },
   ];
-  
+
   return (
     <nav className="navbar navbar-expand-lg main-bg-color py-2 fs-3 ">
       <div className="container-fluid px-5  main-bg-color">

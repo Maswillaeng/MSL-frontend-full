@@ -30,11 +30,18 @@ const ImgInput = styled.input.attrs({
 `;
 
 const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
+  //이미지 파일 상태
   const [imgFile, setImgFile] = useState("");
+
+  //hidden input을 타겟으로 설정하기 위한 ref
   const target = useRef(null);
+
+  //hidden input을 클릭하기 위한 이벤트
   const uploadClick = () => {
     target.current.click();
   };
+
+  //이미지를 저장하기 위한 이벤트
   const saveImgFile = () => {
     const file = target.current.files[0];
     const reader = new FileReader();

@@ -104,15 +104,3 @@
 .board-detail-icon {
   height: 40px;
 }
-
-/* Login 페이지 */
-#form-login {
-  max-width: 500px;
-  min-height: 200px;
-}
-
-/* SignUp 페이지 */
-#sign-up-form {
-  max-width: 500px;
-  min-height: 400px;
-}

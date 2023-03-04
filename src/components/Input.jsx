@@ -45,7 +45,7 @@ const Input = ({
   idx,
   saveImgFile,
   imgFile,
-  danger,
+  warning,
 }) => {
   //이미지 업로드 클릭용 이벤트
   const uploadClick = () => {
@@ -79,9 +79,9 @@ const Input = ({
               />
             </div>
             <DangerMessage>
-              <span>{!saveImgFile && danger[idx] && data.danger}</span>
+              <span>{!saveImgFile && warning[idx] && data.warning}</span>
               <span>
-                {Object.keys(danger).includes(data.id) && danger[data.id]}
+                {Object.keys(warning).includes(data.id) && warning[data.id]}
               </span>
             </DangerMessage>
           </div>

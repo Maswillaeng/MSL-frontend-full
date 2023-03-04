@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -14,6 +14,7 @@ import { realTimeValidation } from "../function/utility/realTimeValidation";
 
 const SignUp = () => {
   const navigate = useNavigate();
+
   //프로필 이미지
   const [imgFile, setImgFile] = useState("");
   const saveImgFile = (num) => {
@@ -25,6 +26,7 @@ const SignUp = () => {
       setMember({ ...member, userImage: reader.result });
     };
   };
+
   //인풋 map 돌리기위한 배열
   const targetRefs = useRef([]);
   const inputArr = [
@@ -71,6 +73,7 @@ const SignUp = () => {
       type: "text",
     },
   ];
+
   //인풋값 저장용
   const [member, setMember] = useState({
     email: "",
@@ -81,9 +84,18 @@ const SignUp = () => {
     userImage: "img/마쉴랭.PNG",
     introduction: "",
   });
+
   //실시간 유효성 검사 메세지
-  const danger = realTimeValidation(member);
-  //유효성검사
+  const [warning, setWarning] = useState({});
+  useEffect(() => {
+   const debounceTimer = setTimeout(() => {
+      console.log("디바운싱");
+      setWarning(realTimeValidation(member));
+    }, 500);
+    return () => clearTimeout(debounceTimer)
+  }, [member]);
+
+  //폼 제출 시, 마지막 유효성 검사
   const buttonEvent = () => {
     if (
       !validationEmail.test(member.email) ||
@@ -137,7 +149,7 @@ const SignUp = () => {
           idx={idx}
           saveImgFile={saveImgFile}
           imgFile={imgFile}
-          danger={danger}
+          warning={warning}
         />
       ))}
       <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />

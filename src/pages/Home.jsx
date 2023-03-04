@@ -12,6 +12,7 @@ const HomeBox = styled.div.attrs({
     "container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0",
 })`
   max-width: 100vw;
+  max-height:200vh;
 `;
 
 const Home = () => {
@@ -140,7 +141,6 @@ const TopImgBox = () => {
 };
 
 const BottomHotBox = () => {
-
   const [rowData, setRowData] = useState([boardData.slice(0, 4)]);
   const addRowData = (count) => {
     if (boardData.slice(4 * (count - 1), 4 * count).length !== 0) {
@@ -159,12 +159,12 @@ const BottomHotBox = () => {
   return (
     <div className="w-75 my-5">
       <div className="ps-3 fs-1 ">인기레시피</div>
-      <div className="my-3 w-100">
+      <div className="my-3 w-100 d-flex flex-column">
         {rowData.map((x, i) => (
           <CardRow key={i} cardList={x} />
         ))}
       </div>
-      <div className="d-flex justify-content-center align-items-center w-100">
+      <div className="d-flex justify-content-center align-items-center w-100 flex-column pb-5">
         {rowData[rowData.length - 1].length % 4 === 0 && (
           <Button
             message={"더보기"}

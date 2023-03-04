@@ -12,21 +12,21 @@ import {
 const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
-  const [danger, setDanger] = useState([false, false]);
+  const [warning, setWarning] = useState([false, false]);
   const userArr = [
     {
       id: "email",
       name: "이메일",
       placeholder: "이메일을 적어주세요.",
       type: "email",
-      danger: "이메일을 확인해주세요.",
+      warning: "이메일을 확인해주세요.",
     },
     {
       id: "password",
       name: "비밀번호",
       placeholder: "비밀번호를 적어주세요.",
       type: "password",
-      danger: "비밀번호를 확인해주세요.",
+      warning: "비밀번호를 확인해주세요.",
     },
   ];
 
@@ -35,11 +35,11 @@ const Login = () => {
   //유효성검사
   const buttonEvent = (e) => {
     if (!validationEmail.test(user.email)) {
-      setDanger([true, false]);
+      setWarning([true, false]);
       return targetRefs.current[0].focus();
     }
     if (!validationPassword.test(user.password)) {
-      setDanger([false, true]);
+      setWarning([false, true]);
       return targetRefs.current[1].focus();
     }
     axios
@@ -73,7 +73,7 @@ const Login = () => {
           member={user}
           targetRefs={targetRefs}
           idx={idx}
-          danger={danger}
+          warning={warning}
         />
       ))}
       <Button size={"lg"} buttonEvent={buttonEvent} message={"로그인"} />

@@ -4,21 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp as faThumbsUpR,
   faComment as faCommentR,
-} from "@fortawesome/free-regular-svg-icons";
+} from "@fortawesome/free-regular-svg-icons"; 
 import commentData from "../dummy/commentData";
 import styled from "styled-components";
-const CardBox = styled.div.attrs({
-  className: "p-2 border bg-light d-flex flex-column align-items-center shadow",
-})`
-  min-height: 400px;
-  max-height: 400px;
-  cursor: pointer;
-`;
+
 const ThumbnailImg = styled.img.attrs({
   alt: "thumbnail",
 })`
   max-height: 180px;
-  min-height: 180px;
 `;
 const TitleBox = styled.div.attrs({
   className: "mt-2 mb-5 mx-2",
@@ -40,14 +33,17 @@ const Card = ({ data }) => {
 
   return (
     <div className="col-3">
-      <CardBox onClick={detail}>
+      <div
+        onClick={detail}
+        className="p-2 border bg-light d-flex flex-column align-items-center shadow pointer"
+      >
         <div className="mb-5">
           <ThumbnailImg src={data.thumbnail} />
         </div>
         <TitleBox>
           <span>{data.title}</span>
         </TitleBox>
-        <div className="mt-4 d-flex align-items-center justify-content-center w-100">
+        <div className="mt-4 d-flex align-items-center justify-content-center w-100 pb-2">
           <div className="mx-2">
             <UserImg
               src={
@@ -71,7 +67,7 @@ const Card = ({ data }) => {
             </span>
           </div>
         </div>
-      </CardBox>
+      </div>
     </div>
   );
 };

@@ -10,6 +10,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import members from "../dummy/members";
 import { useState } from "react";
 import styled from "styled-components";
+const UserImg = styled.img.attrs({
+  className: "rounded-circle me-2 mb-1 pt-1",
+  alt: "",
+})`
+  height: 24px;
+`;
 
 const Reply = ({ data }) => {
   //답글 좋아요
@@ -48,12 +54,6 @@ const Reply = ({ data }) => {
     dislikeHandler();
     setDislikeCount(dislikeCount + 1);
   };
-  const UserImg = styled.img.attrs({
-    className: "rounded-circle me-2 mb-1 pt-1",
-    alt: "",
-  })`
-    height: 24px;
-  `;
   return (
     <li className="mb-2" style={{ listStyle: "none" }}>
       <div>

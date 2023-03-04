@@ -13,6 +13,31 @@ import Button from "./Button";
 import Reply from "./Reply";
 import replyData from "../dummy/replyData";
 import styled from "styled-components";
+const TopCommentBox = styled.div.attrs({
+  className: "w-75 d-flex justify-content-start align-items-center mb-2",
+})`
+  margin-left: -50px;
+  margin-bottom: -35px;
+`;
+
+const ProfileImg = styled.img.attrs({
+  className: "rounded-circle",
+  alt: "",
+})`
+  height: 50px;
+`;
+const IconBox = styled.div.attrs({
+  className:
+    "w-75 d-flex justify-content-start align-items-start ms-5 flex-column",
+})`
+  margin-right: -150px;
+`;
+const ReplyImg = styled.img.attrs({
+  className: "rounded-circle me-3",
+  alt: "",
+})`
+  height: 25px;
+`;
 
 const Comment = ({ data }) => {
   //댓글 up
@@ -95,32 +120,6 @@ const Comment = ({ data }) => {
     );
     setCheckReply(false);
   }, [checkReply]);
-
-  const TopCommentBox = styled.div.attrs({
-    className: "w-75 d-flex justify-content-start align-items-center mb-2",
-  })`
-    margin-left: -50px;
-    margin-bottom: -35px;
-  `;
-
-  const ProfileImg = styled.img.attrs({
-    className: "rounded-circle",
-    alt: "",
-  })`
-    height: 50px;
-  `;
-  const IconBox = styled.div.attrs({
-    className:
-      "w-75 d-flex justify-content-start align-items-start ms-5 flex-column",
-  })`
-    margin-right: -150px;
-  `;
-  const ReplyImg = styled.img.attrs({
-    className: "rounded-circle me-3",
-    alt: "",
-  })`
-    height: 25px;
-  `;
 
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">

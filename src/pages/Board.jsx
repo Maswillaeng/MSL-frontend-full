@@ -1,12 +1,30 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
 import CardRow from "../components/CardRow";
 import Loading from "../components/Loading";
 import boardData from "../dummy/boardData";
 import useIntersectionObserver from "../hook/useIntersectionObserver";
 
 const Board = () => {
+  // axios
+  // .get(
+  //   "http://localhost:8080/api/post/page",
+  //   {},
+  //   {
+  //     headers: {
+  //       "Content-Type": `application/json`,
+  //     },
+  //     withCredentials: true,
+  //   }
+  // )
+  // .then((res) => {
+  //   console.log(res);
+  // })
+  // .catch((err) => {
+  //   alert("실패요");
+  //   console.log(err);
+  // });
   const location = useLocation();
   //카드 카운트
   const [cardData, setCardData] = useState(boardData.slice(0, 4));
@@ -63,20 +81,15 @@ const Board = () => {
     }
   }, [rowCount]);
 
-  const BoardBox = styled.div.attrs({
-    className:
-      "container rounded d-flex flex-column justify-content-center align-items-center my-5",
-  })`
-    max-width: 90vw;
-    min-height: 100vh;
-  `;
-
   return (
-    <BoardBox>
+    <div
+      className="container rounded d-flex flex-column justify-content-center align-items-center my-5"
+      id="board-box"
+    >
       <BoardTop categori={categori} />
       <BoardMiddle rowData={rowData} />
       <BoardBottom target={target} loading={loading} />
-    </BoardBox>
+    </div>
   );
 };
 

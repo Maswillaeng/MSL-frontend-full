@@ -6,7 +6,6 @@ import getUser from "../function/cookie/getUser";
 
 const MyPage = () => {
   const [categori, setCategori] = useState("");
-
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
       <TopProfileTop />
@@ -19,13 +18,14 @@ const MyPage = () => {
   );
 };
 
+const UserImg = styled.img.attrs({
+  className: "rounded-circle",
+  alt: "",
+})`
+  height: 150px;
+`;
+
 const TopProfileTop = () => {
-  const UserImg = styled.img.attrs({
-    className: "rounded-circle",
-    alt: "",
-  })`
-    height: 150px;
-  `;
   return (
     <div className="mb-5 d-flex px-5">
       <div className="me-5">
@@ -49,12 +49,13 @@ const TopProfileTop = () => {
   );
 };
 
+const AccessBox = styled.div.attrs({
+  className: "d-flex  justify-content-center align-items-center w-100",
+})`
+  margin-bottom: -15px;
+`;
+
 const TopProfileBottom = () => {
-  const AccessBox = styled.div.attrs({
-    className: "d-flex  justify-content-center align-items-center w-100",
-  })`
-    margin-bottom: -15px;
-  `;
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">
       <div>

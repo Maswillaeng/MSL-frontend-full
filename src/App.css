@@ -30,6 +30,13 @@
   resize: none;
 }
 
+.flex-07 {
+  flex: 0.7;
+}
+.flex-03 {
+  flex: 0.3;
+}
+
 /* Nav 컴포넌트 */
 .nav {
   --bs-nav-link-hover-color: #aa233c !important;
@@ -58,16 +65,15 @@
   margin-bottom: -5px;
 }
 
-/*  EditorComponent 컴포넌트 */
-.react-quill-box {
+/* EditorComponent 컴포넌트 */
+#react-quill-box {
   height: 650px;
 }
-.react-quill {
+#react-quill {
   height: 600px;
 }
 
 /* Input 컴포넌트 */
-
 .input-icon {
   height: 50px;
   width: 50px;
@@ -84,12 +90,29 @@
   height: 20px;
 }
 
-/* BoardCreate 컴포넌트 */
+/* BoardCreate 페이지 */
 .board-create-icon {
-  height: 40px
+  height: 40px;
 }
 
-/* BoardDetail 컴포넌트 */
+/* BoardDetail 페이지 */
+#board-box {
+  max-width: 90vw;
+  min-height: 100vh;
+}
+
 .board-detail-icon {
-  height: 40px
+  height: 40px;
+}
+
+/* Login 페이지 */
+#form-login {
+  max-width: 500px;
+  min-height: 200px;
+}
+
+/* SignUp 페이지 */
+#sign-up-form {
+  max-width: 500px;
+  min-height: 400px;
 }

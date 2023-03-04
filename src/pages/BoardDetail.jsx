@@ -15,27 +15,42 @@ import ProfileIcon from "../components/ProfileIcon";
 import getUser from "../function/cookie/getUser";
 import styled from "styled-components";
 
+const BoardDetailBox = styled.div.attrs({
+  className:
+    "container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5",
+})`
+  max-width: 60vw;
+`;
 export default function BoardDetail() {
   const location = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
-    <div
-      className="container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5"
-      style={{
-        maxWidth: "60vw",
-      }}
-    >
+    <BoardDetailBox>
       <div className="w-100 mb-5">
         <TopImgBox data={location.state.data} />
         <TopProfileBox data={location.state.data} />
         <TopContentBox data={location.state.data} />
       </div>
       <BottomCommentBox data={location.state.data} />
-    </div>
+    </BoardDetailBox>
   );
 }
+
+const IconBox = styled.div`
+  min-width: 70px;
+`;
+
+const ThumbnailImg = styled.img.attrs({
+  className: "img-thumbnail",
+  alt: "",
+})`
+  min-height: 350px;
+  max-height: 350px;
+  min-width: 500px;
+  max-width: 500px;
+`;
 
 const TopImgBox = ({ data }) => {
   //이미지 개수만큼 생성할 state만들어야할듯
@@ -51,19 +66,7 @@ const TopImgBox = ({ data }) => {
       setCurrentImg(currentImg - 1);
     }
   };
-  const IconBox = styled.div`
-    min-width: 70px;
-  `;
 
-  const ThumbnailImg = styled.img.attrs({
-    className: "img-thumbnail",
-    alt: "",
-  })`
-    min-height: 350px;
-    max-height: 350px;
-    min-width: 500px;
-    max-width: 500px;
-  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <div className="d-flex justify-content-center align-items-center">
@@ -102,6 +105,13 @@ const TopImgBox = ({ data }) => {
   );
 };
 
+const ProfileUserImg = styled.img.attrs({
+  className: "rounded-circle",
+  alt: "userImg",
+})`
+  height: 70px;
+`;
+
 const TopProfileBox = ({ data }) => {
   //추천 관련
   const [likeCount, setLikeCount] = useState(data.like);
@@ -131,16 +141,10 @@ const TopProfileBox = ({ data }) => {
       setSubscribeCount(subscribeCount + 1);
     }
   };
-  const UserImg = styled.img.attrs({
-    className: "rounded-circle",
-    alt: "userImg",
-  })`
-    height: 70px;
-  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center">
       <div className=" mt-5 ">
-        <UserImg src={userImgae} />
+        <ProfileUserImg src={userImgae} />
       </div>
       <div className="ms-2 mt-5 me-5">
         <div>{data.nickname}</div>
@@ -152,7 +156,7 @@ const TopProfileBox = ({ data }) => {
         <div className="mb-4" onClick={likeHandler}>
           <ProfileIcon
             message={"추천"}
-            type={like}
+            state={like}
             addStyle={like ? "bg-primary border-primary" : "border-primary"}
           />
           <span className="ms-4">추천 : {likeCount}</span>
@@ -160,7 +164,7 @@ const TopProfileBox = ({ data }) => {
         <div onClick={subscribeHandler}>
           <ProfileIcon
             message={"구독하기"}
-            type={subscribe}
+            state={subscribe}
             addStyle={
               subscribe ? "bg-danger border-danger ms-1" : "border-danger ms-1"
             }
@@ -185,6 +189,13 @@ const TopContentBox = ({ data }) => {
     </div>
   );
 };
+
+const CommentUserImg = styled.img.attrs({
+  className: "rounded-circle",
+  alt: "userImg",
+})`
+  height: 30px;
+`;
 
 const BottomCommentBox = ({ login, data }) => {
   const navigate = useNavigate();
@@ -226,12 +237,7 @@ const BottomCommentBox = ({ login, data }) => {
   useEffect(() => {
     setCommentArr(commentData.filter((x) => x.post_id === data.post_id));
   }, [commentText]);
-  const UserImg = styled.img.attrs({
-    className: "rounded-circle",
-    alt: "userImg",
-  })`
-    height: 30px;
-  `;
+
   return (
     <>
       <div className="w-50 d-flex flex-column justify-content-start align-items-center">
@@ -261,12 +267,12 @@ const BottomCommentBox = ({ login, data }) => {
               <div className="collapse mt-3 w-100" id="collapseExample">
                 <div className="mb-3 w-100">
                   <label htmlFor="comment" className="form-label ">
-                    <UserImg
+                    <CommentUserImg
                       src={
                         "https://avatars.githubusercontent.com/u/117655658?v=4"
                       }
                     />
-                    <span className="ms-1">{getUser("user")}</span>
+                    <span className="ms-1">{"임시"}</span>
                   </label>
                   <textarea
                     value={commentText}

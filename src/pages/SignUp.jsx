@@ -1,7 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import {
@@ -10,8 +9,10 @@ import {
   validationPassword,
   validationPhone,
 } from "../function/utility/validation";
+import members from "../dummy/members";
+import { realTimeValidation } from "../function/utility/realTimeValidation";
 
-export default function SignUp() {
+const SignUp = () => {
   const navigate = useNavigate();
   //프로필 이미지
   const [imgFile, setImgFile] = useState("");
@@ -21,6 +22,7 @@ export default function SignUp() {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImgFile(reader.result);
+      setMember({ ...member, userImage: reader.result });
     };
   };
   //인풋 map 돌리기위한 배열
@@ -59,7 +61,7 @@ export default function SignUp() {
     {
       id: "userImage",
       name: "이미지",
-      placeholder: "이미지를 등록해주세요.",
+      placeholder: "",
       type: "file",
     },
     {
@@ -76,40 +78,34 @@ export default function SignUp() {
     pwc: "",
     nickname: "",
     phoneNumber: "",
-    userImage: "",
+    userImage: "img/마쉴랭.PNG",
     introduction: "",
   });
-  console.log(member);
-  useEffect(() => {
-    setMember({ ...member, userImage: imgFile });
-  }, [imgFile]);
+  //실시간 유효성 검사 메세지
+  const danger = realTimeValidation(member);
   //유효성검사
-  const buttonEvent = (e) => {
-    if (Object.values(member).filter((x) => x === "").length > 0) {
-      e.preventDefault();
-    }
-    //이메일 유효성 검사
-    if (!validationEmail.test(member.email)) {
-      return targetRefs.current[0].focus();
-    }
-    if (!validationPassword.test(member.password)) {
-      return targetRefs.current[1].focus();
-    }
-    //비번끼리 같거나, 유효성검사 걸리면
+  const buttonEvent = () => {
     if (
-      !validationPassword.test(member.pwc) ||
-      member.password !== member.pwc
-    ) {
-      return targetRefs.current[2].focus();
-    }
-    //특문금지
-    if (validationNickname.test(member.nickname) || member.nickname === "") {
+      !validationEmail.test(member.email) ||
+      members.filter((x) => x.email === member.email).length !== 0
+    )
+      return targetRefs.current[0].focus();
+
+    if (!validationPassword.test(member.password))
+      return targetRefs.current[1].focus();
+
+    if (member.password !== member.pwc) return targetRefs.current[2].focus();
+
+    if (
+      members.filter((x) => x.nickname === member.nickname).length !== 0 ||
+      validationNickname.test(member.nickname) ||
+      member.nickname === ""
+    )
       return targetRefs.current[3].focus();
-    }
-    //휴대폰 번호 유효성검사
-    if (!validationPhone.test(member.phoneNumber)) {
+
+    if (!validationPhone.test(member.phoneNumber))
       return targetRefs.current[4].focus();
-    }
+
     axios
       .post("http://localhost:8080/api/sign", member, {
         headers: {
@@ -126,17 +122,11 @@ export default function SignUp() {
       });
   };
 
-  const SignUpForm = styled.form.attrs({
-    className:
-      "container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4",
-    action: "",
-  })`
-    max-width: 500px;
-    min-height: 400px;
-  `;
-
   return (
-    <SignUpForm>
+    <form
+      className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"
+      id="sign-up-form"
+    >
       {inputArr.map((data, idx) => (
         <Input
           key={data.id}
@@ -147,9 +137,12 @@ export default function SignUp() {
           idx={idx}
           saveImgFile={saveImgFile}
           imgFile={imgFile}
+          danger={danger}
         />
       ))}
       <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />
-    </SignUpForm>
+    </form>
   );
-}
+};
+
+export default SignUp;

@@ -11,14 +11,18 @@ import { useNavigate } from "react-router-dom";
 import Li from "../components/Li";
 import EditorComponent from "../components/EditorComponent";
 import styled from "styled-components";
+import axios from "axios";
 
 const BoardCreate = () => {
   //텍스트에디터용
   const [desc, setDesc] = useState("");
-  function onEditorChange(value) {
+  const onEditorChange = (value) => {
     setDesc(value);
-  }
-  console.log(desc);
+    setContent({
+      ...content,
+      content: value,
+    });
+  };
   //처음엔 배열로 넣었다가 객체의 형태로 바꾸게 된 이유는 이미지가 등록순서대로 보이길래 원래 있는 칸 순서대로 보이기 위해 객체로 변경함
   const [imgData, setImgData] = useState({
     imgSrc1: "",
@@ -34,7 +38,7 @@ const BoardCreate = () => {
     });
   };
   const [imgNum, setImgNum] = useState(0);
-  const [content, setContent] = useState({});
+  const [content, setContent] = useState({ categori: "레시피" });
   const updateContent = (e) => {
     setContent({
       ...content,
@@ -43,26 +47,10 @@ const BoardCreate = () => {
       },
     });
   };
-  const [postData, setPostData] = useState({});
-
-  const BoardCreateBox = styled.div.attrs({
-    className:
-      "container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5 ",
-  })`
-    max-width: 70vw;
-    min-height: 100vh;
-  `;
-
   return (
     <>
-      <BoardCreateNav
-        content={content}
-        imgData={imgData}
-        imgNum={imgNum}
-        setPostData={setPostData}
-        postData={postData}
-      />
-      <BoardCreateBox>
+      <BoardCreateNav content={content} imgData={imgData} imgNum={imgNum} />
+      <div className="container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5 ">
         <TopImgBox imgData={imgData} imgNum={imgNum} setImgNum={setImgNum} />
         <TopAddImg
           addImgData={addImgData}
@@ -74,18 +62,15 @@ const BoardCreate = () => {
           onEditorChange={onEditorChange}
           desc={desc}
         />
-      </BoardCreateBox>
+      </div>
     </>
   );
 };
 
-const BoardCreateNav = ({ content, imgData, imgNum, setPostData }) => {
+const BoardCreateNav = ({ content, imgData, imgNum }) => {
   const navigate = useNavigate();
-  //완료버튼 눌러서 제출할 데이터 모두 저장 , 유효성검사 추가해야함
+  //글 작성 이벤트
   const successEvent = () => {
-    if (Object.values(imgData).filter((x) => x !== "").length === 0) {
-      return alert("이미지를 등록해주세요.");
-    }
     if (!content.title) {
       return alert("제목을 적어주세요.");
     }
@@ -95,11 +80,29 @@ const BoardCreateNav = ({ content, imgData, imgNum, setPostData }) => {
     if (!content.categori) {
       return alert("카테고리를 선택해주세요.");
     }
-    setPostData({
+    const allImgData = Object.values(imgData).filter((x) => x !== "");
+    const postData = {
       ...content,
-      thumbnail: Object.values(imgData).filter((x) => x !== "")[imgNum],
-      imgData: Object.values(imgData).filter((x) => x !== ""),
-    });
+      thumbnail:
+        allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData[imgNum],
+      imgData: allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData,
+    };
+    axios
+      .post("http://localhost:8080/api/post", postData, {
+        headers: {
+          "Content-Type": `application/json`,
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
+        alert("글이 등록되었습니다.");
+        navigate("/board");
+        console.log(res);
+      })
+      .catch((err) => {
+        alert("실패요");
+        console.log(err);
+      });
   };
 
   const backPage = () => {
@@ -137,6 +140,33 @@ const BoardCreateNav = ({ content, imgData, imgNum, setPostData }) => {
   );
 };
 
+const IconBox = styled.div`
+  max-width: 70px;
+  min-width: 70px;
+`;
+const ThumbnailImgBox = styled.div.attrs({
+  className:
+    "w-25 d-flex justify-content-center align-items-center card shadow fs-5 mx-3",
+})`
+  min-height: 280px;
+`;
+const ThumbnailImg = styled.img.attrs({
+  alt: "",
+})`
+  max-height: 270px;
+  min-height: 270px;
+  min-width: 300px;
+  max-width: 300px;
+`;
+const PlusIconBox = styled.div`
+  max-width: 70px;
+  min-width: 70px;
+`;
+const ImgListBox = styled.div`
+  min-height: 20px;
+  max-height: 20px;
+`;
+
 const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
   const imgCountArr = Array(
     Object.values(imgData).filter((x) => x !== "").length
@@ -147,32 +177,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
   const downImgNum = () => {
     setImgNum(imgNum - 1);
   };
-  const IconBox = styled.div`
-    max-width: 70px;
-    min-width: 70px;
-  `;
-  const AddImgBox = styled.div.attrs({
-    className:
-      "w-25 d-flex justify-content-center align-items-center card shadow fs-5 mx-3",
-  })`
-    min-height: 280px;
-  `;
-  const AddImg = styled.div.attrs({
-    alt: "",
-  })`
-    max-height: 270px;
-    min-height: 270px;
-    min-width: 300px;
-    max-width: 300px;
-  `;
-  const PlusIconBox = styled.div`
-    max-width: 70px;
-    min-width: 70px;
-  `;
-  const ImgListBox = styled.div`
-    min-height: 20px;
-    max-height: 20px;
-  `;
+
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <div className="w-100 d-flex justify-content-center align-items-center mb-3">
@@ -185,15 +190,15 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
             />
           )}
         </IconBox>
-        <AddImgBox>
+        <ThumbnailImgBox>
           {Object.values(imgData).filter((x) => x !== "").length === 0 ? (
             "이미지를 등록해주세요."
           ) : (
-            <AddImg
+            <ThumbnailImg
               src={Object.values(imgData).filter((x) => x !== "")[imgNum]}
             />
           )}
-        </AddImgBox>
+        </ThumbnailImgBox>
         <PlusIconBox>
           {Object.values(imgData).filter((x) => x !== "").length > 1 &&
             imgNum <
@@ -209,9 +214,9 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
       <ImgListBox>
         {imgCountArr.map((x, i) =>
           i === imgNum ? (
-            <FontAwesomeIcon icon={faCircleS} className="mx-2 mt-2" />
+            <FontAwesomeIcon icon={faCircleS} className="mx-2 mt-2" key={i} />
           ) : (
-            <FontAwesomeIcon icon={faCircleR} className="mx-2 mt-2" />
+            <FontAwesomeIcon icon={faCircleR} className="mx-2 mt-2" key={i} />
           )
         )}
       </ImgListBox>
@@ -239,18 +244,10 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
 };
 
 const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
-  const TitleBox = styled.div.attrs({
-    className: "me-5",
-  })`
-    flex: 0.7;
-  `;
-  const CategoriBox = styled.div`
-    flex: 0.3;
-  `;
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column my-5">
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
-        <TitleBox>
+        <div className="me-5 flex-07">
           <div>
             <input
               onChange={updateContent}
@@ -260,8 +257,8 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
               placeholder="제목을 적어주세요."
             />
           </div>
-        </TitleBox>
-        <CategoriBox>
+        </div>
+        <div className="flex-03">
           <select
             className="form-select"
             name="categori"
@@ -274,7 +271,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
             <option defaultValue="광역시">광역시</option>
             <option defaultValue="그 외">그 외</option>
           </select>
-        </CategoriBox>
+        </div>
       </div>
       <div className=" mb-5 w-50">
         <div>

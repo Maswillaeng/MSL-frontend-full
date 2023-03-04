@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -6,15 +7,15 @@ import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
 import boardData from "../dummy/boardData";
 import getUser from "../function/cookie/getUser";
+const HomeBox = styled.div.attrs({
+  className:
+    "container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0",
+})`
+  max-width: 100vw;
+`;
 
 const Home = () => {
   const navigate = useNavigate();
-  const HomeBox = styled.div.attrs({
-    className:
-      "container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0",
-  })`
-    max-width: 100vw;
-  `;
   return (
     <HomeBox>
       <TopSearchBox navigate={navigate} />
@@ -139,6 +140,7 @@ const TopImgBox = () => {
 };
 
 const BottomHotBox = () => {
+
   const [rowData, setRowData] = useState([boardData.slice(0, 4)]);
   const addRowData = (count) => {
     if (boardData.slice(4 * (count - 1), 4 * count).length !== 0) {

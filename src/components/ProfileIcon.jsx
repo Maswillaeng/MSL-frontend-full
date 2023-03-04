@@ -9,27 +9,30 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 
-const ProfileIcon = ({ message, type, addStyle }) => {
-  const MessageSpan = styled.span.attrs({
-    className: `border border-2  p-2 rounded ${addStyle} pointer`,
-  })`
-    color: ${(props) => (props.type ? "white" : "black")};
-  `;
+const MessageSpan = styled.span`
+  color: ${(props) => (props.state ? "white" : "black")};
+`;
+const ProfileIcon = ({ message, state, addStyle }) => {
   return (
     <>
       <FontAwesomeIcon
         icon={
           message === "추천"
-            ? type
+            ? state
               ? faThumbsUpS
               : faThumbsUpR
-            : type
+            : state
             ? faBellS
             : faBellR
         }
         className="me-1 profile-icon pointer"
       />
-      <MessageSpan type={type}>{message}</MessageSpan>
+      <MessageSpan
+        className={`border border-2  p-2 rounded ${addStyle} pointer`}
+        state={state}
+      >
+        {message}
+      </MessageSpan>
     </>
   );
 };

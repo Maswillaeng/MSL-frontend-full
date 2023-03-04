@@ -2,6 +2,41 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
+//스타일 컴포넌트
+const DafaultLabel = styled.label.attrs({
+  className: "pt-2",
+})`
+  min-width: 100px;
+`;
+const DangerMessage = styled.div.attrs({
+  className: "d-flex justify-content-center align-items-center text-danger",
+})`
+  min-height: 24px;
+`;
+const ImgLabel = styled.label.attrs({
+  className: "pt-2",
+})`
+  min-width: 165px;
+`;
+const ImgBox = styled.div.attrs({
+  className:
+    "border border-3 mx-5 d-flex justify-content-center align-items-center pointer",
+})`
+  min-width: 100px;
+  max-width: 100px;
+  min-height: 100px;
+  max-height: 100px;
+`;
+const UserImg = styled.img.attrs({
+  className: "rounded",
+  alt: "",
+})`
+  max-width: 90px;
+  min-width: 90px;
+  max-height: 90px;
+  min-height: 90px;
+`;
+
 const Input = ({
   setMember,
   data,
@@ -10,7 +45,9 @@ const Input = ({
   idx,
   saveImgFile,
   imgFile,
+  danger,
 }) => {
+  //이미지 업로드 클릭용 이벤트
   const uploadClick = () => {
     targetRefs.current[idx].click();
   };
@@ -21,48 +58,33 @@ const Input = ({
       [e.target.name]: e.target.value,
     });
   };
-  const DafaultLabel = styled.label.attrs({
-    className: "pt-2",
-  })`
-    min-width: 100px;
-  `;
-  const ImgLabel = styled.label.attrs({
-    className: "pt-2",
-  })`
-    min-width: 165px;
-  `;
-  const ImgBox = styled.div.attrs({
-    className:
-      "border border-3 mx-5 d-flex justify-content-center align-items-center pointer",
-  })`
-    min-width: 100px;
-    max-width: 100px;
-    min-height: 100px;
-    max-height: 100px;
-  `;
-  const UserImg = styled.img.attrs({
-    className: "rounded",
-    alt: "",
-  })`
-    max-width: 90px;
-    min-width: 90px;
-    max-height: 90px;
-    min-height: 90px;
-  `;
   return (
-    <div className="d-flex p-2 my-2 ">
+    <div className="d-flex mt-2 mb-1">
       {data.id !== "userImage" && data.id !== "introduction" ? (
         <>
-          <DafaultLabel htmlFor={data.id}>{data.name}</DafaultLabel>
-          <input
-            id={data.id}
-            type={data.type}
-            ref={(el) => (targetRefs.current[idx] = el)}
-            placeholder={data.placeholder}
-            name={data.id}
-            onChange={(e) => inputChange(e)}
-            className="ms-5 rounded form-control"
-          />
+          <div>
+            <div className="d-flex mb-2">
+              <DafaultLabel htmlFor={data.id}>
+                {data.name}
+                {saveImgFile && <span className="text-danger">*</span>}
+              </DafaultLabel>
+              <input
+                id={data.id}
+                type={data.type}
+                ref={(el) => (targetRefs.current[idx] = el)}
+                placeholder={data.placeholder}
+                name={data.id}
+                onChange={(e) => inputChange(e)}
+                className="ms-5 rounded form-control"
+              />
+            </div>
+            <DangerMessage>
+              <span>{!saveImgFile && danger[idx] && data.danger}</span>
+              <span>
+                {Object.keys(danger).includes(data.id) && danger[data.id]}
+              </span>
+            </DangerMessage>
+          </div>
         </>
       ) : data.id === "userImage" ? (
         <>

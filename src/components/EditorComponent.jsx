@@ -43,13 +43,14 @@ class EditorComponent extends Component {
   ];
 
   render() {
-    const { value, onChange } = this.props;
+    const { value, onChange,name } = this.props;
 
     return (
-      <div className="react-quill-box">
+      <div id="react-quill-box">
         <ReactQuill
-          className="react-quill"
+          id="react-quill"
           theme="snow"
+          name={name}
           modules={this.modules}
           formats={this.formats}
           value={value || ""}

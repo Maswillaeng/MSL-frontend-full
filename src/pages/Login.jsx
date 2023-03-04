@@ -3,42 +3,43 @@ import React, { useState, useRef, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import login from "../function/cookie/login";
-import members from "../dummy/members";
 import { useNavigate } from "react-router-dom";
-import getUser from "../function/cookie/getUser";
 import {
   validationEmail,
   validationPassword,
 } from "../function/utility/validation";
-import styled from "styled-components";
 
-export default function Login() {
+const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
+  const [danger, setDanger] = useState([false, false]);
   const userArr = [
     {
       id: "email",
       name: "이메일",
       placeholder: "이메일을 적어주세요.",
       type: "email",
+      danger: "이메일을 확인해주세요.",
     },
     {
       id: "password",
       name: "비밀번호",
       placeholder: "비밀번호를 적어주세요.",
       type: "password",
+      danger: "비밀번호를 확인해주세요.",
     },
   ];
+
+  //타겟들을 설정하기 위한 useRef 배열
   const targetRefs = useRef([]);
   //유효성검사
   const buttonEvent = (e) => {
-    if (Object.values(user).filter((x) => x === "").length > 0) {
-      e.preventDefault();
-    }
     if (!validationEmail.test(user.email)) {
+      setDanger([true, false]);
       return targetRefs.current[0].focus();
     }
     if (!validationPassword.test(user.password)) {
+      setDanger([false, true]);
       return targetRefs.current[1].focus();
     }
     axios
@@ -46,6 +47,7 @@ export default function Login() {
         headers: {
           "Content-Type": `application/json`,
         },
+        withCredentials: true,
       })
       .then((res) => {
         login(user.email);
@@ -54,21 +56,15 @@ export default function Login() {
       })
       .catch((err) => {
         console.log(err);
-        alert("비밀번호를 확인해주세요.");
+        alert("로그인에 실패했습니다.");
       });
   };
 
-  const LoginForm = styled.form.attrs({
-    className:
-      "container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4",
-    action: "/",
-  })`
-    max-width: 500px;
-    min-height: 200px;
-  `;
-
   return (
-    <LoginForm>
+    <form
+      className="container border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4"
+      id="form-login"
+    >
       {userArr.map((data, idx) => (
         <Input
           key={data.id}
@@ -77,6 +73,7 @@ export default function Login() {
           member={user}
           targetRefs={targetRefs}
           idx={idx}
+          danger={danger}
         />
       ))}
       <Button size={"lg"} buttonEvent={buttonEvent} message={"로그인"} />
@@ -91,6 +88,8 @@ export default function Login() {
           <span className="pointer">비밀번호 찾기</span>
         </div>
       </div>
-    </LoginForm>
+    </form>
   );
-}
+};
+
+export default Login;

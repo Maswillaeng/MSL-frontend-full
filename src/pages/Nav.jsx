@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 
 const Nav = () => {
+  //서버로부터 쿠키를 받을때 얘가 없으면 쿠키가 저장이안되고 쿠키를 활용하지못함
   const location = useLocation();
   return <>{location.pathname !== "/boardCreate" && <MainNav />}</>;
 };
@@ -30,17 +31,21 @@ const MainNav = () => {
       },
     },
   ];
-  let user = { user_id: "123" };
   const loginNavArr = [
     {
       로그아웃: {
         event: () => {
           axios
-            .post("http://localhost:8080/api/logout", user, {
-              headers: {
-                "Content-Type": `application/json`,
-              },
-            })
+            .post(
+              "http://localhost:8080/api/logout",
+              { user_id: getUser("user") },
+              {
+                headers: {
+                  "Content-Type": `application/json`,
+                },
+                withCredentials: true,
+              }
+            )
             .then((res) => {
               alert("로그아웃 되었습니다.");
               logOut(getUser("user"));
@@ -67,7 +72,7 @@ const MainNav = () => {
       },
     },
   ];
- 
+  
   return (
     <nav className="navbar navbar-expand-lg main-bg-color py-2 fs-3 ">
       <div className="container-fluid px-5  main-bg-color">

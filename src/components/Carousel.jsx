@@ -13,8 +13,6 @@ const Carousel = () => {
     slidesToScroll: 1,
     arrows: false,
     autoplay: true,
-    pauseOnFocus: true,
-    pauseOnHover: true,
   };
 
   //메인 이미지 배열

@@ -19,9 +19,7 @@ import { currentTime } from "../function/utility/ currentTime";
 const BoardDetailBox = styled.div.attrs({
   className:
     "container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5",
-})`
-  max-width: 60vw;
-`;
+})``;
 
 const BoardDetail = () => {
   const location = useLocation();
@@ -215,7 +213,7 @@ const CommentUserImg = styled.img.attrs({
   height: 30px;
 `;
 
-const BottomCommentBox = ({ login, data }) => {
+const BottomCommentBox = ({ data }) => {
   const navigate = useNavigate();
 
   //현재 글에 작성된 댓글들을 위한 상태
@@ -274,7 +272,7 @@ const BottomCommentBox = ({ login, data }) => {
 
   return (
     <>
-      <div className="w-50 d-flex flex-column justify-content-start align-items-center">
+      <div className="w-50 d-flex flex-column justify-content-start align-items-center pb-3">
         <div className="w-100 d-flex justify-content-start align-items-center mb-5">
           댓글:{commentArr.length}개
         </div>
@@ -285,7 +283,7 @@ const BottomCommentBox = ({ login, data }) => {
       <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">
         {getUserCookie("user") ? (
           <>
-            <div className="w-100 d-flex justify-content-center align-items-center flex-column">
+            <div className="w-100 d-flex justify-content-center align-items-center flex-column ">
               <button
                 ref={target}
                 onClick={onCommentHandeler}
@@ -331,9 +329,11 @@ const BottomCommentBox = ({ login, data }) => {
           </>
         ) : (
           <>
-            <div className="flex-grow-1">글을 작성하시려면 로그인 해주세요</div>
-            <div>
-              <Button buttonEvent={buttonEvent} message={"로그인"} />
+            <div className="d-flex justify-content-center align-items-center w-100">
+              <div className="mx-5 fs-4">글을 작성하시려면 로그인 해주세요</div>
+              <div>
+                <Button buttonEvent={buttonEvent} message={"로그인"} />
+              </div>
             </div>
           </>
         )}

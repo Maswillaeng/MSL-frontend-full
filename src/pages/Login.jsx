@@ -8,6 +8,7 @@ import {
   validationEmail,
   validationPassword,
 } from "../function/utility/validation";
+import { getLogin } from "../function/api/getLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,17 +50,10 @@ const Login = () => {
       setWarning([false, true]);
       return targetRefs.current[1].focus();
     }
-    axios
-      .post("http://localhost:8080/login", user, {
-        headers: {
-          "Content-Type": `application/json`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
+    getLogin(user)
+      .then(() => {
         loginCookie(user.email);
         navigate("/");
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);

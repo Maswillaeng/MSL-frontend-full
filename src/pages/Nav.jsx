@@ -1,11 +1,9 @@
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Li from "../components/Li";
 import getUserCookie from "../function/cookie/getUserCookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 import logOutCookie from "../function/cookie/logOutCookie";
-import { getUser } from "../function/api/getUser";
 import { getLogOut } from "../function/api/getLogOut";
 
 const Nav = () => {

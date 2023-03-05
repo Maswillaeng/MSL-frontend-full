@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import login from "../function/cookie/login";
+import loginCookie from "../function/cookie/loginCookie";
 import { useNavigate } from "react-router-dom";
 import {
   validationEmail,
@@ -57,7 +57,7 @@ const Login = () => {
         withCredentials: true,
       })
       .then((res) => {
-        login(user.email);
+        loginCookie(user.email);
         navigate("/");
         console.log(res);
       })
@@ -66,6 +66,11 @@ const Login = () => {
         alert("로그인에 실패했습니다.");
       });
   };
+
+  //최초 접근 시, 이메일 입력칸 포커스
+  useEffect(() => {
+    targetRefs.current[0].focus();
+  }, []);
 
   return (
     <div className="container d-flex justify-content-center align-items-center w-50">

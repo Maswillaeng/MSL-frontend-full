@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -138,6 +138,10 @@ const SignUp = () => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    targetRefs.current[0].focus();
+  }, []);
 
   return (
     <div className="container d-flex justify-content-center align-items-center w-50">

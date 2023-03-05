@@ -1,15 +1,32 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import members from "../dummy/members";
-import getUser from "../function/cookie/getUser";
+import { getUser } from "../function/api/getUser";
+import getUserCookie from "../function/cookie/getUserCookie";
 
 const MyPage = () => {
   //카테고리 상태
   const [categori, setCategori] = useState("");
+
+  //조회하려는 유저의 데이터 상태
+  const [userData, setUserData] = useState({});
+
+  //최초 1회 조회하려는 유저의 데이터를 셋팅하기 위한 이펙트
+  useEffect(() => {
+    // getUser()
+    //   .then((res) => {
+    //     setUserData(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  }, []);
+
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
-      <TopProfileTop />
+      <TopProfileTop userData={userData} />
       <TopProfileBottom />
       <BottomCategori setCategori={setCategori} categori={categori} />
       <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100">
@@ -26,17 +43,10 @@ const UserImg = styled.img.attrs({
   height: 150px;
 `;
 
-const TopProfileTop = () => {
+const TopProfileTop = ({ userData }) => {
   return (
     <div className="mb-5 d-flex px-5">
-      <div className="me-5">
-        <UserImg
-          src={
-            members.filter((x) => x.email === "shdomi8599@naver.com")[0]
-              .userImage
-          }
-        />
-      </div>
+      <div className="me-5">{/* <UserImg src={userData.userImage} /> */}</div>
       <div className="d-flex flex-column">
         <div className="flex-grow-1 d-flex justify-content-start align-items-center fs-3 mb-4">
           shdomi8599

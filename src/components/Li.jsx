@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import getUser from "../function/cookie/getUser";
+import getUser from "../function/cookie/getUserCookie";
 
 const Li = ({ data }) => {
   const navigate = useNavigate();

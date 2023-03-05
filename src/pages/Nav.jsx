@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import Li from "../components/Li";
-import getUser from "../function/cookie/getUser";
-import logOut from "../function/cookie/logOut";
+import getUserCookie from "../function/cookie/getUserCookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
+import logOutCookie from "../function/cookie/logOutCookie";
+import { getUser } from "../function/api/getUser";
+import { getLogOut } from "../function/api/getLogOut";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -39,25 +41,13 @@ const MainNav = () => {
     {
       로그아웃: {
         event: () => {
-          axios
-            .post(
-              "http://localhost:8080/api/logout",
-              { user_id: getUser("user") },
-              {
-                headers: {
-                  "Content-Type": `application/json`,
-                },
-                withCredentials: true,
-              }
-            )
-            .then((res) => {
+          getLogOut()
+            .then(() => {
               alert("로그아웃 되었습니다.");
-              logOut(getUser("user"));
+              logOutCookie(getUserCookie("user"));
               navigate("/");
-              console.log(res);
             })
-            .catch((err) => {
-              console.log(err);
+            .catch(() => {
               alert("실패요");
             });
         },
@@ -86,7 +76,7 @@ const MainNav = () => {
         </a>
         <div className="collapse navbar-collapse " id="navbarNavDropdown">
           <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center ">
-            {getUser("user")
+            {getUserCookie("user")
               ? loginNavArr.map((data, idx) => (
                   <Li data={data} idx={idx} key={Object.keys(data)[0]} />
                 ))

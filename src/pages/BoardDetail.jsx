@@ -12,8 +12,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import members from "../dummy/members";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
-import getUser from "../function/cookie/getUser";
+import getUserCookie from "../function/cookie/getUserCookie";
 import styled from "styled-components";
+import { currentTime } from "../function/utility/ currentTime";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -243,20 +244,24 @@ const BottomCommentBox = ({ login, data }) => {
 
   //비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
   const buttonEvent = () => {
-    if (!getUser("user")) {
+    if (!getUserCookie("user")) {
       return navigate("/login");
     }
+
     if (commentText === "") {
       return alert("댓글을 작성해주세요.");
     }
-    commentData.push({
+
+    const postComment = {
       post_id: data.post_id,
-      nickname: getUser("user"),
-      createAt: "2023-02-27",
+      nickname: getUserCookie("user"),
+      createAt: currentTime(),
       content: commentText,
       like: 0,
       dislike: 0,
-    });
+    };
+
+    commentData.push(postComment);
     target.current.click();
     setCommentText("");
     setOnComment(false);
@@ -278,7 +283,7 @@ const BottomCommentBox = ({ login, data }) => {
         ))}
       </div>
       <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">
-        {getUser("user") ? (
+        {getUserCookie("user") ? (
           <>
             <div className="w-100 d-flex justify-content-center align-items-center flex-column">
               <button

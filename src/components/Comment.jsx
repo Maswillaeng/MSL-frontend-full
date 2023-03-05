@@ -13,6 +13,8 @@ import Button from "./Button";
 import Reply from "./Reply";
 import replyData from "../dummy/replyData";
 import styled from "styled-components";
+import { elapsedTime } from "../function/utility/ elapsedTime";
+import { currentTime } from "../function/utility/ currentTime";
 const TopCommentBox = styled.div.attrs({
   className: "w-75 d-flex justify-content-start align-items-center mb-2",
 })`
@@ -113,7 +115,7 @@ const Comment = ({ data }) => {
       reply_id: replyList.length + 1,
       nickname: "shdomi8599",
       content: replyVal,
-      createAt: "방금 전",
+      createAt: currentTime(),
       like: 0,
       dislike: 0,
     });
@@ -153,7 +155,7 @@ const Comment = ({ data }) => {
         </div>
         <div className="ms-2 me-5 w-100 ">
           <div>{data.nickname}</div>
-          <div className="opacity-75">{data.createAt}</div>
+          <div className="opacity-75">{elapsedTime(data.createAt)}</div>
         </div>
         <IconBox>
           <div className="mb-2">

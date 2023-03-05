@@ -1,4 +1,4 @@
-const getUser = (id) => {
+const getUserCookie = (id) => {
   let matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +
@@ -9,4 +9,4 @@ const getUser = (id) => {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 };
 
-export default getUser;
+export default getUserCookie;

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -6,14 +5,13 @@ import Button from "../components/Button";
 import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
 import boardData from "../dummy/boardData";
-import getUser from "../function/cookie/getUser";
+import getUserCookie from "../function/cookie/getUserCookie";
+import Carousel from "../components/Carousel";
+
 const HomeBox = styled.div.attrs({
   className:
-    "container rounded d-flex flex-column justify-content-start align-items-center mt-3 px-0",
-})`
-  max-width: 100vw;
-  max-height: 200vh;
-`;
+    "d-flex flex-column justify-content-start align-items-center mt-3 px-0",
+})``;
 
 const Home = () => {
   const navigate = useNavigate();
@@ -21,7 +19,7 @@ const Home = () => {
     <HomeBox>
       <TopSearchBox navigate={navigate} />
       <TopMainNavBox navigate={navigate} />
-      <TopImgBox />
+      <Carousel />
       <BottomHotBox />
     </HomeBox>
   );
@@ -90,7 +88,7 @@ const TopMainNavBox = ({ navigate }) => {
   return (
     <div className="mb-5 w-100 d-flex justify-content-center align-items-center">
       <ul className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
-        {getUser("user") && (
+        {getUserCookie("user") && (
           <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center ">
             <a
               className="nav-link main-bg-color"
@@ -101,22 +99,18 @@ const TopMainNavBox = ({ navigate }) => {
             </a>
           </li>
         )}
-        <li
-          onClick={moveRecipe}
-          className="nav-item flex-grow-1 d-flex justify-content-center align-items-center"
-        >
-          <a className="nav-link" href="/board">
-            <span className="main-color">칵테일 레시피</span>
-          </a>
+        <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
+          <span onClick={moveRecipe} className="main-color pointer">
+            칵테일 레시피
+          </span>
         </li>
         <li className="nav-item dropdown flex-grow-1 d-flex justify-content-center align-items-center ">
-          <a
-            className="nav-link dropdown-toggle main-color"
+          <div
+            className="nav-link dropdown-toggle main-color pointer"
             data-bs-toggle="dropdown"
-            href="#!"
           >
             <span className="main-color">칵테일 맛집</span>
-          </a>
+          </div>
           <ul className="dropdown-menu ">
             {eventLi.map((x) => (
               <DropdownLi data={x} key={x.name} />
@@ -124,28 +118,9 @@ const TopMainNavBox = ({ navigate }) => {
           </ul>
         </li>
         <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
-          <a
-            className="nav-link disabled"
-            href="#!"
-            tabIndex="-1"
-            aria-disabled="true"
-          >
-            <span className="main-color">미정</span>
-          </a>
+          <span className="main-color pointer">미정</span>
         </li>
       </ul>
-    </div>
-  );
-};
-
-const TopImgBox = () => {
-  return (
-    <div className="w-100 text-center bg-secondary mb-5">
-      <img
-        className="w-100 "
-        src={"img/KakaoTalk_20230225_174505991.png"}
-        alt="mainImg"
-      />
     </div>
   );
 };

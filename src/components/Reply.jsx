@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import members from "../dummy/members";
 import { useState } from "react";
 import styled from "styled-components";
+import { elapsedTime } from "../function/utility/ elapsedTime";
 
 const UserImg = styled.img.attrs({
   className: "rounded-circle me-2 mb-1 pt-1",
@@ -77,7 +78,7 @@ const Reply = ({ data }) => {
         />
         {/* 글 주인이 댓글을 쓰면 "rounded main-bg-color p-1 text-light" 속성을 주자 */}
         <span className="me-2">{data.nickname}</span>
-        <span className="opacity-50">{data.createAt}</span>
+        <span className="opacity-50">{elapsedTime(data.createAt)}</span>
       </div>
       <div className="pt-1 px-4 mx-1 mb-1">
         <span>{data.content}</span>

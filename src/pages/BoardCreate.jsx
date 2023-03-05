@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Li from "../components/Li";
 import EditorComponent from "../components/EditorComponent";
 import styled from "styled-components";
-import axios from "axios";
+import { getPost } from "../function/api/getPost";
 
 const BoardCreate = () => {
   //텍스트 에디터용 상태와 이벤트
@@ -91,24 +91,20 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
     if (!content.categori) {
       return alert("카테고리를 선택해주세요.");
     }
+
     const allImgData = Object.values(imgData).filter((x) => x !== "");
+
     const postData = {
       ...content,
       thumbnail:
         allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData[imgNum],
       imgData: allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData,
     };
-    axios
-      .post("http://localhost:8080/api/post", postData, {
-        headers: {
-          "Content-Type": `application/json`,
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
+    
+    getPost(postData)
+      .then(() => {
         alert("글이 등록되었습니다.");
         navigate("/board");
-        console.log(res);
       })
       .catch((err) => {
         alert("실패요");

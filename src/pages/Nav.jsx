@@ -4,7 +4,7 @@ import getUserCookie from "../function/cookie/getUserCookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 import logOutCookie from "../function/cookie/logOutCookie";
-import { getLogOut } from "../function/api/getLogOut";
+import { postLogOut } from "../function/api/postLogOut";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -39,7 +39,7 @@ const MainNav = () => {
     {
       로그아웃: {
         event: () => {
-          getLogOut()
+          postLogOut()
             .then(() => {
               alert("로그아웃 되었습니다.");
               logOutCookie(getUserCookie("user"));

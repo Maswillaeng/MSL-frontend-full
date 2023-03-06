@@ -1,32 +1,20 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
 import CardRow from "../components/CardRow";
-import Loading from "../components/Loading";
 import SkeletonUi from "../components/SkeletonUi";
 import boardData from "../dummy/boardData";
+import { getBoard } from "../function/api/getBoard";
 import useIntersectionObserver from "../function/hook/useIntersectionObserver";
 
 const Board = () => {
-  // axios
-  // .get(
-  //   "http://localhost:8080/api/post/page",
-  //   {},
-  //   {
-  //     headers: {
-  //       "Content-Type": `application/json`,
-  //     },
-  //     withCredentials: true,
-  //   }
-  // )
-  // .then((res) => {
-  //   console.log(res);
-  // })
-  // .catch((err) => {
-  //   alert("실패요");
-  //   console.log(err);
-  // });
+  // getBoard()
+  //   .then((res) => {
+  //     console.log(res.data.result);
+  //   })
+  //   .catch((err) => {
+  //     alert("실패요");
+  //     console.log(err);
+  //   });
   const location = useLocation();
 
   //1줄의 카드 데이터 상태
@@ -120,7 +108,7 @@ const BoardMiddle = ({ rowData }) => {
     <div
       className={`d-flex flex-column justify-content-start align-items-center w-100 flex-grow-1 mt-5`}
     >
-      <div className="container text-center">
+      <div className="container text-center mt-5">
         {rowData.map((x, i) => (
           <CardRow cardList={x} key={i} />
         ))}

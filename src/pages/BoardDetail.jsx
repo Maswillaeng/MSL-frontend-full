@@ -13,6 +13,7 @@ import members from "../dummy/members";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
 import getUserCookie from "../function/cookie/getUserCookie";
+import { getUser } from "../function/api/getUser";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
 
@@ -24,19 +25,22 @@ const BoardDetailBox = styled.div.attrs({
 const BoardDetail = () => {
   const location = useLocation();
 
+  const [userData, setUserData] = useState({});
+
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    getUser().then((res) => setUserData(res.data));
   }, []);
 
   return (
     <BoardDetailBox>
       <div className="w-100 mb-5">
         <TopImgBox data={location.state.data} />
-        <TopProfileBox data={location.state.data} />
+        <TopProfileBox data={location.state.data} userData={userData} />
         <TopContentBox data={location.state.data} />
       </div>
-      <BottomCommentBox data={location.state.data} />
+      <BottomCommentBox data={location.state.data} userData={userData} />
     </BoardDetailBox>
   );
 };
@@ -119,7 +123,7 @@ const ProfileUserImg = styled.img.attrs({
   height: 70px;
 `;
 
-const TopProfileBox = ({ data }) => {
+const TopProfileBox = ({ data, userData }) => {
   //추천 숫자
   const [likeCount, setLikeCount] = useState(data.like);
 
@@ -213,7 +217,7 @@ const CommentUserImg = styled.img.attrs({
   height: 30px;
 `;
 
-const BottomCommentBox = ({ data }) => {
+const BottomCommentBox = ({ data, userData }) => {
   const navigate = useNavigate();
 
   //현재 글에 작성된 댓글들을 위한 상태
@@ -252,7 +256,7 @@ const BottomCommentBox = ({ data }) => {
 
     const postComment = {
       post_id: data.post_id,
-      nickname: getUserCookie("user"),
+      nickname: userData.nickname,
       createAt: currentTime(),
       content: commentText,
       like: 0,
@@ -304,7 +308,7 @@ const BottomCommentBox = ({ data }) => {
                         "https://avatars.githubusercontent.com/u/117655658?v=4"
                       }
                     />
-                    <span className="ms-1">{"임시"}</span>
+                    <span className="ms-1">{userData.nickname}</span>
                   </label>
                   <textarea
                     value={commentText}

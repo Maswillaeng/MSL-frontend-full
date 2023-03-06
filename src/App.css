@@ -30,11 +30,35 @@
   resize: none;
 }
 
-.flex-07 {
-  flex: 0.7;
+.flex-01 {
+  flex: 0.1;
+}
+.flex-02 {
+  flex: 0.2;
 }
 .flex-03 {
   flex: 0.3;
+}
+.flex-04 {
+  flex: 0.4;
+}
+.flex-05 {
+  flex: 0.5;
+}
+.flex-06 {
+  flex: 0.6;
+}
+.flex-07 {
+  flex: 0.7;
+}
+.flex-08 {
+  flex: 0.8;
+}
+.flex-09 {
+  flex: 0.9;
+}
+.flex-10 {
+  flex: 1;
 }
 
 /* Nav 컴포넌트 */
@@ -63,14 +87,6 @@
   height: 25px;
   cursor: pointer;
   margin-bottom: -5px;
-}
-
-/* EditorComponent 컴포넌트 */
-#react-quill-box {
-  height: 650px;
-}
-#react-quill {
-  height: 600px;
 }
 
 /* Input 컴포넌트 */
@@ -108,8 +124,8 @@
 /* SkeletonUi 컴포넌트*/
 
 .blink {
-  color:  #aa233c;
-  text-shadow: 30px 10px 25px  #aa233c, 30px 10px 25px  #aa233c;
+  color: #aa233c;
+  text-shadow: 30px 10px 25px #aa233c, 30px 10px 25px #aa233c;
   animation: glow 1.5s linear infinite;
 }
 

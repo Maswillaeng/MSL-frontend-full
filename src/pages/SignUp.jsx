@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -11,6 +10,7 @@ import {
 } from "../function/utility/validation";
 import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
+import { postSignUp } from "../function/api/postSignUp";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -123,12 +123,7 @@ const SignUp = () => {
     if (!validationPhone.test(member.phoneNumber))
       return targetRefs.current[4].focus();
 
-    axios
-      .post("http://localhost:8080/api/sign", member, {
-        headers: {
-          "Content-Type": `application/json`,
-        },
-      })
+    postSignUp(member)
       .then((res) => {
         alert("회원가입을 축하합니다.");
         navigate("/");
@@ -144,7 +139,7 @@ const SignUp = () => {
   }, []);
 
   return (
-    <div className="container d-flex justify-content-center align-items-center w-50">
+    <div className="container d-flex justify-content-center align-items-center w-100">
       <form className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3">
         {inputArr.map((data, idx) => (
           <Input

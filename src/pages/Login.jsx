@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -8,7 +7,7 @@ import {
   validationEmail,
   validationPassword,
 } from "../function/utility/validation";
-import { getLogin } from "../function/api/getLogin";
+import { postLogin } from "../function/api/postLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,7 +40,7 @@ const Login = () => {
   const targetRefs = useRef([]);
 
   //로그인 버튼 이벤트, 유효성검사
-  const buttonEvent = (e) => {
+  const buttonEvent = () => {
     if (!validationEmail.test(user.email)) {
       setWarning([true, false]);
       return targetRefs.current[0].focus();
@@ -50,7 +49,7 @@ const Login = () => {
       setWarning([false, true]);
       return targetRefs.current[1].focus();
     }
-    getLogin(user)
+    postLogin(user)
       .then(() => {
         loginCookie(user.email);
         navigate("/");

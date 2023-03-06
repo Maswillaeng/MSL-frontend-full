@@ -15,6 +15,7 @@ import replyData from "../dummy/replyData";
 import styled from "styled-components";
 import { elapsedTime } from "../function/utility/ elapsedTime";
 import { currentTime } from "../function/utility/ currentTime";
+
 const TopCommentBox = styled.div.attrs({
   className: "w-75 d-flex justify-content-start align-items-center mb-2",
 })`

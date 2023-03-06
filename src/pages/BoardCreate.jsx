@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Li from "../components/Li";
 import EditorComponent from "../components/EditorComponent";
 import styled from "styled-components";
-import { getPost } from "../function/api/getPost";
+import { postBoard } from "../function/api/postBoard";
 
 const BoardCreate = () => {
   //텍스트 에디터용 상태와 이벤트
@@ -101,7 +101,7 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
       imgData: allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData,
     };
     
-    getPost(postData)
+    postBoard(postData)
       .then(() => {
         alert("글이 등록되었습니다.");
         navigate("/board");
@@ -260,7 +260,7 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
 
 const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
   return (
-    <div className="w-100 d-flex justify-content-center align-items-center flex-column my-5">
+    <div className="w-100 d-flex justify-content-start align-items-center flex-column my-5" style={{height:'70vh'}}>
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
         <div className="me-5 flex-07">
           <div>
@@ -288,10 +288,8 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
           </select>
         </div>
       </div>
-      <div className=" mb-5 w-50">
-        <div>
+      <div className=" mb-5 w-50 h-100">
           <EditorComponent value={desc} onChange={onEditorChange} />
-        </div>
       </div>
     </div>
   );

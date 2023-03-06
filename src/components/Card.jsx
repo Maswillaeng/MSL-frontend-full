@@ -10,11 +10,10 @@ import styled from "styled-components";
 
 const ThumbnailImg = styled.img.attrs({
   alt: "thumbnail",
-})`
-  max-height: 180px;
-`;
+  className: "img-fluid mt-3",
+})``;
 const TitleBox = styled.div.attrs({
-  className: "mt-2 mb-5 mx-2",
+  className: "mt-2 mb-5 px-4 h-25 flex-02",
 })`
   height: 30px;
 `;
@@ -34,18 +33,18 @@ const Card = ({ data }) => {
   };
 
   return (
-    <div className="col-3">
+    <div className="col-3 m-0">
       <div
         onClick={detail}
-        className="p-2 border bg-light d-flex flex-column align-items-center shadow pointer"
+        className="p-2 border bg-light d-flex flex-column align-items-center shadow pointer h-100 mx-4"
       >
-        <div className="mb-5">
+        <div className="mb-5 h-50 flex-08 w-75">
           <ThumbnailImg src={data.thumbnail} />
         </div>
         <TitleBox>
           <span>{data.title}</span>
         </TitleBox>
-        <div className="mt-4 d-flex align-items-center justify-content-center w-100 pb-2">
+        <div className="mt-4 d-flex align-items-center justify-content-center w-100 pb-2 h-25 flex-01">
           <div className="mx-2">
             <UserImg
               src={

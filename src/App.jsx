@@ -3,6 +3,10 @@ import "./App.css";
 import Nav from "./pages/Nav";
 import React, { Suspense } from "react";
 import PageLoading from "./components/PageLoading";
+import axios from "axios";
+
+//전역으로 쿠키를 주고 받을 수 있게 설정
+axios.defaults.withCredentials = true;
 
 const App = () => {
   const Home = React.lazy(() => import("./pages/Home"));

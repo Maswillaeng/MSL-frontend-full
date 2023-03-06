@@ -153,8 +153,8 @@ const BottomHotBox = () => {
 
   return (
     <div className="w-75 my-5">
-      <div className="ps-3 fs-1 ">인기레시피</div>
-      <div className="my-3 w-100 d-flex flex-column">
+      <div className="ps-3 fs-1 mb-4">인기레시피</div>
+      <div className="w-100 d-flex flex-column">
         {rowData.map((x, i) => (
           <CardRow key={i} cardList={x} />
         ))}

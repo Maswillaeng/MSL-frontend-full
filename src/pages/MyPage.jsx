@@ -1,10 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
-import members from "../dummy/members";
 import { getUser } from "../function/api/getUser";
-import getUserCookie from "../function/cookie/getUserCookie";
 
 const MyPage = () => {
   //카테고리 상태
@@ -15,13 +12,14 @@ const MyPage = () => {
 
   //최초 1회 조회하려는 유저의 데이터를 셋팅하기 위한 이펙트
   useEffect(() => {
-    // getUser()
-    //   .then((res) => {
-    //     setUserData(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    getUser()
+      .then((res) => {
+        setUserData(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -37,23 +35,23 @@ const MyPage = () => {
 };
 
 const UserImg = styled.img.attrs({
-  className: "rounded-circle",
+  className: "rounded-circle img-fluid",
   alt: "",
-})`
-  height: 150px;
-`;
+})``;
 
 const TopProfileTop = ({ userData }) => {
   return (
-    <div className="mb-5 d-flex px-5">
-      <div className="me-5">{/* <UserImg src={userData.userImage} /> */}</div>
+    <div className="mb-5 d-flex px-5 w-100">
+      <div className="me-5 flex-02">
+        <UserImg src={userData.userImage} />
+      </div>
       <div className="d-flex flex-column">
         <div className="flex-grow-1 d-flex justify-content-start align-items-center fs-3 mb-4">
-          shdomi8599
+          <span>{userData.nickname}</span>
         </div>
         <div>소개글</div>
         <div className="flex-grow-1 d-flex justify-content-start align-items-center">
-          <span>칵테일은 관심없다.</span>
+          <span>{userData.introduction}</span>
         </div>
       </div>
     </div>

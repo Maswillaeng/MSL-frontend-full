@@ -11,9 +11,19 @@ import {
 import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/postSignUp";
+import getUserCookie from "../function/cookie/getUserCookie";
 
 const SignUp = () => {
   const navigate = useNavigate();
+
+  //최초 접근 시, 이메일 입력칸 포커스
+  useEffect(() => {
+    if (getUserCookie("user")) {
+      alert("이미 로그인 상태입니다.");
+      return navigate("/");
+    }
+    targetRefs.current[0].focus();
+  }, []);
 
   //프로필 이미지 상태
   const [imgFile, setImgFile] = useState("");
@@ -85,7 +95,7 @@ const SignUp = () => {
     pwc: "",
     nickname: "",
     phoneNumber: "",
-    userImage: "img/마쉴랭.PNG",
+    userImage: "/img/마쉴랭.PNG",
     introduction: "",
   });
 
@@ -133,10 +143,6 @@ const SignUp = () => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    targetRefs.current[0].focus();
-  }, []);
 
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">

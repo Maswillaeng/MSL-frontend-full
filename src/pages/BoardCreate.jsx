@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -45,7 +45,7 @@ const BoardCreate = () => {
   const [imgNum, setImgNum] = useState(0);
 
   //카테고리 상태, 최초 값은 레시피로 설정
-  const [content, setContent] = useState({ categori: "레시피" });
+  const [content, setContent] = useState({ category: "레시피" });
 
   //작성된 내용을 반영하기 위한 이벤트
   const updateContent = (e) => {
@@ -88,7 +88,7 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
     if (!content.content) {
       return alert("설명을 적어주세요.");
     }
-    if (!content.categori) {
+    if (!content.category) {
       return alert("카테고리를 선택해주세요.");
     }
 
@@ -97,10 +97,10 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
     const postData = {
       ...content,
       thumbnail:
-        allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData[imgNum],
-      imgData: allImgData.length === 0 ? "img/마쉴랭.PNG" : allImgData,
+        allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData[imgNum],
+      imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
     };
-    
+
     postBoard(postData)
       .then(() => {
         alert("글이 등록되었습니다.");
@@ -260,7 +260,10 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
 
 const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
   return (
-    <div className="w-100 d-flex justify-content-start align-items-center flex-column my-5" style={{height:'70vh'}}>
+    <div
+      className="w-100 d-flex justify-content-start align-items-center flex-column my-5"
+      style={{ height: "70vh" }}
+    >
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
         <div className="me-5 flex-07">
           <div>
@@ -276,7 +279,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
         <div className="flex-03">
           <select
             className="form-select"
-            name="categori"
+            name="category"
             onChange={updateContent}
           >
             <option disabled>-칵테일 레시피-</option>
@@ -289,7 +292,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
         </div>
       </div>
       <div className=" mb-5 w-50 h-100">
-          <EditorComponent value={desc} onChange={onEditorChange} />
+        <EditorComponent value={desc} onChange={onEditorChange} />
       </div>
     </div>
   );

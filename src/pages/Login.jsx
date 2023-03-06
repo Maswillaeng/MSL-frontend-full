@@ -8,9 +8,19 @@ import {
   validationPassword,
 } from "../function/utility/validation";
 import { postLogin } from "../function/api/postLogin";
+import getUserCookie from "../function/cookie/getUserCookie";
 
 const Login = () => {
   const navigate = useNavigate();
+
+  //최초 접근 시, 이메일 입력칸 포커스
+  useEffect(() => {
+    if (getUserCookie("user")) {
+      alert("이미 로그인 상태입니다.");
+      return navigate("/");
+    }
+    targetRefs.current[0].focus();
+  }, []);
 
   //유저 데이터 상태
   const [user, setUser] = useState({ email: "", password: "" });
@@ -60,13 +70,8 @@ const Login = () => {
       });
   };
 
-  //최초 접근 시, 이메일 입력칸 포커스
-  useEffect(() => {
-    targetRefs.current[0].focus();
-  }, []);
-
   return (
-    <div className="container d-flex justify-content-center align-items-center w-50">
+    <div className="container d-flex justify-content-center align-items-center w-100">
       <form className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3">
         {userArr.map((data, idx) => (
           <Input

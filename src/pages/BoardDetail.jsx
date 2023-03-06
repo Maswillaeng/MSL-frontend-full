@@ -9,7 +9,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Comment from "../components/Comment";
 import Button from "../components/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import members from "../dummy/members";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
 import getUserCookie from "../function/cookie/getUserCookie";
@@ -25,12 +24,15 @@ const BoardDetailBox = styled.div.attrs({
 const BoardDetail = () => {
   const location = useLocation();
 
+  //로그인중이라면 최초 1회 로그인중인 유저 데이터 셋팅
   const [userData, setUserData] = useState({});
 
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getUser().then((res) => setUserData(res.data));
+    if (getUserCookie("user")) {
+      getUser().then((res) => setUserData(res.data));
+    }
   }, []);
 
   return (
@@ -53,79 +55,80 @@ const ThumbnailImg = styled.img.attrs({
   className: "img-thumbnail",
   alt: "",
 })`
-  min-height: 350px;
-  max-height: 350px;
+  min-height: 400px;
+  max-height: 400px;
   min-width: 500px;
   max-width: 500px;
 `;
 
 const TopImgBox = ({ data }) => {
   //글에 등록된 이미지 개수의 상태를 보여주기 위한 배열
-  const circleArr = Array(data.imgSrc.length).fill(1);
+  // const circleArr = Array(data.imgSrc.length).fill(1);
 
   //현재 선택된 이미지를 보여주기 위한 상태
-  const [currentImg, setCurrentImg] = useState(0);
+  // const [currentImg, setCurrentImg] = useState(0);
 
   //현재 보여지는 이미지를 바꾸기 위한 이벤트들
-  const upCurrentImg = () => {
-    if (currentImg < data.imgSrc.length - 1) {
-      setCurrentImg(currentImg + 1);
-    }
-  };
-  const downCurrentImg = () => {
-    if (currentImg > 0) {
-      setCurrentImg(currentImg - 1);
-    }
-  };
+  // const upCurrentImg = () => {
+  //   if (currentImg < data.imgSrc.length - 1) {
+  //     setCurrentImg(currentImg + 1);
+  //   }
+  // };
+  // const downCurrentImg = () => {
+  //   if (currentImg > 0) {
+  //     setCurrentImg(currentImg - 1);
+  //   }
+  // };
+  console.log(data);
 
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <div className="d-flex justify-content-center align-items-center">
         <IconBox>
-          {currentImg !== 0 && (
+          {/* {currentImg !== 0 && (
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={downCurrentImg}
               className="mx-3  pointer board-detail-icon"
             />
-          )}
+          )} */}
         </IconBox>
         <div>
-          <ThumbnailImg src={data.imgSrc[currentImg]} />
+          <ThumbnailImg src={data.thumbnail} />
         </div>
         <IconBox>
-          {currentImg < data.imgSrc.length - 1 && (
+          {/* {currentImg < data.imgSrc.length - 1 && (
             <FontAwesomeIcon
               icon={faArrowRight}
               onClick={upCurrentImg}
               className="mx-3 pointer board-detail-icon"
             />
-          )}
+          )} */}
         </IconBox>
       </div>
       <div>
-        {circleArr.map((x, i) =>
+        {/* {circleArr.map((x, i) =>
           currentImg === i ? (
             <FontAwesomeIcon icon={faCircleS} className="mx-2 mt-2" key={i} />
           ) : (
             <FontAwesomeIcon icon={faCircleR} className="mx-2 mt-2" key={i} />
           )
-        )}
+        )} */}
       </div>
     </div>
   );
 };
 
 const ProfileUserImg = styled.img.attrs({
-  className: "rounded-circle",
+  className: "rounded-circle img-fluid",
   alt: "userImg",
 })`
-  height: 70px;
+  height: 80px;
 `;
 
 const TopProfileBox = ({ data, userData }) => {
   //추천 숫자
-  const [likeCount, setLikeCount] = useState(data.like);
+  const [likeCount, setLikeCount] = useState(data.hits);
 
   //추천 상태
   const [like, setLike] = useState(false);
@@ -140,13 +143,8 @@ const TopProfileBox = ({ data, userData }) => {
     }
   };
 
-  const userImgae = members.filter((x) => x.nickname === data.nickname)[0]
-    .userImage;
-  const userSubscribe = members.filter((x) => x.nickname === data.nickname)[0]
-    .subscribeCount;
-
   //구독 숫자
-  const [subscribeCount, setSubscribeCount] = useState(userSubscribe);
+  const [subscribeCount, setSubscribeCount] = useState(0);
 
   //구독 상태
   const [subscribe, setSubscribe] = useState(false);
@@ -164,7 +162,7 @@ const TopProfileBox = ({ data, userData }) => {
   return (
     <div className="w-100 d-flex justify-content-center align-items-center">
       <div className=" mt-5 ">
-        <ProfileUserImg src={userImgae} />
+        <ProfileUserImg src={userData.userImage} />
       </div>
       <div className="ms-2 mt-5 me-5">
         <div>{data.nickname}</div>
@@ -196,6 +194,7 @@ const TopProfileBox = ({ data, userData }) => {
 };
 
 const TopContentBox = ({ data }) => {
+  console.log(data.content);
   return (
     <div className="d-flex flex-column justify-content-center align-items-center my-5">
       <div className="w-50">
@@ -203,9 +202,12 @@ const TopContentBox = ({ data }) => {
       </div>
       <div className="w-50 mb-4 d-flex justify-content-end align-items-end">
         <span className="mx-3">{data.categori}</span>
-        <span>{data.createAt}</span>
+        <span>{"방금 전"}</span>
       </div>
-      <div className="w-50">{data.content}</div>
+      <div
+        className="w-50"
+        dangerouslySetInnerHTML={{ __html: data.content }}
+      ></div>
     </div>
   );
 };
@@ -303,11 +305,7 @@ const BottomCommentBox = ({ data, userData }) => {
               <div className="collapse mt-3 w-100" id="collapseExample">
                 <div className="mb-3 w-100">
                   <label htmlFor="comment" className="form-label ">
-                    <CommentUserImg
-                      src={
-                        "https://avatars.githubusercontent.com/u/117655658?v=4"
-                      }
-                    />
+                    <CommentUserImg src={userData.userImage} />
                     <span className="ms-1">{userData.nickname}</span>
                   </label>
                   <textarea

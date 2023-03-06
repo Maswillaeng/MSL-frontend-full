@@ -1,13 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-class EditorComponent extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  modules = {
+const EditorComponent = ({ value, onChange }) => {
+  const modules = {
     toolbar: [
       //[{ 'font': [] }],
       [{ header: [1, 2, false] }],
@@ -24,7 +20,7 @@ class EditorComponent extends Component {
     ],
   };
 
-  formats = [
+  const formats = [
     //'font',
     "header",
     "bold",
@@ -42,25 +38,29 @@ class EditorComponent extends Component {
     "background",
   ];
 
-  render() {
-    const { value, onChange,name } = this.props;
+  const ref = useRef(null);
 
-    return (
-      <div id="react-quill-box" className="h-100">
-        <ReactQuill
-          id="react-quill"
-          className="h-100"
-          theme="snow"
-          name={name}
-          modules={this.modules}
-          formats={this.formats}
-          value={value || ""}
-          onChange={(content, delta, source, editor) =>
-            onChange(editor.getHTML())
-          }
-        />
-      </div>
-    );
-  }
-}
+  //스펠체크를 끄기 위한 이펙트
+  useEffect(() => {
+    ref.current?.editor.root.setAttribute("spellcheck", "false");
+  }, []);
+
+  return (
+    <div id="react-quill-box" className="h-100">
+      <ReactQuill
+        id="react-quill"
+        className="h-100"
+        theme="snow"
+        ref={ref}
+        modules={modules}
+        formats={formats}
+        value={value || ""}
+        onChange={(content, delta, source, editor) =>
+          onChange(editor.getHTML())
+        }
+      />
+    </div>
+  );
+};
+
 export default EditorComponent;

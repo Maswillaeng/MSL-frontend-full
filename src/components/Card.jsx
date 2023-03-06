@@ -18,7 +18,7 @@ const TitleBox = styled.div.attrs({
   height: 30px;
 `;
 const UserImg = styled.img.attrs({
-  className: "rounded-circle",
+  className: "rounded-circle me-1",
   alt: "",
 })`
   height: 25px;
@@ -29,7 +29,7 @@ const Card = ({ data }) => {
 
   //데이터를 가지고 상세페이지로 이동하기 위한 이벤트
   const detail = () => {
-    navigate(`/boardDetail/${data.post_id}`, { state: { data: data } });
+    navigate(`/boardDetail/${data.postId}`, { state: { data: data } });
   };
 
   return (
@@ -46,16 +46,12 @@ const Card = ({ data }) => {
         </TitleBox>
         <div className="mt-4 d-flex align-items-center justify-content-center w-100 pb-2 h-25 flex-01">
           <div className="mx-2">
-            <UserImg
-              src={
-                members.filter((x) => x.nickname === data.nickname)[0].userImage
-              }
-            />
+            <UserImg src={"img/마쉴랭.PNG"} />
             <span>{data.nickname}</span>
           </div>
           <div className="mx-2">
             <FontAwesomeIcon icon={faThumbsUpR} className="me-1 card-icon" />
-            <span>{data.like}</span>
+            <span>{data.hits}</span>
           </div>
           <div className="mx-2">
             <FontAwesomeIcon
@@ -63,9 +59,7 @@ const Card = ({ data }) => {
               className="me-1 card-icon"
               id="card-icon"
             />
-            <span>
-              {commentData.filter((x) => x.post_id === data.post_id).length}
-            </span>
+            <span>{data.commentCount}</span>
           </div>
         </div>
       </div>

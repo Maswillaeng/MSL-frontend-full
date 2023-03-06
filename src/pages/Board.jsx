@@ -2,23 +2,33 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CardRow from "../components/CardRow";
 import SkeletonUi from "../components/SkeletonUi";
-import boardData from "../dummy/boardData";
 import { getBoard } from "../function/api/getBoard";
 import useIntersectionObserver from "../function/hook/useIntersectionObserver";
 
 const Board = () => {
-  // getBoard()
-  //   .then((res) => {
-  //     console.log(res.data.result);
-  //   })
-  //   .catch((err) => {
-  //     alert("실패요");
-  //     console.log(err);
-  //   });
   const location = useLocation();
 
+  const [boardData, setBoardData] = useState([]);
+
+  useEffect(() => {
+    getBoard()
+      .then((res) => {
+        const data = res.data.result.reverse();
+        setBoardData(data);
+        return data;
+      })
+      .then((data) => {
+        const firstData = data.slice(0, 4);
+        setCardData(firstData);
+        setRowData([firstData]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   //1줄의 카드 데이터 상태
-  const [cardData, setCardData] = useState(boardData.slice(0, 4));
+  const [cardData, setCardData] = useState([]);
 
   //1줄의 카드 데이터를 셋팅하고 리턴
   const reloadCardData = async (number) => {
@@ -28,7 +38,7 @@ const Board = () => {
   };
 
   //전체 데이터를 보관하는 상태
-  const [rowData, setRowData] = useState([cardData]);
+  const [rowData, setRowData] = useState([]);
 
   //cardData를 전달받아서 데이터를 추가
   const addRowData = (data) => {
@@ -63,6 +73,7 @@ const Board = () => {
     setRowCount((rowCount) => rowCount + 1);
   });
 
+  //boardData를 넣어준 이유는 최초 페이지 로드 시, 데이터가 없는 상태라서 target이 뜬금없는 곳에 가길래 boardData를 통해 제대로 한 번 더 설정되도록 함
   useEffect(() => {
     // 타겟 설정
     if (rowCount === 1) {
@@ -81,7 +92,7 @@ const Board = () => {
         })
         .then(() => setLoading(false));
     }
-  }, [rowCount]);
+  }, [rowCount, boardData]);
 
   return (
     <div
@@ -109,8 +120,8 @@ const BoardMiddle = ({ rowData }) => {
       className={`d-flex flex-column justify-content-start align-items-center w-100 flex-grow-1 mt-5`}
     >
       <div className="container text-center mt-5">
-        {rowData.map((x, i) => (
-          <CardRow cardList={x} key={i} />
+        {rowData.map((data, i) => (
+          <CardRow cardList={data} key={i} />
         ))}
       </div>
     </div>
@@ -121,7 +132,10 @@ const BoardBottom = ({ loading, target }) => {
   const loadingArr = Array(4).fill(1);
   return (
     <>
-      <div className="d-flex justify-content-start align-items-start w-100 mb-5 fs-3 pb-5 blink">
+      <div
+        className="d-flex justify-content-start align-items-start w-100 mb-5 fs-3  blink"
+        ref={target}
+      >
         {loading && (
           <div className="d-flex flex-column justify-content-start align-items-start w-100 ">
             <div className="container text-center">
@@ -134,7 +148,7 @@ const BoardBottom = ({ loading, target }) => {
           </div>
         )}
       </div>
-      <div ref={target}></div>
+      <div></div>
     </>
   );
 };

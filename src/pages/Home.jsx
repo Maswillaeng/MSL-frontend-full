@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
-import boardData from "../dummy/boardData";
 import getUserCookie from "../function/cookie/getUserCookie";
 import Carousel from "../components/Carousel";
+import { getBoard } from "../function/api/getBoard";
 
 const HomeBox = styled.div.attrs({
   className:
@@ -126,8 +126,11 @@ const TopMainNavBox = ({ navigate }) => {
 };
 
 const BottomHotBox = () => {
+  //전체 데이터를 저장하는 상태
+  const [boardData, setBoardData] = useState([]);
+
   //1줄의 카드 데이터들을 보관하는 상태
-  const [rowData, setRowData] = useState([boardData.slice(0, 4)]);
+  const [rowData, setRowData] = useState([]);
 
   //새로운 1줄의 카드 데이터들을 가져오기 위한 이벤트
   const addRowData = (count) => {
@@ -151,6 +154,23 @@ const BottomHotBox = () => {
     }
   }, [rowCount]);
 
+  //최초 1회 데이터를 셋팅하기 위한 이펙트
+  useEffect(() => {
+    getBoard()
+      .then((res) => {
+        const data = res.data.result.reverse();
+        setBoardData(data);
+        return data;
+      })
+      .then((data) => {
+        const firstData = data.slice(0, 4);
+        setRowData([firstData]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div className="w-75 my-5">
       <div className="ps-3 fs-1 mb-4">인기레시피</div>
@@ -160,7 +180,7 @@ const BottomHotBox = () => {
         ))}
       </div>
       <div className="d-flex justify-content-center align-items-center w-100 flex-column pb-5">
-        {rowData[rowData.length - 1].length % 4 === 0 && (
+        {boardData.length >= rowCount * 4 && (
           <Button
             message={"더보기"}
             size={"lg"}

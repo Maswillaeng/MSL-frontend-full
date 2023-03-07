@@ -1,3 +1,6 @@
+/**
+ * 현재 로그인한 유저의 쿠키 정보 조회
+ */
 const getUserCookie = (id) => {
   let matches = document.cookie.match(
     new RegExp(

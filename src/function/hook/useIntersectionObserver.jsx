@@ -1,5 +1,8 @@
 import { useRef } from "react";
 
+/**
+ * 무한스크롤을 위한 커스텀훅
+ */
 const useIntersectionObserver = (callback) => {
   const observer = useRef(
     new IntersectionObserver(

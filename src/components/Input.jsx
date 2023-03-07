@@ -37,12 +37,16 @@ const Input = ({
   imgFile,
   warning,
 }) => {
-  //이미지 업로드 클릭용 이벤트
+  /**
+   * 이미지 업로드 클릭용 이벤트
+   */
   const uploadClick = () => {
     targetRefs.current[idx].click();
   };
 
-  //인풋 값 변경 이벤트
+  /**
+   * 인풋 값 변경 이벤트
+   */
   const inputChange = (e) => {
     setMember({
       ...member,

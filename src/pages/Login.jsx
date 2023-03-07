@@ -49,7 +49,9 @@ const Login = () => {
   //타겟들을 설정하기 위한 useRef 배열
   const targetRefs = useRef([]);
 
-  //로그인 버튼 이벤트, 유효성검사
+  /**
+   * 로그인 버튼 이벤트, 유효성검사
+   */
   const buttonEvent = () => {
     if (!validationEmail.test(user.email)) {
       setWarning([true, false]);

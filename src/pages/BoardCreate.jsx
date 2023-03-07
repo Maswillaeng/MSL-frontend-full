@@ -33,7 +33,9 @@ const BoardCreate = () => {
     imgSrc5: "",
   });
 
-  //이미지 데이터를 저장하기 위한 이벤트
+  /**
+   * 이미지 데이터를 저장하기 위한 이벤트
+   */
   const addImgData = (data) => {
     setImgData({
       ...imgData,
@@ -47,7 +49,9 @@ const BoardCreate = () => {
   //카테고리 상태, 최초 값은 레시피로 설정
   const [content, setContent] = useState({ category: "레시피" });
 
-  //작성된 내용을 반영하기 위한 이벤트
+  /**
+   * 작성된 내용을 반영하기 위한 이벤트
+   */
   const updateContent = (e) => {
     setContent({
       ...content,
@@ -80,7 +84,9 @@ const BoardCreate = () => {
 const BoardCreateNav = ({ content, imgData, imgNum }) => {
   const navigate = useNavigate();
 
-  //글 작성 이벤트
+  /**
+   * 글 작성 이벤트
+   */
   const successEvent = () => {
     if (!content.title) {
       return alert("제목을 적어주세요.");
@@ -112,7 +118,9 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
       });
   };
 
-  //뒤로가기 이벤트를 위한 함수 navigate가 콜백안에서 직접 작성이 불가하길래 따로 빼서 작성함
+  /**
+   * 뒤로가기 이벤트를 위한 함수 navigate가 콜백안에서 직접 작성이 불가하길래 따로 빼서 작성함
+   */
   const backPage = () => {
     navigate(-2);
   };
@@ -184,10 +192,15 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
     Object.values(imgData).filter((x) => x !== "").length
   ).fill(1);
 
-  //썸네일 이미지 변경용 이벤트들
+  /**
+   * 썸네일 이미지 변경용 이벤트 +1
+   */
   const upImgNum = () => {
     setImgNum(imgNum + 1);
   };
+  /**
+   * 썸네일 이미지 변경용 이벤트 -1
+   */
   const downImgNum = () => {
     setImgNum(imgNum - 1);
   };

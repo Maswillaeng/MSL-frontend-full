@@ -5,6 +5,9 @@ import {
   validationPhone,
 } from "./validation";
 
+/**
+ * 실시간 유효성 검사 이벤트
+ */
 export const realTimeValidation = (member) => {
   let message = {};
   if (members.filter((x) => x.email === member.email).length !== 0) {

@@ -110,7 +110,9 @@ const SignUp = () => {
     return () => clearTimeout(debounceTimer);
   }, [member]);
 
-  //폼 제출 시, 마지막 유효성 검사
+  /**
+   * 폼 제출 시, 마지막 유효성 검사
+   */
   const buttonEvent = () => {
     if (
       !validationEmail.test(member.email) ||

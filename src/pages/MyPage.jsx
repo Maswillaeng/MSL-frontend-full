@@ -82,10 +82,15 @@ const TopProfileBottom = () => {
 };
 
 const BottomCategori = ({ setCategori, categori }) => {
-  //카테고리를 변경하기 위한 이벤트들
+  /**
+   * 카테고리를 작성으로 변경하기 위한 이벤트들
+   */
   const writeCategori = () => {
     setCategori("작성");
   };
+  /**
+   * 카테고리를 추천으로 변경하기 위한 이벤트들
+   */
   const recommendCategori = () => {
     setCategori("추천");
   };

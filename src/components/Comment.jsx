@@ -49,7 +49,9 @@ const Comment = ({ data }) => {
   // 댓글 좋아요 카운트
   const [likeCount, setLikeCount] = useState(Number(data.like));
 
-  // 댓글 좋아요 상태와 카운트를 관리하는 이벤트
+  /**
+   * 댓글 좋아요 상태와 카운트를 관리하는 이벤트
+   */
   const commentLikeHandler = () => {
     setCommentLike(!commentLike);
     if (commentLike) {
@@ -68,7 +70,9 @@ const Comment = ({ data }) => {
   //댓글 싫어요 카운트
   const [dislikeCount, setDislikeCount] = useState(Number(data.dislike));
 
-  // 댓글 싫어요 상태와 카운트를 관리하는 이벤트
+  /**
+   * 댓글 싫어요 상태와 카운트를 관리하는 이벤트
+   */
   const commentDislikeHandler = () => {
     setCommentDislike(!commentDislike);
     if (commentDislike) {
@@ -84,7 +88,9 @@ const Comment = ({ data }) => {
   //답글 value 상태
   const [replyVal, setReplyVal] = useState("");
 
-  //답글 value change 이벤트
+  /**
+   * 답글 value change 이벤트
+   */
   const changeReplyVal = (e) => {
     setReplyVal(e.target.value);
   };
@@ -92,7 +98,9 @@ const Comment = ({ data }) => {
   //답글 쓰기 버튼의 상태
   const [writeReply, setWriteReply] = useState(false);
 
-  //답글 버튼 상태를 바꿔주는 이벤트
+  /**
+   * 답글 버튼 상태를 바꿔주는 이벤트
+   */
   const writeReplyHandler = () => {
     setWriteReply(!writeReply);
   };
@@ -100,12 +108,16 @@ const Comment = ({ data }) => {
   //답글 보기 버튼의 상태
   const [readReply, setReadReply] = useState(false);
 
-  //답글 보기 상태를 바꿔주는 이벤트
+  /**
+   * 답글 보기 상태를 바꿔주는 이벤트
+   */
   const readReplyHandler = () => {
     setReadReply(!readReply);
   };
 
-  //답글 등록 이벤트
+  /**
+   * 답글 등록 이벤트
+   */
   const submitReply = () => {
     if (replyVal === "") {
       return alert("답글을 적어주세요.");

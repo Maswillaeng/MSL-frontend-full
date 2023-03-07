@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import members from "../dummy/members";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp as faThumbsUpR,
   faComment as faCommentR,
 } from "@fortawesome/free-regular-svg-icons";
-import commentData from "../dummy/commentData";
 import styled from "styled-components";
 
 const ThumbnailImg = styled.img.attrs({
@@ -27,7 +25,9 @@ const UserImg = styled.img.attrs({
 const Card = ({ data }) => {
   const navigate = useNavigate();
 
-  //데이터를 가지고 상세페이지로 이동하기 위한 이벤트
+  /**
+   * 데이터를 가지고 상세페이지로 이동하기 위한 이벤트
+   */
   const detail = () => {
     navigate(`/boardDetail/${data.postId}`, { state: { data: data } });
   };

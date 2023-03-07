@@ -1,5 +1,8 @@
 import { currentTime } from "./ currentTime";
 
+/**
+ * 현재 시간을 params로 넣으면 상대 시간을 리턴
+ */
 export const elapsedTime = (date) => {
   const start = new Date(date);
   const end = new Date(currentTime()); // 현재 날짜

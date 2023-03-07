@@ -30,7 +30,9 @@ const Board = () => {
   //1줄의 카드 데이터 상태
   const [cardData, setCardData] = useState([]);
 
-  //1줄의 카드 데이터를 셋팅하고 리턴
+  /**
+   * 1줄의 카드 데이터를 셋팅하고 리턴
+   */
   const reloadCardData = async (number) => {
     const data = boardData.slice(4 * (number - 1), 4 * number);
     setCardData(data);
@@ -40,7 +42,9 @@ const Board = () => {
   //전체 데이터를 보관하는 상태
   const [rowData, setRowData] = useState([]);
 
-  //cardData를 전달받아서 데이터를 추가
+  /** 
+   * cardData를 전달받아서 데이터를 추가
+  */
   const addRowData = (data) => {
     if (data.length !== 0) {
       setRowData([...rowData, data]);

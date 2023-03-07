@@ -29,12 +29,16 @@ const TopSearchBox = ({ navigate }) => {
   //검색 값 상태
   const [inputVal, setInputVal] = useState("");
 
-  //검색 값 change 이벤트
+  /**
+   * 검색 값 change 이벤트
+   */
   const changeVal = (e) => {
     setInputVal(e.target.value);
   };
 
-  //검색 버튼 이벤트
+  /**
+   * 검색 버튼 이벤트
+   */
   const buttonEvent = () => {
     navigate("/board", {
       state: { categori: `${inputVal}에 대한 검색결과입니다.` },
@@ -58,7 +62,9 @@ const TopSearchBox = ({ navigate }) => {
 };
 
 const TopMainNavBox = ({ navigate }) => {
-  //칵테일 레시피 카테고리로 이동하기 위한 이벤트
+  /**
+   * 칵테일 레시피 카테고리로 이동하기 위한 이벤트
+   */
   const moveRecipe = () => {
     navigate("/board", { state: { categori: "칵테일 레시피" } });
   };
@@ -132,7 +138,9 @@ const BottomHotBox = () => {
   //1줄의 카드 데이터들을 보관하는 상태
   const [rowData, setRowData] = useState([]);
 
-  //새로운 1줄의 카드 데이터들을 가져오기 위한 이벤트
+  /**
+   * 새로운 1줄의 카드 데이터들을 가져오기 위한 이벤트
+   */
   const addRowData = (count) => {
     if (boardData.slice(4 * (count - 1), 4 * count).length !== 0) {
       setRowData([...rowData, boardData.slice(4 * (count - 1), 4 * count)]);
@@ -142,7 +150,9 @@ const BottomHotBox = () => {
   //카드 줄 카운트를 위한 상태
   const [rowCount, setRowCount] = useState(1);
 
-  //카드 줄을 늘려주는 이벤트
+  /**
+   * 카드 줄을 늘려주는 이벤트
+   */
   const upRowCount = () => {
     setRowCount(rowCount + 1);
   };

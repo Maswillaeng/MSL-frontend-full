@@ -15,6 +15,11 @@ import getUserCookie from "../function/cookie/getUserCookie";
 import { getUser } from "../function/api/getUser";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
+import { postComment } from "../function/api/postComment";
+import { postBoardLike } from "../function/api/postBoardLike";
+import { postFollow } from "../function/api/postFollow";
+import { deleteFollow } from "../function/api/deleteFollow";
+import { deleteBoardLike } from "../function/api/deleteBoardLike";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -79,7 +84,6 @@ const TopImgBox = ({ data }) => {
   //     setCurrentImg(currentImg - 1);
   //   }
   // };
-  console.log(data);
 
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
@@ -133,13 +137,23 @@ const TopProfileBox = ({ data, userData }) => {
   //추천 상태
   const [like, setLike] = useState(false);
 
-  //추천 상태와 카운트를 바꿔주는 이벤트
+  /**
+   * 추천 상태와 카운트를 바꿔주는 이벤트
+   */
   const likeHandler = () => {
+    //user_id는 userData.userId로 변경해야함
+    const likeUser = { post_id: data.postId, user_id: 1 };
     setLike(!like);
     if (like) {
       setLikeCount(likeCount - 1);
+      deleteBoardLike(data.postId, likeUser).then((res) => {
+        console.log(res);
+      });
     } else {
       setLikeCount(likeCount + 1);
+      postBoardLike(data.postId, likeUser).then((res) => {
+        console.log(res);
+      });
     }
   };
 
@@ -149,13 +163,23 @@ const TopProfileBox = ({ data, userData }) => {
   //구독 상태
   const [subscribe, setSubscribe] = useState(false);
 
-  //구독 상태와 카운트를 바꿔주는 이벤트
+  /**
+   * 구독 상태와 카운트를 바꿔주는 이벤트
+   */
   const subscribeHandler = () => {
+    //my_id는 userData.userId로 변경해야함
+    const followUser = { my_id: 1, user_id: data.userId };
     setSubscribe(!subscribe);
     if (subscribe) {
       setSubscribeCount(subscribeCount - 1);
+      deleteFollow(data.userId, followUser).then((res) => {
+        console.log(res);
+      });
     } else {
       setSubscribeCount(subscribeCount + 1);
+      postFollow(data.userId, followUser).then((res) => {
+        console.log(res);
+      });
     }
   };
 
@@ -194,7 +218,6 @@ const TopProfileBox = ({ data, userData }) => {
 };
 
 const TopContentBox = ({ data }) => {
-  console.log(data.content);
   return (
     <div className="d-flex flex-column justify-content-center align-items-center my-5">
       <div className="w-50">
@@ -230,7 +253,9 @@ const BottomCommentBox = ({ data, userData }) => {
   //댓글 버튼 상태
   const [onComment, setOnComment] = useState(false);
 
-  //댓글 핸들러
+  /**
+   * 댓글 핸들러
+   */
   const onCommentHandeler = () => {
     setOnComment(!onComment);
   };
@@ -238,7 +263,9 @@ const BottomCommentBox = ({ data, userData }) => {
   //댓글 text 상태
   const [commentText, setCommentText] = useState("");
 
-  //댓글 text change 이벤트
+  /**
+   * 댓글 text change 이벤트
+   */
   const changeCommentText = (e) => {
     setCommentText(e.target.value);
   };
@@ -246,7 +273,9 @@ const BottomCommentBox = ({ data, userData }) => {
   //버튼 타겟, 버튼을 클릭하기 위해 생성
   const target = useRef(null);
 
-  //비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
+  /**
+   * 비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
+   */
   const buttonEvent = () => {
     if (!getUserCookie("user")) {
       return navigate("/login");
@@ -256,8 +285,8 @@ const BottomCommentBox = ({ data, userData }) => {
       return alert("댓글을 작성해주세요.");
     }
 
-    const postComment = {
-      post_id: data.post_id,
+    const comment = {
+      post_id: data.postId,
       nickname: userData.nickname,
       createAt: currentTime(),
       content: commentText,
@@ -265,7 +294,13 @@ const BottomCommentBox = ({ data, userData }) => {
       dislike: 0,
     };
 
-    commentData.push(postComment);
+    // 댓글 제출 이벤트 확인 완료
+    // postComment(data.postId, comment).then((res) => {
+    //   console.log(res);
+    //   alert("성공");
+    // });
+
+    commentData.push(comment);
     target.current.click();
     setCommentText("");
     setOnComment(false);

@@ -15,16 +15,14 @@ import getUserCookie from "../function/cookie/getUserCookie";
 import { getUser } from "../function/api/getUser";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
-import { postComment } from "../function/api/postComment";
 import { postBoardLike } from "../function/api/postBoardLike";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
 import { deleteBoardLike } from "../function/api/deleteBoardLike";
-import axios from "axios";
 
 const BoardDetailBox = styled.div.attrs({
   className:
-    "container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5",
+    "container rounded d-flex flex-column justify-content-start align-items-center p-5",
 })``;
 
 const BoardDetail = () => {
@@ -43,7 +41,7 @@ const BoardDetail = () => {
 
   return (
     <BoardDetailBox>
-      <div className="w-100 mb-5">
+      <div className="w-100 mb-5 d-flex justify-content-center align-items-center flex-column">
         <TopImgBox data={location.state.data} />
         <TopProfileBox data={location.state.data} userData={userData} />
         <TopContentBox data={location.state.data} />
@@ -53,19 +51,24 @@ const BoardDetail = () => {
   );
 };
 
-const IconBox = styled.div`
-  min-width: 70px;
+const IconBox = styled.div.attrs({
+  className: " d-flex justify-content-center align-items-center mx-2 ",
+})`
+  width: 3vw;
+  height: 3vh;
+`;
+
+const ThumbnailBox = styled.div.attrs({
+  className:
+    " d-flex flex-column justify-content-center align-items-center card shadow h-100 ",
+})`
+  width: 22vw;
 `;
 
 const ThumbnailImg = styled.img.attrs({
-  className: "img-thumbnail",
+  className: "h-100 w-100",
   alt: "",
-})`
-  min-height: 400px;
-  max-height: 400px;
-  min-width: 500px;
-  max-width: 500px;
-`;
+})``;
 
 const TopImgBox = ({ data }) => {
   //글에 등록된 이미지 개수의 상태를 보여주기 위한 배열
@@ -87,28 +90,31 @@ const TopImgBox = ({ data }) => {
   // };
 
   return (
-    <div className="w-100 d-flex justify-content-center align-items-center flex-column">
-      <div className="d-flex justify-content-center align-items-center">
+    <div
+      className="w-100 d-flex justify-content-center align-items-center flex-column"
+      style={{ height: "54vh" }}
+    >
+      <div className="d-flex justify-content-center align-items-center h-75">
         <IconBox>
           {/* {currentImg !== 0 && (
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={downCurrentImg}
-              className="mx-3  pointer board-detail-icon"
+              className="pointer board-detail-icon"
             />
-          )} */}
+         )}  */}
         </IconBox>
-        <div>
+        <ThumbnailBox>
           <ThumbnailImg src={data.thumbnail} />
-        </div>
+        </ThumbnailBox>
         <IconBox>
           {/* {currentImg < data.imgSrc.length - 1 && (
             <FontAwesomeIcon
               icon={faArrowRight}
               onClick={upCurrentImg}
-              className="mx-3 pointer board-detail-icon"
+              className="pointer board-detail-icon"
             />
-          )} */}
+         )}  */}
         </IconBox>
       </div>
       <div>
@@ -128,9 +134,14 @@ const ProfileUserImg = styled.img.attrs({
   className: "rounded-circle img-fluid",
   alt: "userImg",
 })`
-  height: 80px;
+  height: 10vh;
 `;
 
+const ProfileContainer = styled.div.attrs({
+  className: "w-50 d-flex justify-content-center align-items-center px-5",
+})`
+  height: 15vh;
+`;
 const TopProfileBox = ({ data, userData }) => {
   //추천 숫자
   const [likeCount, setLikeCount] = useState(data.hits);
@@ -184,51 +195,54 @@ const TopProfileBox = ({ data, userData }) => {
   };
 
   return (
-    <div className="w-100 d-flex justify-content-center align-items-center">
-      <div className=" mt-5 ">
+    <ProfileContainer>
+      <div className="w-25 d-flex justify-content-center align-items-center">
         <ProfileUserImg src={userData.userImage} />
       </div>
-      <div className="ms-2 mt-5 me-5">
+      <div className="w-25 d-flex justify-content-center align-items-center flex-column">
         <div>{data.nickname}</div>
-        <div className="d-flex justify-content-center align-items-center">
-          구독자 {subscribeCount}명
-        </div>
+        <div>구독자 {subscribeCount}명</div>
       </div>
-      <div className="mx-5 mt-5 d-flex justify-content-start align-items-start flex-column">
-        <div className="mb-4" onClick={likeHandler}>
-          <ProfileIcon
-            message={"추천"}
-            state={like}
-            addStyle={like ? "bg-primary border-primary" : "border-primary"}
-          />
+      <div className="w-50 d-flex justify-content-center align-items-center flex-column h-50">
+        <div className="h-75">
           <span className="ms-4">추천 : {likeCount}</span>
         </div>
-        <div onClick={subscribeHandler}>
-          <ProfileIcon
-            message={"구독하기"}
-            state={subscribe}
-            addStyle={
-              subscribe ? "bg-danger border-danger ms-1" : "border-danger ms-1"
-            }
-          />
+        <div className="d-flex h-25">
+          <div onClick={likeHandler} className="mx-2">
+            <ProfileIcon
+              message={"추천"}
+              state={like}
+              addStyle={like ? "bg-primary border-primary" : "border-primary"}
+            />
+          </div>
+          <div onClick={subscribeHandler} className="mx-2">
+            <ProfileIcon
+              message={"구독하기"}
+              state={subscribe}
+              addStyle={
+                subscribe ? "bg-danger border-danger " : "border-danger"
+              }
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </ProfileContainer>
   );
 };
 
 const TopContentBox = ({ data }) => {
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center my-5">
-      <div className="w-50">
+    <div className="d-flex flex-column justify-content-center align-items-center my-5 w-100">
+      <div className="w-50 border p-2">
         <h1>{data.title}</h1>
       </div>
-      <div className="w-50 mb-4 d-flex justify-content-end align-items-end">
+      <div className="w-50 mb-4 d-flex justify-content-end align-items-end mt-5">
         <span className="mx-3">{data.categori}</span>
         <span>{"방금 전"}</span>
       </div>
       <div
-        className="w-50"
+        className="w-50 mt-5 card shadow p-3"
+        style={{ height: "50vh" }}
         dangerouslySetInnerHTML={{ __html: data.content }}
       ></div>
     </div>
@@ -239,7 +253,7 @@ const CommentUserImg = styled.img.attrs({
   className: "rounded-circle",
   alt: "userImg",
 })`
-  height: 30px;
+  height: 3vh;
 `;
 
 const BottomCommentBox = ({ data, userData }) => {

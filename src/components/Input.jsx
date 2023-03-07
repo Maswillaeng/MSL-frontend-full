@@ -10,7 +10,7 @@ const DafaultLabel = styled.label.attrs({
 const DangerMessage = styled.div.attrs({
   className: "d-flex justify-content-center align-items-center text-danger",
 })`
-  min-height: 24px;
+  min-height: 2.5vh;
 `;
 
 const ImgLabel = styled.label.attrs({

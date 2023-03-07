@@ -108,7 +108,7 @@
 
 /* BoardCreate 페이지 */
 .board-create-icon {
-  height: 40px;
+  height: 4vh;
 }
 
 /* BoardDetail 페이지 */
@@ -119,6 +119,11 @@
 
 .board-detail-icon {
   height: 40px;
+}
+
+/* EditorComponent 컴포넌트*/
+#react-quill {
+  height: 80vh;
 }
 
 /* SkeletonUi 컴포넌트*/

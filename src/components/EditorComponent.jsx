@@ -42,14 +42,13 @@ const EditorComponent = ({ value, onChange }) => {
 
   //스펠체크를 끄기 위한 이펙트
   useEffect(() => {
-    ref.current?.editor.root.setAttribute("spellcheck", "false");
+    ref.current.editor.root.setAttribute("spellcheck", "false");
   }, []);
 
   return (
-    <div id="react-quill-box" className="h-100">
+    <>
       <ReactQuill
         id="react-quill"
-        className="h-100"
         theme="snow"
         ref={ref}
         modules={modules}
@@ -59,7 +58,7 @@ const EditorComponent = ({ value, onChange }) => {
           onChange(editor.getHTML())
         }
       />
-    </div>
+    </>
   );
 };
 

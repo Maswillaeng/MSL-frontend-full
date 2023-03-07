@@ -5,23 +5,13 @@ import styled from "styled-components";
 
 const ImgBox = styled.div.attrs({
   className:
-    "flex-grow-1 d-flex justify-content-center align-items-center card m-3 w-100",
-})`
-  max-height: 210px;
-  min-height: 210px;
-  min-width: 210px;
-  max-width: 210px;
-  cursor: pointer;
-`;
+    "d-flex justify-content-center align-items-center card m-3 w-100 pointer",
+})``;
 
 const ImgFile = styled.img.attrs({
+  className: "img-fluid",
   alt: "",
-})`
-  max-height: 190px;
-  min-height: 190px;
-  min-width: 190px;
-  max-width: 190px;
-`;
+})``;
 
 const ImgInput = styled.input.attrs({
   type: "file",
@@ -30,7 +20,13 @@ const ImgInput = styled.input.attrs({
   display: none;
 `;
 
-const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
+const ImgThumbnailBox = styled.div.attrs({
+  className: "p-1 w-100 d-flex justify-content-center align-items-center",
+})`
+  height: 25vh;
+`;
+
+const AddImg = ({ addImgData, setImgNum, imgData, num }) => {
   //이미지 파일 상태
   const [imgFile, setImgFile] = useState("");
 
@@ -60,18 +56,18 @@ const AddImg = ({ addImgData, setImgNum, imgData, x }) => {
       setImgNum(0);
       setImgFile(reader.result);
       addImgData({
-        [`imgSrc${x}`]: reader.result,
+        [`imgSrc${num}`]: reader.result,
       });
     };
   };
 
   return (
     <ImgBox onClick={uploadClick}>
-      {imgFile && <ImgFile src={imgFile} />}
       <ImgInput ref={target} onChange={saveImgFile} />
-      <div className="p-1 w-100 d-flex justify-content-center align-items-center">
+      <ImgThumbnailBox>
+        {imgFile && <ImgFile src={imgFile} />}
         {!imgFile && <FontAwesomeIcon icon={faPlus} className="add-img-icon" />}
-      </div>
+      </ImgThumbnailBox>
     </ImgBox>
   );
 };

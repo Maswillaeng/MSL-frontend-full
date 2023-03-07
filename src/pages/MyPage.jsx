@@ -14,8 +14,7 @@ const MyPage = () => {
   useEffect(() => {
     getUser()
       .then((res) => {
-        setUserData(res.data);
-        console.log(res.data);
+        setUserData(res.data.result);
       })
       .catch((err) => {
         console.log(err);
@@ -25,7 +24,7 @@ const MyPage = () => {
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
       <TopProfileTop userData={userData} />
-      <TopProfileBottom />
+      <TopProfileBottom userData={userData} />
       <BottomCategori setCategori={setCategori} categori={categori} />
       <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100">
         글
@@ -64,12 +63,12 @@ const AccessBox = styled.div.attrs({
   margin-bottom: -15px;
 `;
 
-const TopProfileBottom = () => {
+const TopProfileBottom = ({ userData }) => {
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">
       <div>
-        <span className="me-3">팔로우 30</span>
-        <span>팔로워 30</span>
+        <span className="me-3">팔로우 {userData.followerCount}</span>
+        <span>팔로워 {userData.followingCount}</span>
       </div>
       <AccessBox>
         <Button addStyle={"px-5"} message={"팔로우"} />

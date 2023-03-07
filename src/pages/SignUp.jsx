@@ -148,7 +148,10 @@ const SignUp = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">
-      <form className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3"
+      >
         {inputArr.map((data, idx) => (
           <Input
             key={data.id}

@@ -20,6 +20,7 @@ import { postBoardLike } from "../function/api/postBoardLike";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
 import { deleteBoardLike } from "../function/api/deleteBoardLike";
+import axios from "axios";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -29,14 +30,14 @@ const BoardDetailBox = styled.div.attrs({
 const BoardDetail = () => {
   const location = useLocation();
 
-  //로그인중이라면 최초 1회 로그인중인 유저 데이터 셋팅
+  //로그인중이라면 최초 1회 로그인중인 유저 데이터 셋팅 , 현재 유저 정보임  *작성자 정보 아님*
   const [userData, setUserData] = useState({});
 
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     if (getUserCookie("user")) {
-      getUser().then((res) => setUserData(res.data));
+      getUser().then((res) => setUserData(res.data.result));
     }
   }, []);
 
@@ -141,8 +142,7 @@ const TopProfileBox = ({ data, userData }) => {
    * 추천 상태와 카운트를 바꿔주는 이벤트
    */
   const likeHandler = () => {
-    //user_id는 userData.userId로 변경해야함
-    const likeUser = { post_id: data.postId, user_id: 1 };
+    const likeUser = { post_id: data.postId, user_id: userData.userId };
     setLike(!like);
     if (like) {
       setLikeCount(likeCount - 1);
@@ -158,6 +158,7 @@ const TopProfileBox = ({ data, userData }) => {
   };
 
   //구독 숫자
+  //작성자 정보가 내려와야 함
   const [subscribeCount, setSubscribeCount] = useState(0);
 
   //구독 상태
@@ -167,8 +168,7 @@ const TopProfileBox = ({ data, userData }) => {
    * 구독 상태와 카운트를 바꿔주는 이벤트
    */
   const subscribeHandler = () => {
-    //my_id는 userData.userId로 변경해야함
-    const followUser = { my_id: 1, user_id: data.userId };
+    const followUser = { my_id: userData.userId, user_id: data.userId };
     setSubscribe(!subscribe);
     if (subscribe) {
       setSubscribeCount(subscribeCount - 1);

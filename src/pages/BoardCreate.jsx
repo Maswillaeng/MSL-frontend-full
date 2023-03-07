@@ -64,7 +64,7 @@ const BoardCreate = () => {
   return (
     <>
       <BoardCreateNav content={content} imgData={imgData} imgNum={imgNum} />
-      <div className="container rounded d-flex flex-column justify-content-start align-items-center my-5 p-5 ">
+      <div className="d-flex flex-column justify-content-start align-items-center my-5 p-5 ">
         <TopImgBox imgData={imgData} imgNum={imgNum} setImgNum={setImgNum} />
         <TopAddImg
           addImgData={addImgData}
@@ -159,31 +159,29 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
   );
 };
 
-const IconBox = styled.div`
-  max-width: 70px;
-  min-width: 70px;
-`;
+const TopImgContainer = styled.div.attrs({
+  className:
+    "w-100 d-flex justify-content-center align-items-center flex-column",
+})``;
+
 const ThumbnailImgBox = styled.div.attrs({
   className:
-    "w-25 d-flex justify-content-center align-items-center card shadow fs-5 mx-3",
+    "w-50 d-flex justify-content-center align-items-center card shadow mx-3 fs-3",
 })`
-  min-height: 280px;
+  height: 48vh;
 `;
 const ThumbnailImg = styled.img.attrs({
+  className: "img-fluid p-3",
   alt: "",
+})``;
+const PlusIconBox = styled.div.attrs({
+  className: "d-flex justify-content-center align-items-center",
 })`
-  max-height: 270px;
-  min-height: 270px;
-  min-width: 300px;
-  max-width: 300px;
-`;
-const PlusIconBox = styled.div`
-  max-width: 70px;
-  min-width: 70px;
+  width: 5vw;
+  height: 5vh;
 `;
 const ImgListBox = styled.div`
-  min-height: 20px;
-  max-height: 20px;
+  height: 2vh;
 `;
 
 const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
@@ -206,17 +204,17 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
   };
 
   return (
-    <div className="w-100 d-flex justify-content-center align-items-center flex-column">
-      <div className="w-100 d-flex justify-content-center align-items-center mb-3">
-        <IconBox>
+    <TopImgContainer>
+      <div className="w-50 d-flex justify-content-center align-items-center h-100 mb-3">
+        <PlusIconBox>
           {imgNum > 0 && (
             <FontAwesomeIcon
               onClick={downImgNum}
               icon={faArrowLeft}
-              className="mx-3 pointer board-create-icon"
+              className="pointer board-create-icon"
             />
           )}
-        </IconBox>
+        </PlusIconBox>
         <ThumbnailImgBox>
           {Object.values(imgData).filter((x) => x !== "").length === 0 ? (
             "이미지를 등록해주세요."
@@ -247,7 +245,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
           )
         )}
       </ImgListBox>
-    </div>
+    </TopImgContainer>
   );
 };
 
@@ -257,10 +255,10 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
     .fill(1)
     .map((x, i) => (x = x + i));
   return (
-    <div className="w-100 d-flex justify-content-center align-items-center my-5">
+    <div className="w-75 d-flex justify-content-center align-items-center my-4">
       {imgBox.map((x) => (
         <AddImg
-          x={x}
+          num={x}
           key={x}
           addImgData={addImgData}
           setImgNum={setImgNum}
@@ -273,12 +271,9 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
 
 const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
   return (
-    <div
-      className="w-100 d-flex justify-content-start align-items-center flex-column my-5"
-      style={{ height: "70vh" }}
-    >
+    <div className="w-100 d-flex justify-content-start align-items-center flex-column my-3">
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
-        <div className="me-5 flex-07">
+        <div className="me-5 col-9">
           <div>
             <input
               onChange={updateContent}
@@ -289,7 +284,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
             />
           </div>
         </div>
-        <div className="flex-03">
+        <div className="col-3">
           <select
             className="form-select"
             name="category"
@@ -304,7 +299,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
           </select>
         </div>
       </div>
-      <div className=" mb-5 w-50 h-100">
+      <div className="col-12 mb-5 w-50">
         <EditorComponent value={desc} onChange={onEditorChange} />
       </div>
     </div>

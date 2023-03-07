@@ -40,13 +40,14 @@ const MainNav = () => {
       로그아웃: {
         event: () => {
           postLogOut()
-            .then(() => {
+            .then((res) => {
               alert("로그아웃 되었습니다.");
               logOutCookie(getUserCookie("user"));
               navigate("/");
             })
-            .catch(() => {
-              alert("실패요");
+            .catch((err) => {
+              console.log(err);
+              alert("잠시 후 다시 시도해주세요.");
             });
         },
       },

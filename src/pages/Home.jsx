@@ -47,7 +47,10 @@ const TopSearchBox = ({ navigate }) => {
 
   return (
     <div className="mb-3 w-100 d-flex justify-content-center align-items-center">
-      <form className="my-2 d-flex justify-content-center align-items-center">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="my-2 d-flex justify-content-center align-items-center"
+      >
         <input
           type="text"
           className="form-control w-75 me-2"

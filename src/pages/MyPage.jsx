@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
+import { deleteFollow } from "../function/api/deleteFollow";
 import { getUser } from "../function/api/getUser";
+import { postFollow } from "../function/api/postFollow";
 
 const MyPage = () => {
   //카테고리 상태
@@ -64,6 +66,33 @@ const AccessBox = styled.div.attrs({
 `;
 
 const TopProfileBottom = ({ userData }) => {
+  //구독 숫자
+  const [subscribeCount, setSubscribeCount] = useState(0);
+
+  //구독 상태
+  const [subscribe, setSubscribe] = useState(false);
+
+  /**
+   * 구독 상태와 카운트를 바꿔주는 이벤트
+   */
+  // const subscribeHandler = () => {
+  //   const followUser = { my_id: userData.userId, user_id: data.userId };
+  //   setSubscribe(!subscribe);
+  //   if (subscribe) {
+  //     setSubscribeCount(subscribeCount - 1);
+  //     deleteFollow(data.userId, followUser).catch((err) => {
+  //       console.log(err);
+  //       alert("잠시 후에 다시 시도해주세요.");
+  //     });
+  //   } else {
+  //     setSubscribeCount(subscribeCount + 1);
+  //     postFollow(data.userId, followUser).catch((err) => {
+  //       console.log(err);
+  //       alert("잠시 후에 다시 시도해주세요.");
+  //     });
+  //   }
+  // };
+
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">
       <div>

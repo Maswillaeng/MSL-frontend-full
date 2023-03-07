@@ -157,13 +157,15 @@ const TopProfileBox = ({ data, userData }) => {
     setLike(!like);
     if (like) {
       setLikeCount(likeCount - 1);
-      deleteBoardLike(data.postId, likeUser).then((res) => {
-        console.log(res);
+      deleteBoardLike(data.postId, likeUser).catch((err) => {
+        console.log(err);
+        alert("잠시 후에 다시 시도해주세요.");
       });
     } else {
       setLikeCount(likeCount + 1);
-      postBoardLike(data.postId, likeUser).then((res) => {
-        console.log(res);
+      postBoardLike(data.postId, likeUser).catch((err) => {
+        console.log(err);
+        alert("잠시 후에 다시 시도해주세요.");
       });
     }
   };
@@ -183,27 +185,29 @@ const TopProfileBox = ({ data, userData }) => {
     setSubscribe(!subscribe);
     if (subscribe) {
       setSubscribeCount(subscribeCount - 1);
-      deleteFollow(data.userId, followUser).then((res) => {
-        console.log(res);
+      deleteFollow(data.userId, followUser).catch((err) => {
+        console.log(err);
+        alert("잠시 후에 다시 시도해주세요.");
       });
     } else {
       setSubscribeCount(subscribeCount + 1);
-      postFollow(data.userId, followUser).then((res) => {
-        console.log(res);
+      postFollow(data.userId, followUser).catch((err) => {
+        console.log(err);
+        alert("잠시 후에 다시 시도해주세요.");
       });
     }
   };
 
   return (
     <ProfileContainer>
-      <div className="w-25 d-flex justify-content-center align-items-center">
+      <div className=" d-flex justify-content-center align-items-center col-3">
         <ProfileUserImg src={userData.userImage} />
       </div>
-      <div className="w-25 d-flex justify-content-center align-items-center flex-column">
+      <div className=" d-flex justify-content-center align-items-center flex-column col-3">
         <div>{data.nickname}</div>
         <div>구독자 {subscribeCount}명</div>
       </div>
-      <div className="w-50 d-flex justify-content-center align-items-center flex-column h-50">
+      <div className=" d-flex justify-content-center align-items-center flex-column h-50 col-6">
         <div className="h-75">
           <span className="ms-4">추천 : {likeCount}</span>
         </div>

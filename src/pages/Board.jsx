@@ -8,9 +8,14 @@ import useIntersectionObserver from "../function/hook/useIntersectionObserver";
 const Board = () => {
   const location = useLocation();
 
-  const [boardData, setBoardData] = useState([]);
-
+  //네비를 통해 들어온다면 최초 1회만 그 카테고리에 맞게 재설정
   useEffect(() => {
+    if (location.state) {
+      window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+      setCategori(location.state.categori);
+      location.state = undefined;
+    }
+    //board 데이터 저장
     getBoard()
       .then((res) => {
         const data = res.data.result.reverse();
@@ -27,6 +32,8 @@ const Board = () => {
       });
   }, []);
 
+  const [boardData, setBoardData] = useState([]);
+
   //1줄의 카드 데이터 상태
   const [cardData, setCardData] = useState([]);
 
@@ -42,9 +49,9 @@ const Board = () => {
   //전체 데이터를 보관하는 상태
   const [rowData, setRowData] = useState([]);
 
-  /** 
+  /**
    * cardData를 전달받아서 데이터를 추가
-  */
+   */
   const addRowData = (data) => {
     if (data.length !== 0) {
       setRowData([...rowData, data]);
@@ -59,15 +66,6 @@ const Board = () => {
 
   //카테고리 상태
   const [categori, setCategori] = useState("전체게시글");
-
-  //네비를 통해 들어온다면 최초 1회만 그 카테고리에 맞게 재설정
-  useEffect(() => {
-    if (location.state) {
-      window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
-      setCategori(location.state.categori);
-      location.state = undefined;
-    }
-  }, []);
 
   //무한스크롤 observe 타겟
   const target = useRef(null);

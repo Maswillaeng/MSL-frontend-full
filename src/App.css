@@ -73,37 +73,37 @@
 
 /* AddImg 컴포넌트 */
 .add-img-icon {
-  height: 50px;
-  width: 50px;
+  height: 8vh;
+  width: 8vw;
 }
 
 /* Card 컴포넌트 */
 .card-icon {
-  height: 20px;
+  height: 2.1vh;
 }
 
 /* Comment 컴포넌트 */
 .comment-icon {
-  height: 25px;
+  height: 1vh;
   cursor: pointer;
   margin-bottom: -5px;
 }
 
 /* Input 컴포넌트 */
 .input-icon {
-  height: 50px;
-  width: 50px;
+  height: 6vh;
+  width: 6vw;
 }
 
 /* ProfileIcon 컴포넌트 */
 .profile-icon {
-  height: 25px;
+  height: 1vh;
   margin-bottom: -5px;
 }
 
 /* Reply 컴포넌트 */
 .reply-icon {
-  height: 20px;
+  height: 2.1vh;
 }
 
 /* BoardCreate 페이지 */
@@ -132,7 +132,6 @@
 }
 
 /* SkeletonUi 컴포넌트*/
-
 .blink {
   color: #aa233c;
   text-shadow: 30px 10px 25px #aa233c, 30px 10px 25px #aa233c;

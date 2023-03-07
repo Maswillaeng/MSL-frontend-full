@@ -8,7 +8,6 @@ import {
   faBell as faBellR,
 } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
-import Button from "./Button";
 
 const MessageSpan = styled.span`
   color: ${(props) => (props.state ? "white" : "black")};
@@ -27,7 +26,7 @@ const ProfileIcon = ({ message, state, addStyle }) => {
             ? faBellS
             : faBellR
         }
-        className=" profile-icon pointer mx-1 profile-icon"
+        className="profile-icon pointer mx-1 "
       />
       <MessageSpan
         role={"button"}

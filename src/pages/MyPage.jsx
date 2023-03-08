@@ -60,7 +60,7 @@ const TopProfileTop = ({ userData }) => {
 };
 
 const AccessBox = styled.div.attrs({
-  className: "d-flex  justify-content-center align-items-center w-100",
+  className: "d-flex  justify-content-center align-items-center w-100 my-1",
 })`
   margin-bottom: -15px;
 `;

@@ -62,8 +62,7 @@ const Login = () => {
       return targetRefs.current[1].focus();
     }
     postLogin(user)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         loginCookie(user.email);
         navigate("/");
       })

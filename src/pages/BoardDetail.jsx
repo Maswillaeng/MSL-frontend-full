@@ -19,6 +19,8 @@ import { postBoardLike } from "../function/api/postBoardLike";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
 import { deleteBoardLike } from "../function/api/deleteBoardLike";
+import SupportBox from "../components/SupportBox";
+import { deleteBoard } from "../function/api/deleteBoard";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -326,9 +328,26 @@ const BottomCommentBox = ({ data, userData }) => {
 
   //제출 상태가 변화할 때, 새로운 댓글을 등록해주기 위한 이펙트
   useEffect(() => {
-    setCommentArr(commentData.filter((x) => x.post_id === data.post_id));
+    setCommentArr(commentData.filter((x) => x.post_id === data.postId));
   }, [onComment]);
 
+  /**
+   * 글 수정하기로 이동
+   */
+  const moveEdit = () => {
+    navigate("/boardCreate", { state: { boardData: data } });
+  };
+
+  /**
+   * 글 삭제하기
+   */
+  const moveDelete = () => {
+    if (window.confirm("글을 삭제하시겠습니까?")) {
+      deleteBoard(data.postId).then(() => {
+        navigate("/board");
+      });
+    }
+  };
   return (
     <>
       <div className="w-50 d-flex flex-column justify-content-start align-items-center pb-3">
@@ -391,6 +410,9 @@ const BottomCommentBox = ({ data, userData }) => {
               </div>
             </div>
           </>
+        )}
+        {userData.nickname === data.nickname && (
+          <SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />
         )}
       </div>
     </>

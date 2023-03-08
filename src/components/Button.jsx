@@ -1,8 +1,8 @@
 const Button = ({ size, buttonEvent, message, addStyle = "" }) => {
   return (
-    <div className={`d-flex justify-content-center my-3`}>
+    <div className={`d-flex justify-content-center my-2`}>
       <button
-        type='submit'
+        type="submit"
         onClick={buttonEvent}
         className={`btn btn-${size} ${addStyle}  text-light`}
         id="btn-bg-color"

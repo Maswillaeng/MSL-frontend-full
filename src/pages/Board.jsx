@@ -10,8 +10,8 @@ const Board = () => {
 
   //네비를 통해 들어온다면 최초 1회만 그 카테고리에 맞게 재설정
   useEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     if (location.state) {
-      window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
       setCategori(location.state.categori);
       location.state = undefined;
     }

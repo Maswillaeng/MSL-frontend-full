@@ -7,13 +7,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as faCircleR } from "@fortawesome/free-regular-svg-icons";
 import AddImg from "../components/AddImg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Li from "../components/Li";
 import EditorComponent from "../components/EditorComponent";
 import styled from "styled-components";
 import { postBoard } from "../function/api/postBoard";
 
 const BoardCreate = () => {
+  const location = useLocation();
+
+  //글 수정하기로 이동했을 시 실행될 이펙트
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+    if (location.state) {
+      const data = location.state.boardData;
+      setDesc(data.content);
+      setContent({ ...content, title: data.title, category: data.category });
+    }
+  }, []);
+
   //텍스트 에디터용 상태와 이벤트
   const [desc, setDesc] = useState("");
   const onEditorChange = (value) => {
@@ -47,7 +59,11 @@ const BoardCreate = () => {
   const [imgNum, setImgNum] = useState(0);
 
   //카테고리 상태, 최초 값은 레시피로 설정
-  const [content, setContent] = useState({ category: "레시피" });
+  const [content, setContent] = useState({
+    title: "",
+    category: "레시피",
+    content: "",
+  });
 
   /**
    * 작성된 내용을 반영하기 위한 이벤트
@@ -72,6 +88,7 @@ const BoardCreate = () => {
           imgData={imgData}
         />
         <BottomContentBox
+          content={content}
           updateContent={updateContent}
           onEditorChange={onEditorChange}
           desc={desc}
@@ -269,7 +286,7 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
   );
 };
 
-const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
+const BottomContentBox = ({ updateContent, desc, onEditorChange, content }) => {
   return (
     <div className="w-100 d-flex justify-content-start align-items-center flex-column my-3">
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
@@ -277,6 +294,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange }) => {
           <div>
             <input
               onChange={updateContent}
+              value={content.title}
               type="email"
               className="form-control"
               name="title"

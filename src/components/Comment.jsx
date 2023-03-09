@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp as faThumbsUpS,
   faThumbsDown as faThumbsDownS,
+  faXmark as faXmarkS,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faThumbsUp as faThumbsUpR,
@@ -19,29 +20,24 @@ import axios from "axios";
 import { postComment } from "../function/api/postComment";
 
 const TopCommentBox = styled.div.attrs({
-  className: "w-75 d-flex justify-content-start align-items-center mb-2",
-})`
-  margin-left: -50px;
-  margin-bottom: -35px;
-`;
+  className: "w-100 d-flex justify-content-start align-items-center mb-2",
+})``;
 
 const ProfileImg = styled.img.attrs({
   className: "rounded-circle",
   alt: "",
 })`
-  height: 50px;
+  height: 5.5vh;
 `;
 const IconBox = styled.div.attrs({
   className:
-    "w-75 d-flex justify-content-start align-items-start ms-5 flex-column",
-})`
-  margin-right: -150px;
-`;
+    "w-100 d-flex justify-content-center align-items-end ms-5 flex-column",
+})``;
 const ReplyImg = styled.img.attrs({
   className: "rounded-circle me-3",
   alt: "",
 })`
-  height: 25px;
+  height: 3vh;
 `;
 
 const Comment = ({ data, userData }) => {
@@ -136,7 +132,6 @@ const Comment = ({ data, userData }) => {
       dislike: 0,
     };
     replyData.push(reply);
-
     setCheckReply(true);
     setWriteReply(false);
   };
@@ -164,15 +159,18 @@ const Comment = ({ data, userData }) => {
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <TopCommentBox>
-        <div>
+        <div className="me-2">
           <ProfileImg src={userData.userImage} />
         </div>
         <div className="ms-2 me-5 w-100 ">
-          <div>{data.nickname}</div>
+          <div>
+            <span>{data.nickname}</span>
+          </div>
           <div className="opacity-75">{elapsedTime(data.createAt)}</div>
         </div>
         <IconBox>
           <div className="mb-2">
+            <FontAwesomeIcon icon={faXmarkS} className="me-5 fs-5 pointer" />
             <FontAwesomeIcon
               onClick={commentLikeHandler}
               icon={commentLike ? faThumbsUpS : faThumbsUpR}

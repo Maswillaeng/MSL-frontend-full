@@ -21,6 +21,8 @@ import { deleteFollow } from "../function/api/deleteFollow";
 import { deleteBoardLike } from "../function/api/deleteBoardLike";
 import SupportBox from "../components/SupportBox";
 import { deleteBoard } from "../function/api/deleteBoard";
+import { postComment } from "../function/api/postComment";
+import axios from "axios";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -307,7 +309,9 @@ const BottomCommentBox = ({ data, userData }) => {
 
     const comment = {
       post_id: data.postId,
+      comment_id: commentArr.length + 1,
       nickname: userData.nickname,
+      user_image:userData.userImage,
       createAt: currentTime(),
       content: commentText,
       like: 0,
@@ -315,10 +319,9 @@ const BottomCommentBox = ({ data, userData }) => {
     };
 
     // 댓글 제출 이벤트 확인 완료
-    // postComment(data.postId, comment).then((res) => {
-    //   console.log(res);
-    //   alert("성공");
-    // });
+    postComment(data.postId, comment).then((res) => {
+      console.log(res);
+    });
 
     commentData.push(comment);
     target.current.click();
@@ -355,7 +358,7 @@ const BottomCommentBox = ({ data, userData }) => {
           댓글:{commentArr.length}개
         </div>
         {commentArr.map((x, i) => (
-          <Comment key={i} data={x} />
+          <Comment key={i} data={x} userData={userData} />
         ))}
       </div>
       <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">

@@ -76,7 +76,7 @@ const Login = () => {
     <div className="container d-flex justify-content-center align-items-center w-100">
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3"
+        className="card shadow  d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3"
       >
         {userArr.map((data, idx) => (
           <Input
@@ -97,7 +97,7 @@ const Login = () => {
             </a>
           </div>
           <div className="my-3">
-            <span className="pointer">이메일</span>
+            <span className="pointer">이메일/</span>
             <span className="pointer">비밀번호 찾기</span>
           </div>
         </div>

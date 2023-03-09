@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
+import SupportBox from "../components/SupportBox";
 import { deleteFollow } from "../function/api/deleteFollow";
 import { getUser } from "../function/api/getUser";
 import { postFollow } from "../function/api/postFollow";
 
 const MyPage = () => {
+  const navigate = useNavigate();
   //카테고리 상태
   const [categori, setCategori] = useState("");
 
@@ -23,6 +26,12 @@ const MyPage = () => {
       });
   }, []);
 
+  const editUser = () => {
+    if (window.confirm("회원정보를 수정하시겠습니까?")) {
+      navigate("/signUp", { state: { userData } });
+    }
+  };
+
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
       <TopProfileTop userData={userData} />
@@ -31,6 +40,7 @@ const MyPage = () => {
       <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100">
         글
       </div>
+      <SupportBox userData={userData} editUser={editUser}/>
     </div>
   );
 };

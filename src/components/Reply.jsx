@@ -82,7 +82,7 @@ const Reply = ({ data }) => {
     <li className="mb-2" style={{ listStyle: "none" }}>
       <div>
         <UserImg
-          src={members.filter((x) => x.nickname === data.nickname)[0].userImage}
+          src={data.user_image}
         />
         {/* 글 주인이 댓글을 쓰면 "rounded main-bg-color p-1 text-light" 속성을 주자 */}
         <span className="me-2">{data.nickname}</span>

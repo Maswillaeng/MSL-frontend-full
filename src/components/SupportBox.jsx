@@ -5,24 +5,23 @@ const Box = styled.div.attrs({
   className:
     "card border shadow position-fixed d-flex justify-content-center align-items-center",
 })`
-  height: 15vh;
+  height: ${(props) => (props.userData ? "10vh" : "15vh")};
   width: 16vh;
   right: 5vw;
-  top: 75vh;
+  top: ${(props) => (props.userData ? "80vh" : "75vh")};
 `;
 
-// const AbsoluteBox = styled.div.attrs({
-//     className: "card border border-2 border-dark position-absolute",
-// })`
-//   height: 200px;
-//   width: 200px;
-// `;
-
-const SupportBox = ({ moveEdit, moveDelete }) => {
+const SupportBox = ({ moveEdit, moveDelete, userData, editUser }) => {
   return (
-    <Box>
-      <Button buttonEvent={moveEdit} message={"글 수정하기"} />
-      <Button buttonEvent={moveDelete} message={"글 삭제하기"} />
+    <Box userData={userData}>
+      {userData ? (
+        <Button buttonEvent={editUser} message={"내 정보 수정"} />
+      ) : (
+        <>
+          <Button buttonEvent={moveEdit} message={"글 수정하기"} />
+          <Button buttonEvent={moveDelete} message={"글 삭제하기"} />
+        </>
+      )}
     </Box>
   );
 };

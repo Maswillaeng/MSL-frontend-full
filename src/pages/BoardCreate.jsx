@@ -12,9 +12,12 @@ import Li from "../components/Li";
 import EditorComponent from "../components/EditorComponent";
 import styled from "styled-components";
 import { postBoard } from "../function/api/postBoard";
+import { putBoard } from "../function/api/putBoard";
 
 const BoardCreate = () => {
   const location = useLocation();
+
+  const [editData, setEditData] = useState(undefined);
 
   //글 수정하기로 이동했을 시 실행될 이펙트
   useEffect(() => {
@@ -23,6 +26,7 @@ const BoardCreate = () => {
       const data = location.state.boardData;
       setDesc(data.content);
       setContent({ ...content, title: data.title, category: data.category });
+      setEditData(data);
     }
   }, []);
 
@@ -79,7 +83,12 @@ const BoardCreate = () => {
 
   return (
     <>
-      <BoardCreateNav content={content} imgData={imgData} imgNum={imgNum} />
+      <BoardCreateNav
+        content={content}
+        imgData={imgData}
+        imgNum={imgNum}
+        editData={editData}
+      />
       <div className="d-flex flex-column justify-content-start align-items-center my-5 p-5 ">
         <TopImgBox imgData={imgData} imgNum={imgNum} setImgNum={setImgNum} />
         <TopAddImg
@@ -98,7 +107,7 @@ const BoardCreate = () => {
   );
 };
 
-const BoardCreateNav = ({ content, imgData, imgNum }) => {
+const BoardCreateNav = ({ content, imgData, imgNum, editData }) => {
   const navigate = useNavigate();
 
   /**
@@ -136,10 +145,34 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
   };
 
   /**
+   * 글 수정 이벤트
+   */
+  const editEvent = () => {
+    const allImgData = Object.values(imgData).filter((x) => x !== "");
+
+    const postData = {
+      ...content,
+      thumbnail:
+        allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData[imgNum],
+      imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
+    };
+
+    const num = editData.postId;
+    putBoard(num, postData)
+      .then(() => {
+        alert("글이 수정되었습니다.");
+        navigate("/board");
+      })
+      .catch(() => {
+        alert("잠시 후에 다시 시도해주세요.");
+      });
+  };
+
+  /**
    * 뒤로가기 이벤트를 위한 함수 navigate가 콜백안에서 직접 작성이 불가하길래 따로 빼서 작성함
    */
   const backPage = () => {
-    navigate(-2);
+    navigate(-1);
   };
 
   //네비를 구성하는 배열
@@ -156,7 +189,7 @@ const BoardCreateNav = ({ content, imgData, imgNum }) => {
     },
     {
       완료: {
-        event: successEvent,
+        event: editData ? editEvent : successEvent,
       },
     },
   ];
@@ -295,7 +328,7 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange, content }) => {
             <input
               onChange={updateContent}
               value={content.title}
-              type="email"
+              type="text"
               className="form-control"
               name="title"
               placeholder="제목을 적어주세요."

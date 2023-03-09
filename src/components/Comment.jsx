@@ -15,6 +15,8 @@ import replyData from "../dummy/replyData";
 import styled from "styled-components";
 import { elapsedTime } from "../function/utility/ elapsedTime";
 import { currentTime } from "../function/utility/ currentTime";
+import axios from "axios";
+import { postComment } from "../function/api/postComment";
 
 const TopCommentBox = styled.div.attrs({
   className: "w-75 d-flex justify-content-start align-items-center mb-2",
@@ -42,7 +44,7 @@ const ReplyImg = styled.img.attrs({
   height: 25px;
 `;
 
-const Comment = ({ data }) => {
+const Comment = ({ data, userData }) => {
   //댓글 좋아요 상태
   const [commentLike, setCommentLike] = useState(false);
 
@@ -122,16 +124,19 @@ const Comment = ({ data }) => {
     if (replyVal === "") {
       return alert("답글을 적어주세요.");
     }
-    replyData.push({
+    const reply = {
       post_id: data.post_id,
       comment_id: data.comment_id,
       reply_id: replyList.length + 1,
-      nickname: "shdomi8599",
+      nickname: userData.nickname,
+      user_image: userData.userImage,
       content: replyVal,
       createAt: currentTime(),
       like: 0,
       dislike: 0,
-    });
+    };
+    replyData.push(reply);
+
     setCheckReply(true);
     setWriteReply(false);
   };
@@ -160,11 +165,7 @@ const Comment = ({ data }) => {
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <TopCommentBox>
         <div>
-          <ProfileImg
-            src={
-              members.filter((x) => x.nickname === data.nickname)[0].userImage
-            }
-          />
+          <ProfileImg src={userData.userImage} />
         </div>
         <div className="ms-2 me-5 w-100 ">
           <div>{data.nickname}</div>
@@ -208,11 +209,7 @@ const Comment = ({ data }) => {
             aria-label={"답글달기"}
             className="d-flex justify-content-center align-items-center w-100"
           >
-            <ReplyImg
-              src={
-                members.filter((x) => x.nickname === "shdomi8599")[0].userImage
-              }
-            />
+            <ReplyImg src={userData.userImage} />
             <input
               type="text"
               className="form-control me-3 w-50"
@@ -231,8 +228,8 @@ const Comment = ({ data }) => {
         )}
         {readReply && (
           <ul className="d-flex align-items-start w-100 flex-column">
-            {replyList.map((x) => (
-              <Reply data={x} key={x.reply_id} />
+            {replyList.map((x, i) => (
+              <Reply data={x} key={i} />
             ))}
           </ul>
         )}

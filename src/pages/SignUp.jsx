@@ -104,7 +104,8 @@ const SignUp = () => {
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       console.log("디바운싱");
-      //서버에 api 요청을 모아서 1번만 해야하기때문에 입력을 멈췄을 때, realTimeValidation 함수만 1번 실행되면 된다.
+      //서버에 api 요청을 모아서 1번만 해야하기때문에 입력을 멈췄을 때,
+      // realTimeValidation 함수만 1번 실행되면 된다.
       setWarning(realTimeValidation(member));
     }, 500);
     return () => clearTimeout(debounceTimer);
@@ -145,12 +146,12 @@ const SignUp = () => {
         console.log(err);
       });
   };
-
+  
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="border border-info rounded d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3"
+        className="card shadow d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3 pb-3"
       >
         {inputArr.map((data, idx) => (
           <Input

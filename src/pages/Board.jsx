@@ -20,6 +20,7 @@ const Board = () => {
       .then((res) => {
         const data = res.data.result.reverse();
         setBoardData(data);
+        console.log(data);
         return data;
       })
       .then((data) => {

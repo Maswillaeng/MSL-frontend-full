@@ -68,6 +68,7 @@ const Input = ({
               </div>
               <div className="flex-10">
                 <input
+                  autoComplete="current-password"
                   id={data.id}
                   type={data.type}
                   ref={(el) => (targetRefs.current[idx] = el)}

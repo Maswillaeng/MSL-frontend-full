@@ -4,9 +4,10 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
-import getUserCookie from "../function/cookie/getUserCookie";
 import Carousel from "../components/Carousel";
 import { getBoard } from "../function/api/getBoard";
+import { useRecoilValue } from "recoil";
+import { currentUserState } from "../recoil/atom";
 
 const HomeBox = styled.div.attrs({
   className:
@@ -65,6 +66,8 @@ const TopSearchBox = ({ navigate }) => {
 };
 
 const TopMainNavBox = ({ navigate }) => {
+  //로그인 체크 상태
+  const currentUser = useRecoilValue(currentUserState);
   /**
    * 칵테일 레시피 카테고리로 이동하기 위한 이벤트
    */
@@ -97,7 +100,7 @@ const TopMainNavBox = ({ navigate }) => {
   return (
     <div className="mb-5 w-100 d-flex justify-content-center align-items-center">
       <ul className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
-        {getUserCookie("user") && (
+        {currentUser !== 0 && (
           <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center ">
             <a
               className="nav-link main-bg-color"

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Button from "../components/Button";
 import SupportBox from "../components/SupportBox";
 import { deleteFollow } from "../function/api/deleteFollow";
 import { getUser } from "../function/api/getUser";
 import { postFollow } from "../function/api/postFollow";
+import { currentUserState } from "../recoil/atom";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -15,9 +17,12 @@ const MyPage = () => {
   //조회하려는 유저의 데이터 상태
   const [userData, setUserData] = useState({});
 
+  //로그인 체크 상태
+  const currentUser = useRecoilValue(currentUserState);
+
   //최초 1회 조회하려는 유저의 데이터를 셋팅하기 위한 이펙트
   useEffect(() => {
-    getUser()
+    getUser(currentUser)
       .then((res) => {
         setUserData(res.data.result);
       })
@@ -40,7 +45,7 @@ const MyPage = () => {
       <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100">
         글
       </div>
-      <SupportBox userData={userData} editUser={editUser}/>
+      <SupportBox userData={userData} editUser={editUser} />
     </div>
   );
 };
@@ -102,6 +107,7 @@ const TopProfileBottom = ({ userData }) => {
   //     });
   //   }
   // };
+  console.log(userData);
 
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">

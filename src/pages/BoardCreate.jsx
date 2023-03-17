@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -18,7 +18,6 @@ const BoardCreate = () => {
   const location = useLocation();
 
   const [editData, setEditData] = useState(undefined);
-
   //글 수정하기로 이동했을 시 실행될 이펙트
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
@@ -28,6 +27,7 @@ const BoardCreate = () => {
       setContent({ ...content, title: data.title, category: data.category });
       setEditData(data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //텍스트 에디터용 상태와 이벤트
@@ -65,10 +65,14 @@ const BoardCreate = () => {
   //카테고리 상태, 최초 값은 레시피로 설정
   const [content, setContent] = useState({
     title: "",
-    category: "레시피",
+    category: "FREE",
     content: "",
   });
 
+  const [tag, setTag] = useState([]);
+  const updateTag = (e) => {
+    setTag([...tag, e.target.value]);
+  };
   /**
    * 작성된 내용을 반영하기 위한 이벤트
    */
@@ -84,6 +88,7 @@ const BoardCreate = () => {
   return (
     <>
       <BoardCreateNav
+        tag={tag}
         content={content}
         imgData={imgData}
         imgNum={imgNum}
@@ -100,6 +105,7 @@ const BoardCreate = () => {
           content={content}
           updateContent={updateContent}
           onEditorChange={onEditorChange}
+          updateTag={updateTag}
           desc={desc}
         />
       </div>
@@ -107,7 +113,7 @@ const BoardCreate = () => {
   );
 };
 
-const BoardCreateNav = ({ content, imgData, imgNum, editData }) => {
+const BoardCreateNav = ({ content, imgData, imgNum, editData, tag }) => {
   const navigate = useNavigate();
 
   /**
@@ -131,7 +137,9 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData }) => {
       thumbnail:
         allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData[imgNum],
       imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
+      tag: tag,
     };
+    console.log(postData);
 
     postBoard(postData)
       .then(() => {
@@ -319,7 +327,13 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
   );
 };
 
-const BottomContentBox = ({ updateContent, desc, onEditorChange, content }) => {
+const BottomContentBox = ({
+  updateContent,
+  desc,
+  onEditorChange,
+  content,
+  updateTag,
+}) => {
   return (
     <div className="w-100 d-flex justify-content-start align-items-center flex-column my-3">
       <div className="w-50 d-flex justify-content-center align-items-center my-5">
@@ -352,6 +366,15 @@ const BottomContentBox = ({ updateContent, desc, onEditorChange, content }) => {
       </div>
       <div className="col-12 mb-5 w-50">
         <EditorComponent value={desc} onChange={onEditorChange} />
+      </div>
+      <div className="w-50 pt-3">
+        <input
+          placeholder="해쉬태그를 입력해주세요."
+          name="tag"
+          type="text"
+          className="w-100"
+          onChange={updateTag}
+        />
       </div>
     </div>
   );

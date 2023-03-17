@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import getUser from "../function/cookie/getUserCookie";
+import { useRecoilValue } from "recoil";
+import { currentUserState } from "../recoil/atom";
 
 const Li = ({ data }) => {
   const navigate = useNavigate();
 
+  //로그인 체크 상태
+  const currentUser = useRecoilValue(currentUserState);
+
   //로그인 유저라면 boardCreate로 이동, 아니라면 로그인 페이지로 이동하는 이벤트
   const checkLogin = () => {
-    if (getUser("user")) {
+    if (currentUser !== 0) {
       navigate("/boardCreate");
     } else {
       alert("로그인을 부탁드려요.");
@@ -22,17 +26,17 @@ const Li = ({ data }) => {
             className="nav-item text-light me-5"
             onClick={data[Object.keys(data)[0]].event}
           >
-            <a
+            <span
               className={
-                Object.keys(data)[0] === "로그아웃" ||
-                Object.keys(data)[0] === "마이페이지"
-                  ? "nav-link text-light"
-                  : "nav-link "
+                Object.keys(data)[0] === "뒤로가기" ||
+                Object.keys(data)[0] === "완료" ||
+                Object.keys(data)[0] === "글 작성"
+                  ? "nav-link"
+                  : "nav-link text-light"
               }
-              href="#!"
             >
               {Object.keys(data)[0]}
-            </a>
+            </span>
           </li>
         ) : (
           <li className="nav-item me-5">
@@ -57,14 +61,17 @@ const Li = ({ data }) => {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <a className="dropdown-item" href="/board">
+              <span
+                className="dropdown-item pointer"
+                onClick={() => navigate("/board")}
+              >
                 전체게시글
-              </a>
+              </span>
             </li>
             <li>
-              <a className="dropdown-item" href="#!" onClick={checkLogin}>
+              <span className="dropdown-item pointer" onClick={checkLogin}>
                 글쓰기
-              </a>
+              </span>
             </li>
           </ul>
         </li>

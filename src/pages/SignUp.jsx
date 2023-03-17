@@ -11,14 +11,18 @@ import {
 import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/postSignUp";
-import getUserCookie from "../function/cookie/getUserCookie";
+import { useRecoilValue } from "recoil";
+import { currentUserState } from "../recoil/atom";
 
 const SignUp = () => {
   const navigate = useNavigate();
 
+  //로그인 시, 회원 아이디 저장용 상태
+  const currentUser = useRecoilValue(currentUserState);
+
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {
-    if (getUserCookie("user")) {
+    if (currentUser !== 0) {
       alert("이미 로그인 상태입니다.");
       return navigate("/");
     }
@@ -146,7 +150,7 @@ const SignUp = () => {
         console.log(err);
       });
   };
-  
+
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">
       <form

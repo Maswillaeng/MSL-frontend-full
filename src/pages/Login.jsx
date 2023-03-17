@@ -1,21 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import loginCookie from "../function/cookie/loginCookie";
 import { useNavigate } from "react-router-dom";
 import {
   validationEmail,
   validationPassword,
 } from "../function/utility/validation";
 import { postLogin } from "../function/api/postLogin";
-import getUserCookie from "../function/cookie/getUserCookie";
+import { useRecoilState } from "recoil";
+import { currentUserState } from "../recoil/atom";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  //로그인 시, 회원 아이디 저장용 상태
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {
-    if (getUserCookie("user")) {
+    if (currentUser !== 0) {
       alert("이미 로그인 상태입니다.");
       return navigate("/");
     }
@@ -62,8 +65,8 @@ const Login = () => {
       return targetRefs.current[1].focus();
     }
     postLogin(user)
-      .then(() => {
-        loginCookie(user.email);
+      .then((res) => {
+        setCurrentUser(res.data.result.userId);
         navigate("/");
       })
       .catch((err) => {

@@ -1,17 +1,9 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowRight,
-  faArrowLeft,
-  faCircle as faCircleS,
-} from "@fortawesome/free-solid-svg-icons";
-import { faCircle as faCircleR } from "@fortawesome/free-regular-svg-icons";
 import React, { useEffect, useRef, useState } from "react";
 import Comment from "../components/Comment";
 import Button from "../components/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
-import getUserCookie from "../function/cookie/getUserCookie";
 import { getUser } from "../function/api/getUser";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
@@ -22,7 +14,8 @@ import { deleteBoardLike } from "../function/api/deleteBoardLike";
 import SupportBox from "../components/SupportBox";
 import { deleteBoard } from "../function/api/deleteBoard";
 import { postComment } from "../function/api/postComment";
-import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { currentUserState } from "../recoil/atom";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -32,14 +25,17 @@ const BoardDetailBox = styled.div.attrs({
 const BoardDetail = () => {
   const location = useLocation();
 
+  //로그인 체크 상태
+  const currentUser = useRecoilValue(currentUserState);
+
   //로그인중이라면 최초 1회 로그인중인 유저 데이터 셋팅 , 현재 유저 정보임  *작성자 정보 아님*
   const [userData, setUserData] = useState({});
 
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if (getUserCookie("user")) {
-      getUser().then((res) => setUserData(res.data.result));
+    if (currentUser !== 0) {
+      getUser(currentUser).then((res) => setUserData(res.data.result));
     }
   }, []);
 
@@ -50,7 +46,11 @@ const BoardDetail = () => {
         <TopProfileBox data={location.state.data} userData={userData} />
         <TopContentBox data={location.state.data} />
       </div>
-      <BottomCommentBox data={location.state.data} userData={userData} />
+      <BottomCommentBox
+        data={location.state.data}
+        userData={userData}
+        currentUser={currentUser}
+      />
     </BoardDetailBox>
   );
 };
@@ -147,6 +147,7 @@ const ProfileContainer = styled.div.attrs({
   height: 15vh;
 `;
 const TopProfileBox = ({ data, userData }) => {
+  console.log(data);
   //추천 숫자
   const [likeCount, setLikeCount] = useState(data.hits);
 
@@ -264,7 +265,7 @@ const CommentUserImg = styled.img.attrs({
   height: 3vh;
 `;
 
-const BottomCommentBox = ({ data, userData }) => {
+const BottomCommentBox = ({ data, userData, currentUser }) => {
   const navigate = useNavigate();
 
   //현재 글에 작성된 댓글들을 위한 상태
@@ -294,24 +295,23 @@ const BottomCommentBox = ({ data, userData }) => {
 
   //버튼 타겟, 버튼을 클릭하기 위해 생성
   const target = useRef(null);
-
   /**
    * 비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
    */
   const buttonEvent = () => {
-    if (!getUserCookie("user")) {
+    if (currentUser === 0) {
       return navigate("/login");
     }
 
     if (commentText === "") {
       return alert("댓글을 작성해주세요.");
     }
-
+    
     const comment = {
       post_id: data.postId,
       comment_id: commentArr.length + 1,
       nickname: userData.nickname,
-      user_image:userData.userImage,
+      user_image: userData.userImage,
       createAt: currentTime(),
       content: commentText,
       like: 0,
@@ -362,7 +362,7 @@ const BottomCommentBox = ({ data, userData }) => {
         ))}
       </div>
       <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">
-        {getUserCookie("user") ? (
+        {currentUser !== 0 ? (
           <>
             <div className="w-100 d-flex justify-content-center align-items-center flex-column ">
               <button

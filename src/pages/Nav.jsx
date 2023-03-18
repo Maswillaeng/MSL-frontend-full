@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 import { postLogOut } from "../function/api/postLogOut";
 import { useRecoilState } from "recoil";
-import { currentUserState } from "../recoil/atom";
+import { currentUserState, lastSliceNumState } from "../recoil/atom";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -17,6 +17,13 @@ const MainNav = () => {
 
   //로그인 체크 상태
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+
+  const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
+
+  const moveMain = () => {
+    setLastSliceNum(1);
+    navigate("/");
+  };
 
   //로그아웃했을 때, li 데이터들을 가진 배열
   const navArr = [
@@ -78,7 +85,7 @@ const MainNav = () => {
       <div className="container-fluid px-5  main-bg-color">
         <div className="navbar-brand fs-1 text-light ms-5">
           <FontAwesomeIcon icon={faMartiniGlassEmpty} />
-          <span className="mx-3" onClick={() => navigate("/")}>
+          <span className="mx-3 pointer" onClick={moveMain}>
             마쉴랭
           </span>
         </div>

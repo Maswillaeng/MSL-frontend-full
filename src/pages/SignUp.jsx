@@ -27,7 +27,7 @@ const SignUp = () => {
       return navigate("/");
     }
     targetRefs.current[0].focus();
-  }, []);
+  }, [currentUser, navigate]);
 
   //프로필 이미지 상태
   const [imgFile, setImgFile] = useState("");
@@ -107,7 +107,6 @@ const SignUp = () => {
   const [warning, setWarning] = useState({});
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
-      console.log("디바운싱");
       //서버에 api 요청을 모아서 1번만 해야하기때문에 입력을 멈췄을 때,
       // realTimeValidation 함수만 1번 실행되면 된다.
       setWarning(realTimeValidation(member));

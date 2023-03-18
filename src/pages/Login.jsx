@@ -23,6 +23,7 @@ const Login = () => {
       return navigate("/");
     }
     targetRefs.current[0].focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //유저 데이터 상태
@@ -79,7 +80,7 @@ const Login = () => {
     <div className="container d-flex justify-content-center align-items-center w-100">
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="card shadow  d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3"
+        className="card shadow  d-flex flex-column justify-content-center align-items-center mt-4 w-50 py-3"
       >
         {userArr.map((data, idx) => (
           <Input
@@ -93,15 +94,17 @@ const Login = () => {
           />
         ))}
         <Button size={"lg"} buttonEvent={buttonEvent} message={"로그인"} />
-        <div className="d-flex justify-content-center align-items-center w-100">
-          <div className="mx-5">
-            <a className="nav-link" href="/signUp">
+        <div className="row justify-content-center align-items-center w-50 pt-2">
+          <div className="col-lg-4 col-md-12 text-center mb-3 mb-lg-0 ">
+            <span className="nav-link" onClick={() => navigate("/signUp")}>
               회원가입
-            </a>
+            </span>
           </div>
-          <div className="my-3">
-            <span className="pointer">이메일/</span>
-            <span className="pointer">비밀번호 찾기</span>
+          <div className="col-lg-8 col-md-12 text-center">
+            <div className="d-flex justify-content-center">
+              <span className="pointer me-2">이메일 /</span>
+              <span className="pointer me-2">비밀번호 찾기</span>
+            </div>
           </div>
         </div>
       </form>

@@ -10,6 +10,10 @@
   font-family: "NEXON Lv2 Gothic OTF";
 }
 
+li {
+  list-style: none;
+}
+
 .main-bg-color {
   background-color: #aa233c;
 }
@@ -146,3 +150,6 @@
     filter: hue-rotate(360deg);
   }
 }
+
+
+

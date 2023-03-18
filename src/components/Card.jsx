@@ -6,6 +6,11 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
 
+const CardBox = styled.div.attrs({
+  className:
+    "col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center mb-3 py-3",
+})``;
+
 const ThumbnailImg = styled.img.attrs({
   alt: "thumbnail",
   className: "img-fluid mt-3",
@@ -33,7 +38,7 @@ const Card = ({ data }) => {
   };
 
   return (
-    <div className="col-3 m-0">
+    <CardBox>
       <div
         onClick={detail}
         className="p-2 border bg-light d-flex flex-column align-items-center shadow pointer h-100 mx-4"
@@ -63,7 +68,7 @@ const Card = ({ data }) => {
           </div>
         </div>
       </div>
-    </div>
+    </CardBox>
   );
 };
 

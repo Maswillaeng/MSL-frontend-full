@@ -29,7 +29,7 @@ const MyPage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [currentUser]);
 
   const editUser = () => {
     if (window.confirm("회원정보를 수정하시겠습니까?")) {

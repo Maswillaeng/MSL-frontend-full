@@ -7,15 +7,16 @@ import ProfileIcon from "../components/ProfileIcon";
 import { getUser } from "../function/api/getUser";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
-import { postBoardLike } from "../function/api/postBoardLike";
+import { postBoardHit } from "../function/api/postBoardHit";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
-import { deleteBoardLike } from "../function/api/deleteBoardLike";
 import SupportBox from "../components/SupportBox";
 import { deleteBoard } from "../function/api/deleteBoard";
 import { postComment } from "../function/api/postComment";
 import { useRecoilValue } from "recoil";
 import { currentUserState } from "../recoil/atom";
+import { deleteBoardHit } from "../function/api/deleteBoardHit";
+import { elapsedTime } from "../function/utility/ elapsedTime";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -35,9 +36,11 @@ const BoardDetail = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     if (currentUser !== 0) {
-      getUser(currentUser).then((res) => setUserData(res.data.result));
+      getUser(currentUser).then((res) => {
+        setUserData(res.data.result);
+      });
     }
-  }, []);
+  }, [currentUser]);
 
   return (
     <BoardDetailBox>
@@ -54,6 +57,13 @@ const BoardDetail = () => {
     </BoardDetailBox>
   );
 };
+
+const TopImgDivBox = styled.div.attrs({
+  className:
+    "w-100 d-flex justify-content-center align-items-center flex-column",
+})`
+  height: 54vh;
+`;
 
 const IconBox = styled.div.attrs({
   className: " d-flex justify-content-center align-items-center mx-2 ",
@@ -94,10 +104,7 @@ const TopImgBox = ({ data }) => {
   // };
 
   return (
-    <div
-      className="w-100 d-flex justify-content-center align-items-center flex-column"
-      style={{ height: "54vh" }}
-    >
+    <TopImgDivBox>
       <div className="d-flex justify-content-center align-items-center h-75">
         <IconBox>
           {/* {currentImg !== 0 && (
@@ -130,7 +137,7 @@ const TopImgBox = ({ data }) => {
           )
         )} */}
       </div>
-    </div>
+    </TopImgDivBox>
   );
 };
 
@@ -147,28 +154,32 @@ const ProfileContainer = styled.div.attrs({
   height: 15vh;
 `;
 const TopProfileBox = ({ data, userData }) => {
-  console.log(data);
   //추천 숫자
-  const [likeCount, setLikeCount] = useState(data.hits);
+  const [hitCount, setHitCount] = useState(data.hits);
 
   //추천 상태
-  const [like, setLike] = useState(false);
+  const [hit, setHit] = useState(false);
 
   /**
    * 추천 상태와 카운트를 바꿔주는 이벤트
    */
-  const likeHandler = () => {
-    const likeUser = { post_id: data.postId, user_id: userData.userId };
-    setLike(!like);
-    if (like) {
-      setLikeCount(likeCount - 1);
-      deleteBoardLike(data.postId, likeUser).catch((err) => {
+  const hitHandler = () => {
+    const postId = data.postId;
+    const currentUserId = userData.userId;
+    const hitUser = { post_id: postId, user_id: currentUserId };
+    if (!currentUserId) {
+      return alert("로그인을 부탁드려요.");
+    }
+    setHit(!hit);
+    if (hit) {
+      setHitCount(hitCount - 1);
+      deleteBoardHit(postId, hitUser).catch((err) => {
         console.log(err);
         alert("잠시 후에 다시 시도해주세요.");
       });
     } else {
-      setLikeCount(likeCount + 1);
-      postBoardLike(data.postId, likeUser).catch((err) => {
+      setHitCount(hitCount + 1);
+      postBoardHit(postId, hitUser).catch((err) => {
         console.log(err);
         alert("잠시 후에 다시 시도해주세요.");
       });
@@ -186,17 +197,23 @@ const TopProfileBox = ({ data, userData }) => {
    * 구독 상태와 카운트를 바꿔주는 이벤트
    */
   const subscribeHandler = () => {
-    const followUser = { my_id: userData.userId, user_id: data.userId };
+    const postUserId = data.userId;
+    const currentUserId = userData.userId;
+    const followUser = { my_id: currentUserId, user_id: postUserId };
+    console.log(currentUserId);
+    if (!currentUserId) {
+      return alert("로그인을 부탁드려요.");
+    }
     setSubscribe(!subscribe);
     if (subscribe) {
       setSubscribeCount(subscribeCount - 1);
-      deleteFollow(data.userId, followUser).catch((err) => {
+      deleteFollow(postUserId, followUser).catch((err) => {
         console.log(err);
         alert("잠시 후에 다시 시도해주세요.");
       });
     } else {
       setSubscribeCount(subscribeCount + 1);
-      postFollow(data.userId, followUser).catch((err) => {
+      postFollow(postUserId, followUser).catch((err) => {
         console.log(err);
         alert("잠시 후에 다시 시도해주세요.");
       });
@@ -214,14 +231,14 @@ const TopProfileBox = ({ data, userData }) => {
       </div>
       <div className=" d-flex justify-content-center align-items-center flex-column h-50 col-6">
         <div className="h-75">
-          <span className="ms-4">추천 : {likeCount}</span>
+          <span className="ms-4">추천 : {hitCount}</span>
         </div>
         <div className="d-flex h-25">
-          <div onClick={likeHandler} className="mx-2">
+          <div onClick={hitHandler} className="mx-2">
             <ProfileIcon
               message={"추천"}
-              state={like}
-              addStyle={like ? "bg-primary border-primary" : "border-primary"}
+              state={hit}
+              addStyle={hit ? "bg-primary border-primary" : "border-primary"}
             />
           </div>
           <div onClick={subscribeHandler} className="mx-2">
@@ -239,6 +256,12 @@ const TopProfileBox = ({ data, userData }) => {
   );
 };
 
+const ContentBox = styled.div.attrs({
+  className: "w-50 mt-5 card shadow p-3",
+})`
+  height: 50vh;
+`;
+
 const TopContentBox = ({ data }) => {
   return (
     <div className="d-flex flex-column justify-content-center align-items-center my-5 w-100">
@@ -247,13 +270,11 @@ const TopContentBox = ({ data }) => {
       </div>
       <div className="w-50 mb-4 d-flex justify-content-end align-items-end mt-5">
         <span className="mx-3">{data.categori}</span>
-        <span>{"방금 전"}</span>
+        <span>{elapsedTime(data.createAt)}</span>
       </div>
-      <div
-        className="w-50 mt-5 card shadow p-3"
-        style={{ height: "50vh" }}
+      <ContentBox
         dangerouslySetInnerHTML={{ __html: data.content }}
-      ></div>
+      ></ContentBox>
     </div>
   );
 };
@@ -306,7 +327,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
     if (commentText === "") {
       return alert("댓글을 작성해주세요.");
     }
-    
+
     const comment = {
       post_id: data.postId,
       comment_id: commentArr.length + 1,

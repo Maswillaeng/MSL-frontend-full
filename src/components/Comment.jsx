@@ -169,22 +169,33 @@ const Comment = ({ data, userData }) => {
           <div className="opacity-75">{elapsedTime(data.createAt)}</div>
         </div>
         <IconBox>
-          <div className="mb-2">
-            <FontAwesomeIcon icon={faXmarkS} className="me-5 fs-5 pointer" />
-            <FontAwesomeIcon
-              onClick={commentLikeHandler}
-              icon={commentLike ? faThumbsUpS : faThumbsUpR}
-              className="me-2 comment-icon"
-            />
-            {likeCount}
+          <div className="mb-2 d-flex justify-content-center align-items-center w-100">
+            <div className="flex-07">
+              <FontAwesomeIcon icon={faXmarkS} className="ps-5 fs-5 pointer" />
+            </div>
+            <div className="flex-02">
+              <FontAwesomeIcon
+                onClick={commentLikeHandler}
+                icon={commentLike ? faThumbsUpS : faThumbsUpR}
+                className="me-2 comment-icon"
+              />
+            </div>
+            <div className="flex-01">
+              <span>{likeCount}</span>
+            </div>
           </div>
-          <div>
-            <FontAwesomeIcon
-              onClick={commentDislikeHandler}
-              icon={commentDislike ? faThumbsDownS : faThumbsDownR}
-              className="me-2 comment-icon"
-            />
-            {dislikeCount}
+          <div className="mb-2 d-flex justify-content-center align-items-center w-100">
+            <div className="flex-07"></div>
+            <div className="flex-02">
+              <FontAwesomeIcon
+                onClick={commentDislikeHandler}
+                icon={commentDislike ? faThumbsDownS : faThumbsDownR}
+                className="me-2 comment-icon"
+              />
+            </div>
+            <div className="flex-01">
+              <span>{dislikeCount}</span>
+            </div>
           </div>
         </IconBox>
       </TopCommentBox>

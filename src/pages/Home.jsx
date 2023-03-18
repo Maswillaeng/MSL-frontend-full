@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button";
-import CardRow from "../components/CardRow";
 import DropdownLi from "../components/DropdownLi";
 import Carousel from "../components/Carousel";
-import { getBoard } from "../function/api/getBoard";
-import { useRecoilValue } from "recoil";
-import { currentUserState } from "../recoil/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { currentUserState, lastSliceNumState } from "../recoil/atom";
+import { boardDataSliceState, sliceDataLengthState } from "../recoil/selector";
+import Card from "../components/Card";
 
 const HomeBox = styled.div.attrs({
   className:
@@ -138,71 +138,40 @@ const TopMainNavBox = ({ navigate }) => {
 };
 
 const BottomHotBox = () => {
-  //전체 데이터를 저장하는 상태
-  const [boardData, setBoardData] = useState([]);
+  //게시글 데이터
+  const boardData = useRecoilValue(boardDataSliceState);
 
-  //1줄의 카드 데이터들을 보관하는 상태
-  const [rowData, setRowData] = useState([]);
+  //현재 불러와진 글의 개수
+  const sliceDataLength = useRecoilValue(sliceDataLengthState);
 
-  /**
-   * 새로운 1줄의 카드 데이터들을 가져오기 위한 이벤트
-   */
-  const addRowData = (count) => {
-    if (boardData.slice(4 * (count - 1), 4 * count).length !== 0) {
-      setRowData([...rowData, boardData.slice(4 * (count - 1), 4 * count)]);
-    }
-  };
-
-  //카드 줄 카운트를 위한 상태
-  const [rowCount, setRowCount] = useState(1);
+  //게시글 추가 로드를 위한 상태
+  const [lastSliceNum, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
   /**
-   * 카드 줄을 늘려주는 이벤트
+   * 게시글 추가 로드를 위한 count up
    */
-  const upRowCount = () => {
-    setRowCount(rowCount + 1);
+  const upSliceCount = () => {
+    setLastSliceNum(lastSliceNum + 1);
   };
-
-  //카드 줄이 늘어난다면 새로운 카드 데이터들을 갖고오도록 도와주는 이펙트
-  useEffect(() => {
-    if (rowCount > 1) {
-      addRowData(rowCount);
-    }
-  }, [rowCount]);
-
-  //최초 1회 데이터를 셋팅하기 위한 이펙트
-  useEffect(() => {
-    getBoard()
-      .then((res) => {
-        const data = res.data.result.reverse();
-        setBoardData(data);
-        return data;
-      })
-      .then((data) => {
-        const firstData = data.slice(0, 4);
-        setRowData([firstData]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   return (
     <div className="w-75 my-5">
       <div className="ps-3 fs-1 mb-4">인기레시피</div>
-      <div className="w-100 d-flex flex-column">
-        {rowData.map((x, i) => (
-          <CardRow key={i} cardList={x} />
+      <div className="w-100 row">
+        {boardData.map((data, i) => (
+          <Card data={data} key={data.createAt + i} />
         ))}
       </div>
       <div className="d-flex justify-content-center align-items-center w-100 flex-column pb-5">
-        {boardData.length >= rowCount * 4 && (
+        {sliceDataLength % 4 === 0 ? (
           <Button
             message={"더보기"}
             size={"lg"}
             addStyle="px-5"
-            buttonEvent={upRowCount}
+            buttonEvent={upSliceCount}
           />
+        ) : (
+          <div className="py-3 fs-2">마지막 글입니다.</div>
         )}
       </div>
     </div>

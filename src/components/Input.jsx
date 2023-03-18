@@ -13,6 +13,13 @@ const DangerMessage = styled.div.attrs({
   min-height: 3vh;
 `;
 
+const ImgInputBox = styled.div.attrs({
+  className:
+    "d-flex w-100 justify-content-center align-items-center flex-column",
+})`
+  height: 17vh;
+`;
+
 const ImgLabel = styled.label.attrs({
   className: "pt-2",
 })``;
@@ -55,78 +62,71 @@ const Input = ({
   };
 
   return (
-    <div className="d-flex mt-2 mb-1 col-12 w-100 justify-content-center align-items-center">
+    <div className="d-flex mt-1 mb-1 ms-5 ps-3 col-12 w-100 justify-content-center align-items-center">
       {data.id !== "userImage" && data.id !== "introduction" ? (
-        <>
-          <div className="d-flex w-100 justify-content-center align-items-center flex-column">
-            <div className="d-flex mb-2 w-50 justify-content-center align-items-center ">
-              <div className="flex-06">
-                <DafaultLabel htmlFor={data.id}>
-                  {data.name}
-                  {saveImgFile && <span className="text-danger">*</span>}
-                </DafaultLabel>
-              </div>
-              <div className="flex-10">
-                <input
-                  autoComplete="current-password"
-                  id={data.id}
-                  type={data.type}
-                  ref={(el) => (targetRefs.current[idx] = el)}
-                  placeholder={data.placeholder}
-                  name={data.id}
-                  onChange={(e) => inputChange(e)}
-                  className=" rounded form-control"
-                />
-              </div>
+        <div className="d-flex w-100 justify-content-center align-items-center flex-column">
+          <div className="row mb-2 w-75 ">
+            <div className="col-12 col-md-4">
+              <DafaultLabel htmlFor={data.id}>
+                {data.name}
+                {saveImgFile && <span className="text-danger">*</span>}
+              </DafaultLabel>
             </div>
-            <DangerMessage>
-              <span>{!saveImgFile && warning[idx] && data.warning}</span>
-              <span>
-                {Object.keys(warning).includes(data.id) && warning[data.id]}
-              </span>
-            </DangerMessage>
+            <div className="col-12 col-md-8">
+              <input
+                autoComplete="current-password"
+                id={data.id}
+                type={data.type}
+                ref={(el) => (targetRefs.current[idx] = el)}
+                placeholder={data.placeholder}
+                name={data.id}
+                onChange={(e) => inputChange(e)}
+                className="rounded form-control w-75"
+              />
+            </div>
           </div>
-        </>
+          <DangerMessage>
+            <span>{!saveImgFile && warning[idx] && data.warning}</span>
+            <span>
+              {Object.keys(warning).includes(data.id) && warning[data.id]}
+            </span>
+          </DangerMessage>
+        </div>
       ) : data.id === "userImage" ? (
-        <>
-          <div
-            className="d-flex w-100 justify-content-center align-items-center flex-column"
-            style={{ height: "12vh" }}
-          >
-            <div className="d-flex mb-2 w-50 justify-content-center align-items-center h-100">
-              <div className="flex-06">
-                <ImgLabel htmlFor={data.id}>{data.name}</ImgLabel>
-              </div>
-              <div className="flex-10 h-100">
-                <input
-                  type={data.type}
-                  accept="image/*"
-                  placeholder={data.placeholder}
-                  ref={(el) => (targetRefs.current[idx] = el)}
-                  name={data.id}
-                  onChange={() => {
-                    saveImgFile(idx);
-                  }}
-                  className="hidden"
-                />
-                <ImgBox onClick={uploadClick}>
-                  {!imgFile && (
-                    <FontAwesomeIcon icon={faPlus} className="input-icon" />
-                  )}
-                  {imgFile && <UserImg src={imgFile} />}
-                </ImgBox>
-              </div>
+        <ImgInputBox>
+          <div className="row mb-2 w-75 h-100">
+            <div className="col-12 col-md-4 d-flex justify-content-start align-items-center">
+              <ImgLabel htmlFor={data.id}>{data.name}</ImgLabel>
+            </div>
+            <div className="col-12 col-md-8 h-100">
+              <input
+                type={data.type}
+                accept="image/*"
+                placeholder={data.placeholder}
+                ref={(el) => (targetRefs.current[idx] = el)}
+                name={data.id}
+                onChange={() => {
+                  saveImgFile(idx);
+                }}
+                className="hidden"
+              />
+              <ImgBox onClick={uploadClick}>
+                {!imgFile && (
+                  <FontAwesomeIcon icon={faPlus} className="input-icon" />
+                )}
+                {imgFile && <UserImg src={imgFile} />}
+              </ImgBox>
             </div>
           </div>
-        </>
+        </ImgInputBox>
       ) : (
         <>
           <div className="d-flex w-100 justify-content-center align-items-center flex-column">
-            <div className="d-flex mb-2 w-50 justify-content-center align-items-center ">
-              <div className="flex-06">
+            <div className="row mb-2 w-75">
+              <div className="col-12 col-md-4 d-flex justify-content-start align-items-center">
                 <DafaultLabel htmlFor={data.id}>{data.name}</DafaultLabel>
               </div>
-              <div className="flex-10 ">
+              <div className="col-12 col-md-8">
                 <textarea
                   ref={(el) => (targetRefs.current[idx] = el)}
                   rows="4"
@@ -134,7 +134,7 @@ const Input = ({
                   placeholder={data.placeholder}
                   name={data.id}
                   onChange={(e) => inputChange(e)}
-                  className="rounded form-control non-resize"
+                  className="rounded form-control non-resize w-75"
                 />
               </div>
             </div>

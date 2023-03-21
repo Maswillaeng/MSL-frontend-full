@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 const SkeletonUiBox = styled.div.attrs({
-  className:
-    "p-2 border bg-light d-flex flex-column align-items-center shadow pointer",
+  className: "border bg-light d-flex flex-column align-items-center shadow",
 })`
   min-height: 370px;
 `;
@@ -16,7 +15,7 @@ const TitleBox = styled.div.attrs({
 
 const SkeletonUi = () => {
   return (
-    <div className="col-3">
+    <div className="col-lg-3 col-md-6 col-sm-12 d-flex justify-content-center mb-3 py-3">
       <SkeletonUiBox>
         <TitleBox></TitleBox>
       </SkeletonUiBox>

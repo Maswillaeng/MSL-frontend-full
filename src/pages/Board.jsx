@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Card from "../components/Card";
@@ -27,8 +27,7 @@ const Board = () => {
       location.state = undefined;
     }
     setLastSliceNum(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location, setLastSliceNum]);
 
   //로딩 상태
   const [loading, setLoading] = useState(false);
@@ -41,7 +40,9 @@ const Board = () => {
 
   //커스텀훅 사용
   const [observe, unobserve] = useIntersectionObserver(() => {
+    setLoading(true);
     setLastSliceNum((lastSliceNum) => lastSliceNum + 1);
+    setLoading(false);
   });
 
   useEffect(() => {
@@ -95,17 +96,15 @@ const BoardBottom = ({ loading, target, sliceDataLength }) => {
   const loadingArr = Array(4).fill(1);
   return (
     <div
-      className="d-flex justify-content-start align-items-start w-100 mb-5 fs-3  blink"
+      className="d-flex justify-content-start align-items-start w-100 mb-5 fs-3 flex-column  blink"
       ref={target}
     >
       {loading && (
-        <div className="d-flex flex-column justify-content-start align-items-start w-100 ">
-          <div className="container text-center">
-            <div className="row g-5 mt-3 mb-5">
-              {loadingArr.map((x, i) => (
-                <SkeletonUi key={i} />
-              ))}
-            </div>
+        <div className="d-flex flex-column justify-content-center align-items-center w-100 ">
+          <div className="row g-5 mt-3 mb-5 w-75">
+            {loadingArr.map((x, i) => (
+              <SkeletonUi key={i} />
+            ))}
           </div>
         </div>
       )}

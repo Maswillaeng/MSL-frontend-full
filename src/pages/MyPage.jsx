@@ -26,11 +26,15 @@ const MyPage = () => {
       .then((res) => {
         setUserData(res.data.result);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        alert("잠시 후에 다시 입장해주세요.");
+        navigate("/");
       });
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
+  /**
+   * 회원정보 수정하기 이벤트
+   */
   const editUser = () => {
     if (window.confirm("회원정보를 수정하시겠습니까?")) {
       navigate("/signUp", { state: { userData } });
@@ -107,7 +111,6 @@ const TopProfileBottom = ({ userData }) => {
   //     });
   //   }
   // };
-  console.log(userData);
 
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">

@@ -11,7 +11,7 @@ import {
 export const realTimeValidation = (member) => {
   let message = {};
   if (members.filter((x) => x.email === member.email).length !== 0) {
-    message = { ...message, email: "이미 사용중인 이메일입니다." };
+    message = { email: "이미 사용중인 이메일입니다." };
   }
   if (!validationPassword.test(member.password) && member.password !== "") {
     message = {

@@ -43,6 +43,7 @@ const Input = ({
   saveImgFile,
   imgFile,
   warning,
+  editUser,
 }) => {
   /**
    * 이미지 업로드 클릭용 이벤트

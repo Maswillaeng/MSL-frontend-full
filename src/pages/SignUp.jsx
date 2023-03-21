@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import {
@@ -16,18 +16,26 @@ import { currentUserState } from "../recoil/atom";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   //로그인 시, 회원 아이디 저장용 상태
   const currentUser = useRecoilValue(currentUserState);
 
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {
-    if (currentUser !== 0) {
+    if (currentUser !== 0 && !location.state) {
       alert("이미 로그인 상태입니다.");
       return navigate("/");
     }
     targetRefs.current[0].focus();
-  }, [currentUser, navigate]);
+  }, [currentUser, location.state, navigate]);
+
+  //회원 수정으로 접근했을 때의 회원 데이터
+  const [editUser, setEditUser] = useState(undefined);
+
+  useEffect(() => {
+    location.state && setEditUser(location.state.userData);
+  }, [location.state]);
 
   //프로필 이미지 상태
   const [imgFile, setImgFile] = useState("");
@@ -167,6 +175,7 @@ const SignUp = () => {
             saveImgFile={saveImgFile}
             imgFile={imgFile}
             warning={warning}
+            editUser={editUser}
           />
         ))}
         <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />

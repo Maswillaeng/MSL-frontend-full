@@ -102,13 +102,12 @@ const TopMainNavBox = ({ navigate }) => {
       <ul className="nav nav-pills w-75 d-flex justify-content-center align-items-center p-3 fs-3">
         {currentUser !== 0 && (
           <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center ">
-            <a
-              className="nav-link main-bg-color"
-              aria-current="page"
-              href="/myPage"
+            <span
+              className="main-color pointer"
+              onClick={() => navigate("/myPage")}
             >
-              <span className="main-color">MY페이지</span>
-            </a>
+              MY페이지
+            </span>
           </li>
         )}
         <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center">
@@ -157,13 +156,13 @@ const BottomHotBox = () => {
   return (
     <div className="w-75 my-5">
       <div className="ps-3 fs-1 mb-4">인기레시피</div>
-      <div className="w-100 row">
+      <div className="w-100 row ms-1">
         {boardData.map((data, i) => (
           <Card data={data} key={data.createAt + i} />
         ))}
       </div>
       <div className="d-flex justify-content-center align-items-center w-100 flex-column pb-5">
-        {sliceDataLength % 4 === 0 ? (
+        {sliceDataLength !== 0 && sliceDataLength % 4 === 0 ? (
           <Button
             message={"더보기"}
             size={"lg"}
@@ -171,7 +170,11 @@ const BottomHotBox = () => {
             buttonEvent={upSliceCount}
           />
         ) : (
-          <div className="py-3 fs-2">마지막 글입니다.</div>
+          <div className="py-3 fs-2">
+            {sliceDataLength === 0
+              ? "등록된 글이 없습니다."
+              : "마지막 글입니다."}
+          </div>
         )}
       </div>
     </div>

@@ -13,6 +13,10 @@ import EditorComponent from "../components/EditorComponent";
 import styled from "styled-components";
 import { postBoard } from "../function/api/postBoard";
 import { putBoard } from "../function/api/putBoard";
+import { WithContext as ReactTags } from "react-tag-input";
+import { useRecoilState } from "recoil";
+import { boardDataState } from "../recoil/atom";
+import { getBoard } from "../function/api/getBoard";
 
 const BoardCreate = () => {
   const location = useLocation();
@@ -69,10 +73,22 @@ const BoardCreate = () => {
     content: "",
   });
 
-  const [tag, setTag] = useState([]);
-  const updateTag = (e) => {
-    setTag([...tag, e.target.value]);
+  //해시태그 값 상태
+  const [tags, setTags] = useState([]);
+
+  /**
+   * 해시태그 업데이트
+   */
+  const handleAddition = (tag) => {
+    setTags([...tags, tag]);
   };
+  /**
+   * 해시태그 중복 삭제
+   */
+  const handleDelete = (index) => {
+    setTags(tags.filter((tag, i) => i !== index));
+  };
+
   /**
    * 작성된 내용을 반영하기 위한 이벤트
    */
@@ -88,11 +104,11 @@ const BoardCreate = () => {
   return (
     <>
       <BoardCreateNav
-        tag={tag}
         content={content}
         imgData={imgData}
         imgNum={imgNum}
         editData={editData}
+        tags={tags}
       />
       <div className="d-flex flex-column justify-content-start align-items-center my-5 p-5 ">
         <TopImgBox imgData={imgData} imgNum={imgNum} setImgNum={setImgNum} />
@@ -105,7 +121,9 @@ const BoardCreate = () => {
           content={content}
           updateContent={updateContent}
           onEditorChange={onEditorChange}
-          updateTag={updateTag}
+          handleAddition={handleAddition}
+          handleDelete={handleDelete}
+          tags={tags}
           desc={desc}
         />
       </div>
@@ -113,8 +131,11 @@ const BoardCreate = () => {
   );
 };
 
-const BoardCreateNav = ({ content, imgData, imgNum, editData, tag }) => {
+const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
   const navigate = useNavigate();
+
+  //게시글 데이터 상태
+  const [, setBoardData] = useRecoilState(boardDataState);
 
   /**
    * 글 작성 이벤트
@@ -131,7 +152,7 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tag }) => {
     }
 
     const allImgData = Object.values(imgData).filter((x) => x !== "");
-
+    const tag = tags.map((x) => x.text);
     const postData = {
       ...content,
       thumbnail:
@@ -139,16 +160,23 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tag }) => {
       imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
       tag: tag,
     };
-    console.log(postData);
 
     postBoard(postData)
       .then(() => {
         alert("글이 등록되었습니다.");
-        navigate("/board");
+        getBoard()
+          .then((res) => {
+            const data = res.data.result.reverse();
+            console.log(data);
+            return data;
+          })
+          .then((res) => {
+            setBoardData(res);
+          });
       })
-      .catch((err) => {
-        alert("실패요");
-        console.log(err);
+      .then(() => navigate("/board"))
+      .catch(() => {
+        alert("잠시 후에 다시 시도해주세요.");
       });
   };
 
@@ -166,11 +194,21 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tag }) => {
     };
 
     const num = editData.postId;
+
     putBoard(num, postData)
       .then(() => {
         alert("글이 수정되었습니다.");
-        navigate("/board");
+        getBoard()
+          .then((res) => {
+            const data = res.data.result.reverse();
+            console.log(data);
+            return data;
+          })
+          .then((res) => {
+            setBoardData(res);
+          });
       })
+      .then(() => navigate("/board"))
       .catch(() => {
         alert("잠시 후에 다시 시도해주세요.");
       });
@@ -332,7 +370,9 @@ const BottomContentBox = ({
   desc,
   onEditorChange,
   content,
-  updateTag,
+  handleAddition,
+  handleDelete,
+  tags,
 }) => {
   return (
     <div className="w-100 d-flex justify-content-start align-items-center flex-column my-3">
@@ -367,13 +407,28 @@ const BottomContentBox = ({
       <div className="col-12 mb-5 w-50">
         <EditorComponent value={desc} onChange={onEditorChange} />
       </div>
-      <div className="w-50 pt-3">
-        <input
-          placeholder="해쉬태그를 입력해주세요."
-          name="tag"
-          type="text"
-          className="w-100"
-          onChange={updateTag}
+      <div className="w-50 pt-4">
+        <ReactTags
+          tags={tags}
+          handleAddition={handleAddition}
+          handleDelete={handleDelete}
+          classNames={{
+            tag: "btn btn-primary p-1 m-1", // tag 요소에 btn, btn-primary 클래스 추가
+            remove: "btn btn-primary btn-sm", // remove 요소에 btn, btn-primary, btn-sm 클래스 추가
+            tagInput: "form-control w-100", // input 요소에 form-control 클래스 추가
+            tagInputField: "tag-input-class",
+          }}
+          inputAttributes={{
+            className: "tag-input-class", // input 요소에 추가할 클래스명
+          }}
+          placeholder="해시태그를 입력해주세요." // input placeholder 추가
+          inputFieldPosition="bottom" // input 위치를 bottom으로 변경
+          allowDragDrop={false} // 드래그 앤 드랍 기능 비활성화
+          autofocus={false} // 자동 포커스 기능 비활성화
+          delimiters={[13, 32]} // 엔터 및 스페이스바로 태그 추가 가능하도록 설정
+          inline={false} // 인라인 모드 비활성화
+          maxLength={15} // 최대 길이 설정
+          minQueryLength={1} // 최소 쿼리 길이 설정
         />
       </div>
     </div>

@@ -5,6 +5,7 @@ import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 import { postLogOut } from "../function/api/postLogOut";
 import { useRecoilState } from "recoil";
 import { currentUserState, lastSliceNumState } from "../recoil/atom";
+import { useCallback } from "react";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -20,10 +21,10 @@ const MainNav = () => {
 
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
-  const moveMain = () => {
+  const moveMain = useCallback(() => {
     setLastSliceNum(1);
     navigate("/");
-  };
+  }, [navigate, setLastSliceNum]);
 
   //로그아웃했을 때, li 데이터들을 가진 배열
   const navArr = [

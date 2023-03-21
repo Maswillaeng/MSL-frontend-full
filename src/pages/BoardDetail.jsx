@@ -17,6 +17,8 @@ import { useRecoilValue } from "recoil";
 import { currentUserState } from "../recoil/atom";
 import { deleteBoardHit } from "../function/api/deleteBoardHit";
 import { elapsedTime } from "../function/utility/ elapsedTime";
+import { useRecoilState } from "recoil";
+import { boardDataState } from "../recoil/atom";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -200,21 +202,19 @@ const TopProfileBox = ({ data, userData }) => {
     const postUserId = data.userId;
     const currentUserId = userData.userId;
     const followUser = { my_id: currentUserId, user_id: postUserId };
-    console.log(currentUserId);
+
     if (!currentUserId) {
       return alert("로그인을 부탁드려요.");
     }
     setSubscribe(!subscribe);
     if (subscribe) {
       setSubscribeCount(subscribeCount - 1);
-      deleteFollow(postUserId, followUser).catch((err) => {
-        console.log(err);
+      deleteFollow(postUserId, followUser).catch(() => {
         alert("잠시 후에 다시 시도해주세요.");
       });
     } else {
       setSubscribeCount(subscribeCount + 1);
-      postFollow(postUserId, followUser).catch((err) => {
-        console.log(err);
+      postFollow(postUserId, followUser).catch(() => {
         alert("잠시 후에 다시 시도해주세요.");
       });
     }
@@ -288,6 +288,9 @@ const CommentUserImg = styled.img.attrs({
 
 const BottomCommentBox = ({ data, userData, currentUser }) => {
   const navigate = useNavigate();
+
+  //게시글 데이터 상태
+  const [boardData, setBoardData] = useRecoilState(boardDataState);
 
   //현재 글에 작성된 댓글들을 위한 상태
   const [commentArr, setCommentArr] = useState(
@@ -367,11 +370,15 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
    */
   const moveDelete = () => {
     if (window.confirm("글을 삭제하시겠습니까?")) {
-      deleteBoard(data.postId).then(() => {
-        navigate("/board");
-      });
+      deleteBoard(data.postId)
+        .then(() => {
+          setBoardData(boardData.filter((x) => x.postId !== data.postId));
+          navigate("/board");
+        })
+        .catch(() => alert("잠시 후에 다시 시도해주세요."));
     }
   };
+
   return (
     <>
       <div className="w-50 d-flex flex-column justify-content-start align-items-center pb-3">

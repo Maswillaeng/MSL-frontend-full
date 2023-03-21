@@ -152,4 +152,7 @@ li {
 }
 
 
-
+.tag-input-class {
+  width: 100%;
+  border: none;
+}

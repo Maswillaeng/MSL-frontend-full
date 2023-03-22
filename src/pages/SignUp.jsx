@@ -11,24 +11,20 @@ import {
 import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/postSignUp";
-import { useRecoilValue } from "recoil";
-import { currentUserState } from "../recoil/atom";
+import getIdCookie from "../function/cookie/getIdCookie";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  //로그인 시, 회원 아이디 저장용 상태
-  const currentUser = useRecoilValue(currentUserState);
-
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {
-    if (currentUser !== 0 && !location.state) {
+    if (getIdCookie() !== 0 && !location.state) {
       alert("이미 로그인 상태입니다.");
       return navigate("/");
     }
     targetRefs.current[0].focus();
-  }, [currentUser, location.state, navigate]);
+  }, [location.state, navigate]);
 
   //회원 수정으로 접근했을 때의 회원 데이터
   const [editUser, setEditUser] = useState(undefined);

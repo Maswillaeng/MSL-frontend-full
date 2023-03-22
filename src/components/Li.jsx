@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { currentUserState } from "../recoil/atom";
+import getIdCookie from "../function/cookie/getIdCookie";
 
 const Li = ({ data }) => {
   const navigate = useNavigate();
@@ -10,12 +9,9 @@ const Li = ({ data }) => {
   const path = location.pathname;
   console.log(Object.keys(data)[0]);
 
-  //로그인 체크 상태
-  const currentUser = useRecoilValue(currentUserState);
-
   //로그인 유저라면 boardCreate로 이동, 아니라면 로그인 페이지로 이동하는 이벤트
   const checkLogin = () => {
-    if (currentUser !== 0) {
+    if (getIdCookie() !== 0) {
       navigate("/boardCreate");
     } else {
       alert("로그인을 부탁드려요.");

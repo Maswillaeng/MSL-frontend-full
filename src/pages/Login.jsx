@@ -16,7 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   //로그인 시, 회원 아이디 저장용 상태
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const [, setCurrentUser] = useRecoilState(currentUserState);
 
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {

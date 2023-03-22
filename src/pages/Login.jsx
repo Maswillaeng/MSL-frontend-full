@@ -20,7 +20,7 @@ const Login = () => {
 
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {
-    if (getIdCookie()===0) {
+    if (getIdCookie() !== 0) {
       alert("이미 로그인 상태입니다.");
       return navigate("/");
     }

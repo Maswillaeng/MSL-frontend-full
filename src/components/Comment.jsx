@@ -173,20 +173,20 @@ const Comment = ({ data, userData }) => {
             <div className="flex-07">
               <FontAwesomeIcon icon={faXmarkS} className="ps-5 fs-5 pointer" />
             </div>
-            <div className="flex-02">
+            <div className="flex-02 ps-2">
               <FontAwesomeIcon
                 onClick={commentLikeHandler}
                 icon={commentLike ? faThumbsUpS : faThumbsUpR}
                 className="me-2 comment-icon"
               />
             </div>
-            <div className="flex-01">
+            <div className="flex-01 ">
               <span>{likeCount}</span>
             </div>
           </div>
           <div className="mb-2 d-flex justify-content-center align-items-center w-100">
             <div className="flex-07"></div>
-            <div className="flex-02">
+            <div className="flex-02 ps-2">
               <FontAwesomeIcon
                 onClick={commentDislikeHandler}
                 icon={commentDislike ? faThumbsDownS : faThumbsDownR}

@@ -284,6 +284,11 @@ const TitleBox = styled.div.attrs({
 })`
   min-width: 365px;
 `;
+const TimeBox = styled.div.attrs({
+  className: "w-50 mb-4 d-flex justify-content-end align-items-end mt-5",
+})`
+  min-width: 365px;
+`;
 
 const TopContentBox = ({ data }) => {
   return (
@@ -291,10 +296,10 @@ const TopContentBox = ({ data }) => {
       <TitleBox>
         <h1>{data.title}</h1>
       </TitleBox>
-      <div className="w-50 mb-4 d-flex justify-content-end align-items-end mt-5">
+      <TimeBox>
         <span className="mx-3">{data.categori}</span>
         <span>{elapsedTime(data.createAt)}</span>
-      </div>
+      </TimeBox>
       <ContentBox
         dangerouslySetInnerHTML={{ __html: data.content }}
       ></ContentBox>
@@ -314,9 +319,20 @@ const CommentUserImg = styled.img.attrs({
 })`
   height: 3vh;
 `;
+const LengthBox = styled.div.attrs({
+  className: "w-100 d-flex justify-content-start align-items-center mb-5",
+})``;
+const BottomBox = styled.div.attrs({
+  className:
+    "w-50 d-flex flex-column justify-content-start align-items-center pb-3",
+})`
+  min-width: 365px;
+`;
 
 const BottomCommentBox = ({ data, userData, currentUser }) => {
   const navigate = useNavigate();
+  console.log(currentUser);
+  console.log(data.userId);
 
   //게시글 데이터 상태
   const [boardData, setBoardData] = useRecoilState(boardDataState);
@@ -408,18 +424,16 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
 
   return (
     <>
-      <div className="w-50 d-flex flex-column justify-content-start align-items-center pb-3">
-        <div className="w-100 d-flex justify-content-start align-items-center mb-5">
-          댓글:{commentData.length}개
-        </div>
+      <BottomBox>
+        <LengthBox>댓글:{commentData.length}개</LengthBox>
         {commentData.map((x, i) => (
           <Comment key={i} data={x} userData={userData} />
         ))}
-      </div>
+      </BottomBox>
       <CommentBox>
-        {currentUser !== 0 ? (
+        {getIdCookie() !== 0 ? (
           <>
-            <div className="w-100 d-flex justify-content-center align-items-center flex-column ">
+            <div className="w-100 d-flex justify-content-center align-items-center flex-column">
               <button
                 ref={target}
                 onClick={onCommentHandeler}
@@ -443,6 +457,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
                     onChange={changeCommentText}
                     className="form-control non-resize"
                     id="comment"
+                    maxLenth={300}
                     rows="5"
                   ></textarea>
                 </div>
@@ -469,7 +484,9 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
             </div>
           </>
         )}
-        {<SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />}
+        {data.userId === currentUser && (
+          <SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />
+        )}
       </CommentBox>
     </>
   );

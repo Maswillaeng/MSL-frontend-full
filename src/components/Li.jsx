@@ -23,7 +23,7 @@ const Li = ({ data }) => {
       {Object.keys(data)[0] !== "게시판" ? (
         data[Object.keys(data)[0]].event ? (
           <li
-            className="nav-item text-light me-5 pointer"
+            className="nav-item text-light me-4 pointer"
             onClick={data[Object.keys(data)[0]].event}
           >
             <span
@@ -49,7 +49,10 @@ const Li = ({ data }) => {
           </li>
         )
       ) : (
-        <li className="nav-item dropdown ">
+        <li
+          className="nav-item dropdown text-center"
+          style={{ width: "160px" }}
+        >
           <a
             className="nav-link dropdown-toggle text-light"
             href="#!"

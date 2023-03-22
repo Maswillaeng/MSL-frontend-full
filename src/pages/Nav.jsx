@@ -93,8 +93,8 @@ const MainNav = () => {
             마쉴랭
           </span>
         </div>
-        <div className="collapse navbar-collapse " id="navbarNavDropdown">
-          <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center ">
+        <div className="navbar-collapse" id="navbarNavDropdown">
+          <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center">
             {getIdCookie() !== 0
               ? loginNavArr.map((data, idx) => (
                   <Li data={data} idx={idx} key={Object.keys(data)[0]} />

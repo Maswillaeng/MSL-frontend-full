@@ -1,5 +1,6 @@
 import { selector } from "recoil";
-import { boardDataState, lastSliceNumState } from "./atom";
+import { getUser } from "../function/api/getUser";
+import { boardDataState, currentUserState, lastSliceNumState } from "./atom";
 
 //게시글 분할
 export const boardDataSliceState = selector({
@@ -11,10 +12,20 @@ export const boardDataSliceState = selector({
   },
 });
 
+//게시글 길이
 export const sliceDataLengthState = selector({
   key: "sliceDataLengthState",
   get: ({ get }) => {
     const length = get(boardDataSliceState).length;
     return length;
+  },
+});
+
+//로그인한 유저의 정보
+export const userState = selector({
+  key: "userState",
+  get: ({ get }) => {
+    const userId = get(currentUserState);
+    return getUser(userId);
   },
 });

@@ -1,6 +1,13 @@
 /**
- * id쿠키를 저장하는 메소드
+ * id쿠키를 저장하고 전달받은 시간 뒤에 삭제되도록 도와주는 함수
  */
-export const setCookie = (id) => {
-  document.cookie = `id=${id};expires=Fri, 31 Dec 9999 23:59:59 GMT;path=/`;
+const setIdCookie = (id, time) => {
+  const now = new Date();
+  const [hours, minutes, seconds] = time.split(":").map(Number);
+  const expirationTime = (hours * 60 + minutes) * 60 + seconds;
+  const futureTime = new Date(now.getTime() + expirationTime * 1000);
+  const formattedTime = futureTime.toUTCString();
+  document.cookie = `id=${id};expires=${formattedTime};path=/`;
 };
+
+export default setIdCookie;

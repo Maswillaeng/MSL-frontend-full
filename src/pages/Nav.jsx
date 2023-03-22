@@ -6,6 +6,7 @@ import { postLogOut } from "../function/api/postLogOut";
 import { useRecoilState } from "recoil";
 import { currentUserState, lastSliceNumState } from "../recoil/atom";
 import { useCallback } from "react";
+import deleteIdCookie from "../function/cookie/deleteIdCookie";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -57,6 +58,7 @@ const MainNav = () => {
           postLogOut()
             .then(() => {
               alert("로그아웃 되었습니다.");
+              deleteIdCookie();
               setCurrentUser(0);
               navigate("/");
             })

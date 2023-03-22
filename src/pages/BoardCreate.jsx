@@ -167,7 +167,6 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
         getBoard()
           .then((res) => {
             const data = res.data.result.reverse();
-            console.log(data);
             return data;
           })
           .then((res) => {

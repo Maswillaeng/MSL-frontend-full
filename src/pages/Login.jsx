@@ -9,6 +9,7 @@ import {
 import { postLogin } from "../function/api/postLogin";
 import { useRecoilState } from "recoil";
 import { currentUserState } from "../recoil/atom";
+import setIdCookie from "../function/cookie/setIdCookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -67,7 +68,10 @@ const Login = () => {
     }
     postLogin(user)
       .then((res) => {
-        setCurrentUser(res.data.result.userId);
+        const time = res.data.result.expirationTime;
+        const userId = res.data.result.userId;
+        setCurrentUser(userId);
+        setIdCookie(userId, time);
         navigate("/");
       })
       .catch((err) => {

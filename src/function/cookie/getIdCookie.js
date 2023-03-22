@@ -1,12 +1,14 @@
 /**
- *
- * @param {쿠키 데이터} name
  * @returns 아이디값
  */
-export const getIdCookie = (name) => {
-  var value = "; " + document.cookie;
-  var parts = value.split("; " + name + "=");
-  if (parts.length == 2) {
-    return parts.pop().split(";").shift();
+const getIdCookie = () => {
+  const value = "; " + document.cookie;
+  const parts = value.split(";id=");
+  if (parts.length === 2) {
+    return Number(parts.pop().split(";").shift());
+  } else {
+    return 0;
   }
 };
+
+export default getIdCookie;

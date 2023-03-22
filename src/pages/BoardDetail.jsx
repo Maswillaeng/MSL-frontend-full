@@ -14,7 +14,7 @@ import SupportBox from "../components/SupportBox";
 import { deleteBoard } from "../function/api/deleteBoard";
 import { postComment } from "../function/api/postComment";
 import { useRecoilValue } from "recoil";
-import { currentUserState } from "../recoil/atom";
+import { commentDataState, currentUserState } from "../recoil/atom";
 import { deleteBoardHit } from "../function/api/deleteBoardHit";
 import { elapsedTime } from "../function/utility/ elapsedTime";
 import { useRecoilState } from "recoil";
@@ -293,9 +293,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
   const [boardData, setBoardData] = useRecoilState(boardDataState);
 
   //현재 글에 작성된 댓글들을 위한 상태
-  const [commentArr, setCommentArr] = useState(
-    commentData.filter((x) => x.post_id === data.post_id)
-  );
+  const [commentData, setCommentData] = useRecoilState(commentDataState);
 
   //댓글 버튼 상태
   const [onComment, setOnComment] = useState(false);
@@ -333,7 +331,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
 
     const comment = {
       post_id: data.postId,
-      comment_id: commentArr.length + 1,
+      comment_id: commentData.length + 1,
       nickname: userData.nickname,
       user_image: userData.userImage,
       createAt: currentTime(),
@@ -347,7 +345,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
       console.log(res);
     });
 
-    commentData.push(comment);
+    setCommentData([...commentData, comment]);
     target.current.click();
     setCommentText("");
     setOnComment(false);
@@ -355,7 +353,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
 
   //제출 상태가 변화할 때, 새로운 댓글을 등록해주기 위한 이펙트
   useEffect(() => {
-    setCommentArr(commentData.filter((x) => x.post_id === data.postId));
+    setCommentData(commentData.filter((x) => x.post_id === data.postId));
   }, [onComment]);
 
   /**
@@ -383,9 +381,9 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
     <>
       <div className="w-50 d-flex flex-column justify-content-start align-items-center pb-3">
         <div className="w-100 d-flex justify-content-start align-items-center mb-5">
-          댓글:{commentArr.length}개
+          댓글:{commentData.length}개
         </div>
-        {commentArr.map((x, i) => (
+        {commentData.map((x, i) => (
           <Comment key={i} data={x} userData={userData} />
         ))}
       </div>

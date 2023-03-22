@@ -63,7 +63,7 @@ const Li = ({ data }) => {
           >
             게시판
           </a>
-          <ul className="dropdown-menu">
+          <ul className="dropdown-menu position-absolute">
             <li>
               <span
                 className="dropdown-item pointer"

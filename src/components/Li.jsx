@@ -1,9 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { currentUserState } from "../recoil/atom";
 
 const Li = ({ data }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  //경로 이름 추출
+  const path = location.pathname;
+  console.log(Object.keys(data)[0]);
 
   //로그인 체크 상태
   const currentUser = useRecoilValue(currentUserState);
@@ -28,11 +33,7 @@ const Li = ({ data }) => {
           >
             <span
               className={
-                Object.keys(data)[0] === "뒤로가기" ||
-                Object.keys(data)[0] === "완료" ||
-                Object.keys(data)[0] === "글 작성"
-                  ? "nav-link"
-                  : "nav-link text-light"
+                path === "/boardCreate" ? "nav-link" : "nav-link text-light"
               }
             >
               {Object.keys(data)[0]}

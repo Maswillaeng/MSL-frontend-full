@@ -21,6 +21,7 @@ import { userState } from "../recoil/selector";
 import { deleteBoardHit } from "../function/api/deleteBoardHit";
 import { elapsedTime } from "../function/utility/ elapsedTime";
 import { getUser } from "../function/api/getUser";
+import getIdCookie from "../function/cookie/getIdCookie";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -76,6 +77,7 @@ const ThumbnailBox = styled.div.attrs({
     " d-flex flex-column justify-content-center align-items-center card shadow h-100 ",
 })`
   width: 22vw;
+  min-width: 365px;
 `;
 
 const ThumbnailImg = styled.img.attrs({
@@ -148,9 +150,10 @@ const ProfileUserImg = styled.img.attrs({
 `;
 
 const ProfileContainer = styled.div.attrs({
-  className: "w-50 d-flex justify-content-center align-items-center px-5",
+  className: "w-50 justify-content-center align-items-center d-flex",
 })`
-  height: 15vh;
+  height: 20vh;
+  min-width: 365px;
 `;
 const TopProfileBox = ({ data, userData }) => {
   //작성자 정보
@@ -182,12 +185,12 @@ const TopProfileBox = ({ data, userData }) => {
    * 추천 상태와 카운트를 바꿔주는 이벤트
    */
   const hitHandler = () => {
+    if (getIdCookie() === 0) {
+      return alert("로그인을 부탁드려요.");
+    }
     const postId = data.postId;
     const currentUserId = userData.userId;
     const hitUser = { post_id: postId, user_id: currentUserId };
-    if (!currentUserId) {
-      return alert("로그인을 부탁드려요.");
-    }
     setHit(!hit);
     if (hit) {
       setHitCount(hitCount - 1);
@@ -213,13 +216,13 @@ const TopProfileBox = ({ data, userData }) => {
    * 구독 상태와 카운트를 바꿔주는 이벤트
    */
   const subscribeHandler = () => {
+    if (getIdCookie() === 0) {
+      return alert("로그인을 부탁드려요.");
+    }
+
     const postUserId = data.userId;
     const currentUserId = userData.userId;
     const followUser = { my_id: currentUserId, user_id: postUserId };
-
-    if (!currentUserId) {
-      return alert("로그인을 부탁드려요.");
-    }
     setSubscribe(!subscribe);
     if (subscribe) {
       setSubscribeCount(subscribeCount - 1);
@@ -236,26 +239,26 @@ const TopProfileBox = ({ data, userData }) => {
 
   return (
     <ProfileContainer>
-      <div className=" d-flex justify-content-center align-items-center col-3">
+      <div className="d-flex justify-content-center align-items-center w-25">
         <ProfileUserImg src={author.userImage} />
       </div>
-      <div className=" d-flex justify-content-center align-items-center flex-column col-3">
+      <div className="d-flex justify-content-center align-items-center flex-column w-25">
         <div>{data.nickname}</div>
         <div>구독자 {subscribeCount}명</div>
       </div>
-      <div className=" d-flex justify-content-center align-items-center flex-column h-50 col-6">
-        <div className="h-75">
+      <div className="d-flex justify-content-center align-items-center flex-column w-50">
+        <div>
           <span className="ms-4">추천 : {hitCount}</span>
         </div>
-        <div className="d-flex h-25">
-          <div onClick={hitHandler} className="mx-2">
+        <div className="d-flex h-100 flex-column">
+          <div onClick={hitHandler} className="mx-2 py-3 w-100">
             <ProfileIcon
               message={"추천"}
               state={hit}
               addStyle={hit ? "bg-primary border-primary" : "border-primary"}
             />
           </div>
-          <div onClick={subscribeHandler} className="mx-2">
+          <div onClick={subscribeHandler} className="mx-2 py-2 w-100">
             <ProfileIcon
               message={"구독하기"}
               state={subscribe}
@@ -274,14 +277,20 @@ const ContentBox = styled.div.attrs({
   className: "w-50 mt-5 card shadow p-3",
 })`
   height: 50vh;
+  min-width: 365px;
+`;
+const TitleBox = styled.div.attrs({
+  className: "w-50 border p-2",
+})`
+  min-width: 365px;
 `;
 
 const TopContentBox = ({ data }) => {
   return (
     <div className="d-flex flex-column justify-content-center align-items-center my-5 w-100">
-      <div className="w-50 border p-2">
+      <TitleBox>
         <h1>{data.title}</h1>
-      </div>
+      </TitleBox>
       <div className="w-50 mb-4 d-flex justify-content-end align-items-end mt-5">
         <span className="mx-3">{data.categori}</span>
         <span>{elapsedTime(data.createAt)}</span>
@@ -293,6 +302,12 @@ const TopContentBox = ({ data }) => {
   );
 };
 
+const CommentBox = styled.div.attrs({
+  className:
+    "w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4",
+})`
+  min-width: 365px;
+`;
 const CommentUserImg = styled.img.attrs({
   className: "rounded-circle",
   alt: "userImg",
@@ -401,7 +416,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
           <Comment key={i} data={x} userData={userData} />
         ))}
       </div>
-      <div className="w-50 d-flex justify-content-start align-items-center mb-5 shadow rounded p-4">
+      <CommentBox>
         {currentUser !== 0 ? (
           <>
             <div className="w-100 d-flex justify-content-center align-items-center flex-column ">
@@ -447,7 +462,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
         ) : (
           <>
             <div className="d-flex justify-content-center align-items-center w-100">
-              <div className="mx-5 fs-4">글을 작성하시려면 로그인 해주세요</div>
+              <div className="mx-5 fs-5">글을 작성하시려면 로그인 해주세요</div>
               <div>
                 <Button buttonEvent={buttonEvent} message={"로그인"} />
               </div>
@@ -455,7 +470,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
           </>
         )}
         {<SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />}
-      </div>
+      </CommentBox>
     </>
   );
 };

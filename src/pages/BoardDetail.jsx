@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Comment from "../components/Comment";
 import Button from "../components/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import commentData from "../dummy/commentData";
 import ProfileIcon from "../components/ProfileIcon";
-import { getUser } from "../function/api/getUser";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
 import { postBoardHit } from "../function/api/postBoardHit";
@@ -13,12 +11,16 @@ import { deleteFollow } from "../function/api/deleteFollow";
 import SupportBox from "../components/SupportBox";
 import { deleteBoard } from "../function/api/deleteBoard";
 import { postComment } from "../function/api/postComment";
-import { useRecoilValue } from "recoil";
-import { commentDataState, currentUserState } from "../recoil/atom";
+import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  commentDataState,
+  currentUserState,
+  boardDataState,
+} from "../recoil/atom";
+import { userState } from "../recoil/selector";
 import { deleteBoardHit } from "../function/api/deleteBoardHit";
 import { elapsedTime } from "../function/utility/ elapsedTime";
-import { useRecoilState } from "recoil";
-import { boardDataState } from "../recoil/atom";
+import { getUser } from "../function/api/getUser";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -32,17 +34,12 @@ const BoardDetail = () => {
   const currentUser = useRecoilValue(currentUserState);
 
   //로그인중이라면 최초 1회 로그인중인 유저 데이터 셋팅 , 현재 유저 정보임  *작성자 정보 아님*
-  const [userData, setUserData] = useState({});
+  const userData = useRecoilValue(userState);
 
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if (currentUser !== 0) {
-      getUser(currentUser).then((res) => {
-        setUserData(res.data.result);
-      });
-    }
-  }, [currentUser]);
+  }, []);
 
   return (
     <BoardDetailBox>
@@ -104,7 +101,6 @@ const TopImgBox = ({ data }) => {
   //     setCurrentImg(currentImg - 1);
   //   }
   // };
-
   return (
     <TopImgDivBox>
       <div className="d-flex justify-content-center align-items-center h-75">
@@ -145,9 +141,10 @@ const TopImgBox = ({ data }) => {
 
 const ProfileUserImg = styled.img.attrs({
   className: "rounded-circle img-fluid",
-  alt: "userImg",
+  alt: "",
 })`
   height: 10vh;
+  width: 10vh;
 `;
 
 const ProfileContainer = styled.div.attrs({
@@ -156,6 +153,25 @@ const ProfileContainer = styled.div.attrs({
   height: 15vh;
 `;
 const TopProfileBox = ({ data, userData }) => {
+  //작성자 정보
+  //작성자의 이미지때문에 관리 시작
+  const [author, setAuthor] = useState({});
+
+  /**
+   * 작성자 데이터 세팅
+   * @param {userId} id
+   */
+  const getAuthor = (id) => {
+    getUser(id).then((res) => {
+      setAuthor(res);
+    });
+  };
+
+  //최초 1회 작성자 데이터 세팅
+  useEffect(() => {
+    getAuthor(data.userId);
+  }, [data.userId]);
+
   //추천 숫자
   const [hitCount, setHitCount] = useState(data.hits);
 
@@ -176,13 +192,11 @@ const TopProfileBox = ({ data, userData }) => {
     if (hit) {
       setHitCount(hitCount - 1);
       deleteBoardHit(postId, hitUser).catch((err) => {
-        console.log(err);
         alert("잠시 후에 다시 시도해주세요.");
       });
     } else {
       setHitCount(hitCount + 1);
       postBoardHit(postId, hitUser).catch((err) => {
-        console.log(err);
         alert("잠시 후에 다시 시도해주세요.");
       });
     }
@@ -223,7 +237,7 @@ const TopProfileBox = ({ data, userData }) => {
   return (
     <ProfileContainer>
       <div className=" d-flex justify-content-center align-items-center col-3">
-        <ProfileUserImg src={userData.userImage} />
+        <ProfileUserImg src={author.userImage} />
       </div>
       <div className=" d-flex justify-content-center align-items-center flex-column col-3">
         <div>{data.nickname}</div>
@@ -440,9 +454,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
             </div>
           </>
         )}
-        {userData.nickname === data.nickname && (
-          <SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />
-        )}
+        {<SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />}
       </div>
     </>
   );

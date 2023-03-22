@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { currentUserState, lastSliceNumState } from "../recoil/atom";
 import { useCallback } from "react";
 import deleteIdCookie from "../function/cookie/deleteIdCookie";
+import getIdCookie from "../function/cookie/getIdCookie";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -18,7 +19,7 @@ const MainNav = () => {
   const navigate = useNavigate();
 
   //로그인 체크 상태
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const [, setCurrentUser] = useRecoilState(currentUserState);
 
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
@@ -94,7 +95,7 @@ const MainNav = () => {
         </div>
         <div className="collapse navbar-collapse " id="navbarNavDropdown">
           <ul className="w-100 navbar-nav d-flex justify-content-end align-items-center ">
-            {currentUser !== 0
+            {getIdCookie() !== 0
               ? loginNavArr.map((data, idx) => (
                   <Li data={data} idx={idx} key={Object.keys(data)[0]} />
                 ))

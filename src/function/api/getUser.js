@@ -5,7 +5,10 @@ import axios from "axios";
  */
 export const getUser = async (id) => {
   if (id === 0) {
-    return {};
+    return undefined;
   }
-  return await axios.get(`http://localhost:8080/api/user/${id}`);
+  return await axios.get(`http://localhost:8080/api/user/${id}`).then((res) => {
+    const user = res.data.result;
+    return user;
+  });
 };

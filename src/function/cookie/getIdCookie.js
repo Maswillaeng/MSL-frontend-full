@@ -3,9 +3,9 @@
  */
 const getIdCookie = () => {
   const value = "; " + document.cookie;
-  const parts = value.split(";id=");
+  const parts = value.split("; id=");
   if (parts.length === 2) {
-    return Number(parts.pop().split(";").shift());
+    return Number(parts[1]);
   } else {
     return 0;
   }

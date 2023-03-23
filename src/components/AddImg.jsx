@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const ImgBox = styled.div.attrs({
   className:
-    "d-flex justify-content-center align-items-center card m-3 w-100 pointer",
+    "col-lg-2 col-md-4 col-sm-12 d-flex justify-content-center align-items-center card m-3 pointer",
 })``;
 
 const ImgFile = styled.img.attrs({

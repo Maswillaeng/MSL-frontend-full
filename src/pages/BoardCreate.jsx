@@ -242,7 +242,7 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
   return (
     <nav className="navbar navbar-expand-lg bg-light py-2 fs-3 w-100">
       <div className="container-fluid w-100">
-        <div className="collapse navbar-collapse w-100" id="navbarNavDropdown">
+        <div className="navbar-collapse w-100" id="navbarNavDropdown">
           <ul className="navbar-nav d-flex justify-content-between align-items-center my-3 w-100 px-5 fs-1">
             {navArr.map((data, idx) => (
               <Li data={data} idx={idx} key={Object.keys(data)[0]} />
@@ -257,13 +257,16 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
 const TopImgContainer = styled.div.attrs({
   className:
     "w-100 d-flex justify-content-center align-items-center flex-column",
-})``;
+})`
+  min-width: 400px;
+`;
 
 const ThumbnailImgBox = styled.div.attrs({
   className:
-    "w-50 d-flex justify-content-center align-items-center card shadow mx-3 fs-3",
+    "w-25 d-flex justify-content-center align-items-center card shadow mx-3 fs-3",
 })`
-  height: 48vh;
+  height: 40vh;
+  min-width: 360px;
 `;
 const ThumbnailImg = styled.img.attrs({
   className: "img-fluid p-3",
@@ -350,7 +353,7 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
     .fill(1)
     .map((x, i) => (x = x + i));
   return (
-    <div className="w-75 d-flex justify-content-center align-items-center my-4">
+    <div className="w-75 row justify-content-center align-items-center my-4">
       {imgBox.map((x) => (
         <AddImg
           num={x}
@@ -364,6 +367,23 @@ export const TopAddImg = ({ addImgData, setImgNum, imgData }) => {
   );
 };
 
+const EditorBox = styled.div.attrs({
+  className: "col-12 mb-5 w-50",
+})`
+  min-width: 365px;
+`;
+const TagsBox = styled.div.attrs({
+  className: "w-50 pt-4",
+})`
+  min-width: 365px;
+`;
+
+const ContentTitleBox = styled.div.attrs({
+  className: "w-50 my-5 row",
+})`
+  min-width: 365px;
+`;
+
 const BottomContentBox = ({
   updateContent,
   desc,
@@ -375,8 +395,8 @@ const BottomContentBox = ({
 }) => {
   return (
     <div className="w-100 d-flex justify-content-start align-items-center flex-column my-3">
-      <div className="w-50 d-flex justify-content-center align-items-center my-5">
-        <div className="me-5 col-9">
+      <ContentTitleBox>
+        <div className="col-lg-8 col-md-12 m-1 px-0">
           <div>
             <input
               onChange={updateContent}
@@ -388,7 +408,7 @@ const BottomContentBox = ({
             />
           </div>
         </div>
-        <div className="col-3">
+        <div className="col-lg-3 col-md-12 m-1 px-0">
           <select
             className="form-select"
             name="category"
@@ -402,11 +422,11 @@ const BottomContentBox = ({
             <option defaultValue="그 외">그 외</option>
           </select>
         </div>
-      </div>
-      <div className="col-12 mb-5 w-50">
+      </ContentTitleBox>
+      <EditorBox>
         <EditorComponent value={desc} onChange={onEditorChange} />
-      </div>
-      <div className="w-50 pt-4">
+      </EditorBox>
+      <TagsBox>
         <ReactTags
           tags={tags}
           handleAddition={handleAddition}
@@ -429,7 +449,7 @@ const BottomContentBox = ({
           maxLength={15} // 최대 길이 설정
           minQueryLength={1} // 최소 쿼리 길이 설정
         />
-      </div>
+      </TagsBox>
     </div>
   );
 };

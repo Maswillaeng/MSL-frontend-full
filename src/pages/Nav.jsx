@@ -24,7 +24,7 @@ const MainNav = () => {
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
   const moveMain = useCallback(() => {
-    setLastSliceNum(1);
+    setLastSliceNum(1); //전역으로 무한스크롤을 관리하다보니 다시 1로 리셋
     navigate("/");
   }, [navigate, setLastSliceNum]);
 

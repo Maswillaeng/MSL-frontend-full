@@ -12,6 +12,14 @@ import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/postSignUp";
 import getIdCookie from "../function/cookie/getIdCookie";
+import styled from "styled-components";
+
+const SignUpForm = styled.div.attrs({
+  className:
+    "card shadow d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3 pb-3",
+})`
+  min-width: 470px;
+`;
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -156,10 +164,7 @@ const SignUp = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="card shadow d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3 pb-3"
-      >
+      <SignUpForm onSubmit={(e) => e.preventDefault()}>
         {inputArr.map((data, idx) => (
           <Input
             key={data.id}
@@ -175,7 +180,7 @@ const SignUp = () => {
           />
         ))}
         <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />
-      </form>
+      </SignUpForm>
     </div>
   );
 };

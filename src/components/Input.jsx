@@ -122,7 +122,7 @@ const Input = ({
         </ImgInputBox>
       ) : (
         <>
-          <div className="d-flex w-100 justify-content-center align-items-center flex-column">
+          <div className="d-flex w-100 justify-content-center align-items-center flex-column pt-4">
             <div className="row mb-2 w-75">
               <div className="col-12 col-md-4 d-flex justify-content-start align-items-center">
                 <DafaultLabel htmlFor={data.id}>{data.name}</DafaultLabel>

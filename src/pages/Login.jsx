@@ -11,6 +11,14 @@ import { useRecoilState } from "recoil";
 import { currentUserState } from "../recoil/atom";
 import setIdCookie from "../function/cookie/setIdCookie";
 import getIdCookie from "../function/cookie/getIdCookie";
+import styled from "styled-components";
+
+const LoginForm = styled.div.attrs({
+  className:
+    "card shadow  d-flex flex-column justify-content-center align-items-center mt-4 w-50 py-3",
+})`
+  min-width: 470px;
+`;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -83,10 +91,7 @@ const Login = () => {
 
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="card shadow  d-flex flex-column justify-content-center align-items-center mt-4 w-50 py-3"
-      >
+      <LoginForm onSubmit={(e) => e.preventDefault()}>
         {userArr.map((data, idx) => (
           <Input
             key={data.id}
@@ -112,7 +117,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-      </form>
+      </LoginForm>
     </div>
   );
 };

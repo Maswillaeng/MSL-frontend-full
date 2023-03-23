@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/Button";
-import DropdownLi from "../components/DropdownLi";
-import Carousel from "../components/Carousel";
+import Button from "../components/common/Button";
+import DropdownLi from "../components/common/DropdownLi";
+import Carousel from "../components/home/Carousel";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { currentUserState, lastSliceNumState } from "../recoil/atom";
 import { boardDataSliceState, sliceDataLengthState } from "../recoil/selector";
-import Card from "../components/Card";
+import Card from "../components/common/Card";
 
 const HomeBox = styled.div.attrs({
   className:

@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Nav from "./pages/Nav";
 import React, { Suspense } from "react";
-import PageLoading from "./components/PageLoading";
+import PageLoading from "./components/common/PageLoading";
 import axios from "axios";
 
 //전역으로 쿠키를 주고 받을 수 있게 설정

@@ -7,10 +7,10 @@ import {
   faThumbsDown as faThumbsDownR,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import members from "../dummy/members";
+import members from "../../dummy/members";
 import { useState } from "react";
 import styled from "styled-components";
-import { elapsedTime } from "../function/utility/ elapsedTime";
+import { elapsedTime } from "../../function/utility/ elapsedTime";
 
 const UserImg = styled.img.attrs({
   className: "rounded-circle me-2 mb-1 pt-1",

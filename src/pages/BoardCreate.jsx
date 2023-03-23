@@ -6,10 +6,10 @@ import {
   faCircle as faCircleS,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCircle as faCircleR } from "@fortawesome/free-regular-svg-icons";
-import AddImg from "../components/AddImg";
+import AddImg from "../components/boardCreate/AddImg";
 import { useLocation, useNavigate } from "react-router-dom";
-import Li from "../components/Li";
-import EditorComponent from "../components/EditorComponent";
+import Li from "../components/common/Li";
+import EditorComponent from "../components/boardCreate/EditorComponent";
 import styled from "styled-components";
 import { postBoard } from "../function/api/postBoard";
 import { putBoard } from "../function/api/putBoard";

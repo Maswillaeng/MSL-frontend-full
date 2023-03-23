@@ -8,16 +8,13 @@ import {
   faThumbsUp as faThumbsUpR,
   faThumbsDown as faThumbsDownR,
 } from "@fortawesome/free-regular-svg-icons";
-import members from "../dummy/members";
 import { useEffect, useState } from "react";
-import Button from "./Button";
+import Button from "../common/Button";
 import Reply from "./Reply";
-import replyData from "../dummy/replyData";
+import replyData from "../../dummy/replyData";
 import styled from "styled-components";
-import { elapsedTime } from "../function/utility/ elapsedTime";
-import { currentTime } from "../function/utility/ currentTime";
-import axios from "axios";
-import { postComment } from "../function/api/postComment";
+import { elapsedTime } from "../../function/utility/ elapsedTime";
+import { currentTime } from "../../function/utility/ currentTime";
 
 const TopCommentBox = styled.div.attrs({
   className: "w-100 d-flex justify-content-start align-items-center mb-2",

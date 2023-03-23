@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import Li from "../components/Li";
+import Li from "../components/common/Li";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 import { postLogOut } from "../function/api/postLogOut";

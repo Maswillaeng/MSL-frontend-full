@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import getIdCookie from "../function/cookie/getIdCookie";
+import getIdCookie from "../../function/cookie/getIdCookie";
 
 const Li = ({ data }) => {
   const navigate = useNavigate();

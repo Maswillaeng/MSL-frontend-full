@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import Comment from "../components/Comment";
-import Button from "../components/Button";
+import Comment from "../components/boardDetail/Comment";
+import Button from "../components/common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import ProfileIcon from "../components/ProfileIcon";
+import ProfileIcon from "../components/boardDetail/ProfileIcon";
 import styled from "styled-components";
 import { currentTime } from "../function/utility/ currentTime";
 import { postBoardHit } from "../function/api/postBoardHit";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
-import SupportBox from "../components/SupportBox";
+import SupportBox from "../components/common/SupportBox";
 import { deleteBoard } from "../function/api/deleteBoard";
 import { postComment } from "../function/api/postComment";
 import { useRecoilValue, useRecoilState } from "recoil";

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import Card from "../components/Card";
-import SkeletonUi from "../components/SkeletonUi";
+import Card from "../components/common/Card";
+import SkeletonUi from "../components/common/SkeletonUi";
 import useIntersectionObserver from "../function/hook/useIntersectionObserver";
 import { lastSliceNumState } from "../recoil/atom";
 import { boardDataSliceState, sliceDataLengthState } from "../recoil/selector";

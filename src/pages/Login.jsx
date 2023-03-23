@@ -83,8 +83,7 @@ const Login = () => {
         setIdCookie(userId, time);
         navigate("/");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         alert("로그인에 실패했습니다.");
       });
   };

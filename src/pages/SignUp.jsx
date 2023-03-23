@@ -152,13 +152,12 @@ const SignUp = () => {
       return targetRefs.current[4].focus();
 
     postSignUp(member)
-      .then((res) => {
+      .then(() => {
         alert("회원가입을 축하합니다.");
         navigate("/");
-        console.log(res);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        alert("회원가입에 실패했습니다.");
       });
   };
 

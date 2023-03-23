@@ -46,7 +46,6 @@ const ContentSpan = styled.span.attrs({
 `;
 
 const Comment = ({ data, userData, checkDeleteHandler }) => {
-  console.log(data);
   const postId = data.postId;
   const commentId = data.commentId;
 

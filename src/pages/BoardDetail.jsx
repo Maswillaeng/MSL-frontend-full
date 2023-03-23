@@ -4,7 +4,6 @@ import Button from "../components/common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfileIcon from "../components/boardDetail/ProfileIcon";
 import styled from "styled-components";
-import { currentTime } from "../function/utility/ currentTime";
 import { postBoardHit } from "../function/api/postBoardHit";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
@@ -22,6 +21,7 @@ import { deleteBoardHit } from "../function/api/deleteBoardHit";
 import { elapsedTime } from "../function/utility/ elapsedTime";
 import { getUser } from "../function/api/getUser";
 import getIdCookie from "../function/cookie/getIdCookie";
+import { getComment } from "../function/api/getComment";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -331,8 +331,6 @@ const BottomBox = styled.div.attrs({
 
 const BottomCommentBox = ({ data, userData, currentUser }) => {
   const navigate = useNavigate();
-  console.log(currentUser);
-  console.log(data.userId);
 
   //게시글 데이터 상태
   const [boardData, setBoardData] = useRecoilState(boardDataState);
@@ -342,6 +340,16 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
 
   //댓글 버튼 상태
   const [onComment, setOnComment] = useState(false);
+
+  //삭제하기 체크
+  const [checkDelete, setCheckDelete] = useState(false);
+
+  /**
+   * 댓글 삭제 핸들러
+   */
+  const checkDeleteHandler = () => {
+    setCheckDelete(!checkDelete);
+  };
 
   /**
    * 댓글 핸들러
@@ -360,8 +368,16 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
     setCommentText(e.target.value);
   };
 
+  //댓글을 셋팅하기 위한 이펙트
+  useEffect(() => {
+    getComment(data.postId).then((res) =>
+      setCommentData(res.data.result.comment)
+    );
+  }, [checkDelete, data.postId, setCommentData]);
+
   //버튼 타겟, 버튼을 클릭하기 위해 생성
   const target = useRef(null);
+
   /**
    * 비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
    */
@@ -375,31 +391,19 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
     }
 
     const comment = {
-      post_id: data.postId,
-      comment_id: commentData.length + 1,
-      nickname: userData.nickname,
-      user_image: userData.userImage,
-      createAt: currentTime(),
       content: commentText,
-      like: 0,
-      dislike: 0,
     };
 
     // 댓글 제출 이벤트 확인 완료
-    postComment(data.postId, comment).then((res) => {
-      console.log(res);
+    postComment(data.postId, comment).then(() => {
+      getComment(data.postId).then((res) =>
+        setCommentData(res.data.result.comment)
+      );
     });
-
-    setCommentData([...commentData, comment]);
     target.current.click();
     setCommentText("");
     setOnComment(false);
   };
-
-  //제출 상태가 변화할 때, 새로운 댓글을 등록해주기 위한 이펙트
-  useEffect(() => {
-    setCommentData(commentData.filter((x) => x.post_id === data.postId));
-  }, [onComment]);
 
   /**
    * 글 수정하기로 이동
@@ -427,7 +431,12 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
       <BottomBox>
         <LengthBox>댓글:{commentData.length}개</LengthBox>
         {commentData.map((x, i) => (
-          <Comment key={i} data={x} userData={userData} />
+          <Comment
+            key={x.commentId}
+            data={x}
+            userData={userData}
+            checkDeleteHandler={checkDeleteHandler}
+          />
         ))}
       </BottomBox>
       <CommentBox>
@@ -457,7 +466,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
                     onChange={changeCommentText}
                     className="form-control non-resize"
                     id="comment"
-                    maxLenth={300}
+                    maxlenth={300}
                     rows="5"
                   ></textarea>
                 </div>

@@ -14,7 +14,7 @@ import { postSignUp } from "../function/api/postSignUp";
 import getIdCookie from "../function/cookie/getIdCookie";
 import styled from "styled-components";
 
-const SignUpForm = styled.div.attrs({
+const SignUpForm = styled.form.attrs({
   className:
     "card shadow d-flex flex-column justify-content-center align-items-center mt-4 w-50 pt-3 pb-3",
 })`

@@ -5,7 +5,7 @@ import axios from "axios";
  */
 export const deleteComment = async (postId, commentId) => {
   return await axios.delete(
-    `http://localhost:8080/api/${postId}/${commentId}`,
+    `http://localhost:8080/api/post/${postId}/${commentId}`,
     {
       headers: {
         "Content-Type": `application/json`,

@@ -1,11 +1,11 @@
 import axios from "axios";
 
 /**
- * 댓글 작성
+ * 대댓글 작성
  */
-export const postComment = async (postId, data) => {
+export const postReply = async (postId, commentId, data) => {
   return await axios.post(
-    `http://localhost:8080/api/post/${postId}/comment`,
+    `http://localhost:8080/api/post/${postId}/${commentId}/comment`,
     data,
     {
       headers: {

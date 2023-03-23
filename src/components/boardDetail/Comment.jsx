@@ -11,10 +11,13 @@ import {
 import { useEffect, useState } from "react";
 import Button from "../common/Button";
 import Reply from "./Reply";
-import replyData from "../../dummy/replyData";
 import styled from "styled-components";
 import { elapsedTime } from "../../function/utility/ elapsedTime";
-import { currentTime } from "../../function/utility/ currentTime";
+import { deleteComment } from "../../function/api/deleteComment";
+import { postReply } from "../../function/api/postReply";
+import { getReply } from "../../function/api/getReply";
+import { putComment } from "../../function/api/putComment";
+import getIdCookie from "../../function/cookie/getIdCookie";
 
 const TopCommentBox = styled.div.attrs({
   className: "w-100 d-flex justify-content-start align-items-center mb-2",
@@ -28,7 +31,7 @@ const ProfileImg = styled.img.attrs({
 `;
 const IconBox = styled.div.attrs({
   className:
-    "w-100 d-flex justify-content-center align-items-end ms-5 flex-column",
+    "w-100 d-flex justify-content-center align-items-end ms-2 flex-column",
 })``;
 const ReplyImg = styled.img.attrs({
   className: "rounded-circle me-3",
@@ -36,13 +39,22 @@ const ReplyImg = styled.img.attrs({
 })`
   height: 3vh;
 `;
+const ContentSpan = styled.span.attrs({
+  className: "",
+})`
+  min-height: 30px;
+`;
 
-const Comment = ({ data, userData }) => {
+const Comment = ({ data, userData, checkDeleteHandler }) => {
+  console.log(data);
+  const postId = data.postId;
+  const commentId = data.commentId;
+
   //댓글 좋아요 상태
   const [commentLike, setCommentLike] = useState(false);
 
   // 댓글 좋아요 카운트
-  const [likeCount, setLikeCount] = useState(Number(data.like));
+  const [likeCount, setLikeCount] = useState(Number(data.likeCount));
 
   /**
    * 댓글 좋아요 상태와 카운트를 관리하는 이벤트
@@ -63,7 +75,7 @@ const Comment = ({ data, userData }) => {
   const [commentDislike, setCommentDislike] = useState(false);
 
   //댓글 싫어요 카운트
-  const [dislikeCount, setDislikeCount] = useState(Number(data.dislike));
+  const [dislikeCount, setDislikeCount] = useState(Number(data.hateCount));
 
   /**
    * 댓글 싫어요 상태와 카운트를 관리하는 이벤트
@@ -97,6 +109,9 @@ const Comment = ({ data, userData }) => {
    * 답글 버튼 상태를 바꿔주는 이벤트
    */
   const writeReplyHandler = () => {
+    if (getIdCookie() === 0) {
+      return alert("로그인을 부탁드려요.");
+    }
     setWriteReply(!writeReply);
   };
 
@@ -110,6 +125,16 @@ const Comment = ({ data, userData }) => {
     setReadReply(!readReply);
   };
 
+  //모든 답글 데이터의 상태
+  const [replyList, setReplyList] = useState([]);
+
+  /**
+   * 댓글 삭제 이벤트
+   */
+  const deleteCommentData = () => {
+    deleteComment(postId, commentId).then(checkDeleteHandler);
+  };
+
   /**
    * 답글 등록 이벤트
    */
@@ -118,46 +143,57 @@ const Comment = ({ data, userData }) => {
       return alert("답글을 적어주세요.");
     }
     const reply = {
-      post_id: data.post_id,
-      comment_id: data.comment_id,
-      reply_id: replyList.length + 1,
-      nickname: userData.nickname,
-      user_image: userData.userImage,
       content: replyVal,
-      createAt: currentTime(),
-      like: 0,
-      dislike: 0,
     };
-    replyData.push(reply);
-    setCheckReply(true);
-    setWriteReply(false);
+    postReply(postId, commentId, reply).then(() => {
+      getReply(postId, commentId)
+        .then((res) => {
+          setReplyList(res.data.result);
+        })
+        .then(() => {
+          setWriteReply(false);
+        });
+    });
   };
 
-  //모든 답글 데이터의 상태
-  const [replyList, setReplyList] = useState(
-    replyData.filter(
-      (x) => x.post_id === data.post_id && x.comment_id === data.comment_id
-    )
-  );
-
-  //답글 제출 체크용
-  const [checkReply, setCheckReply] = useState(false);
-
-  //답글 제출이 확인되면 새로운 데이터를 가져오는 이펙트
+  //최초 1회 답글 셋팅
   useEffect(() => {
-    setReplyList(
-      replyData.filter(
-        (x) => x.post_id === data.post_id && x.comment_id === data.comment_id
-      )
-    );
-    setCheckReply(false);
-  }, [checkReply]);
+    getReply(postId, commentId).then((res) => {
+      setReplyList(res.data.result);
+    });
+  }, [commentId, postId]);
+
+  //댓글 수정을 위한 상태
+  const [inputVal, setInputVal] = useState(data.content);
+
+  //댓글 수정 상태 체크용
+  const [input, setInput] = useState(false);
+
+  /**
+   * input칸 핸들러 , 값이 수정되면 다시 셋팅
+   */
+  const inputHandler = () => {
+    if (input) {
+      const data = {
+        content: inputVal,
+      };
+      putComment(postId, commentId, data);
+    }
+    setInput(!input);
+  };
+
+  /**
+   * input 체인지 함수
+   */
+  const changeInput = (e) => {
+    setInputVal(e.target.value);
+  };
 
   return (
     <div className="w-100 d-flex justify-content-center align-items-center flex-column">
       <TopCommentBox>
         <div className="me-2">
-          <ProfileImg src={userData.userImage} />
+          <ProfileImg src={data.userImage} />
         </div>
         <div className="ms-2 me-5 w-100 ">
           <div>
@@ -168,7 +204,21 @@ const Comment = ({ data, userData }) => {
         <IconBox>
           <div className="mb-2 d-flex justify-content-center align-items-center w-100">
             <div className="flex-07">
-              <FontAwesomeIcon icon={faXmarkS} className="ps-5 fs-5 pointer" />
+              {getIdCookie() === data.userId && (
+                <>
+                  <span
+                    className="bg-dark text-white p-1 rounded pointer"
+                    onClick={inputHandler}
+                  >
+                    {input ? "완료" : "수정"}
+                  </span>
+                  <FontAwesomeIcon
+                    icon={faXmarkS}
+                    className="ps-3 fs-5 pointer"
+                    onClick={deleteCommentData}
+                  />
+                </>
+              )}
             </div>
             <div className="flex-02 ps-2">
               <FontAwesomeIcon
@@ -177,7 +227,7 @@ const Comment = ({ data, userData }) => {
                 className="me-2 comment-icon"
               />
             </div>
-            <div className="flex-01 ">
+            <div className="flex-01">
               <span>{likeCount}</span>
             </div>
           </div>
@@ -197,7 +247,11 @@ const Comment = ({ data, userData }) => {
         </IconBox>
       </TopCommentBox>
       <div className="w-100 d-flex justify-content-start align-items-center px-5 py-2">
-        {data.content}
+        {input ? (
+          <input value={inputVal} onChange={changeInput} />
+        ) : (
+          <ContentSpan>{inputVal}</ContentSpan>
+        )}
       </div>
       <div className="w-100 d-flex justify-content-start align-items-center px-5 mt-3 pb-1 pointer">
         {replyList.length !== 0 && (
@@ -211,10 +265,7 @@ const Comment = ({ data, userData }) => {
       </div>
       <div className="w-100 d-flex justify-content-start align-items-center flex-column">
         {writeReply && (
-          <div
-            aria-label={"답글달기"}
-            className="d-flex justify-content-center align-items-center w-100"
-          >
+          <div className="d-flex justify-content-center align-items-center w-100">
             <ReplyImg src={userData.userImage} />
             <input
               type="text"

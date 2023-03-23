@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
-import Nav from "./pages/Nav";
+import "./css/App.css";
+import Nav from "./components/common/Nav";
 import React, { Suspense } from "react";
 import PageLoading from "./components/common/PageLoading";
 import axios from "axios";

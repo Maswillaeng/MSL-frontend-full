@@ -13,7 +13,7 @@ import setIdCookie from "../function/cookie/setIdCookie";
 import getIdCookie from "../function/cookie/getIdCookie";
 import styled from "styled-components";
 
-const LoginForm = styled.div.attrs({
+const LoginForm = styled.form.attrs({
   className:
     "card shadow  d-flex flex-column justify-content-center align-items-center mt-4 w-50 py-3",
 })`

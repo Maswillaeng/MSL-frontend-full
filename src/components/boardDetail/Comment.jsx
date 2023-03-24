@@ -247,7 +247,7 @@ const Comment = ({ data, userData, checkDeleteHandler }) => {
       </TopCommentBox>
       <div className="w-100 d-flex justify-content-start align-items-center px-5 py-2">
         {input ? (
-          <input value={inputVal} onChange={changeInput} />
+          <input className="border border-primary" value={inputVal} onChange={changeInput} />
         ) : (
           <ContentSpan>{inputVal}</ContentSpan>
         )}

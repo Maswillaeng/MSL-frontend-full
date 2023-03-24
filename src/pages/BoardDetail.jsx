@@ -4,7 +4,7 @@ import Button from "../components/common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfileIcon from "../components/boardDetail/ProfileIcon";
 import styled from "styled-components";
-import { postBoardHit } from "../function/api/postBoardHit";
+import { postBoardLike } from "../function/api/postBoardLike";
 import { postFollow } from "../function/api/postFollow";
 import { deleteFollow } from "../function/api/deleteFollow";
 import SupportBox from "../components/common/SupportBox";
@@ -17,11 +17,12 @@ import {
   boardDataState,
 } from "../recoil/atom";
 import { userState } from "../recoil/selector";
-import { deleteBoardHit } from "../function/api/deleteBoardHit";
+import { deleteBoardLike } from "../function/api/deleteBoardLike";
 import { elapsedTime } from "../function/utility/ elapsedTime";
 import { getUser } from "../function/api/getUser";
 import getIdCookie from "../function/cookie/getIdCookie";
 import { getComment } from "../function/api/getComment";
+import Hash from "../components/boardDetail/Hash";
 
 const BoardDetailBox = styled.div.attrs({
   className:
@@ -156,9 +157,16 @@ const ProfileContainer = styled.div.attrs({
   min-width: 365px;
 `;
 const TopProfileBox = ({ data, userData }) => {
+  const postId = data.postId;
+  const postLikeCount = data.likeCount;
+  const postUserId = data.userId;
+  const currentUserId = userData.userId;
+  const currentFollowerState = userData.followState;
+  const likeList = userData.likePostList;
   //작성자 정보
   //작성자의 이미지때문에 관리 시작
   const [author, setAuthor] = useState({});
+  const authorfollowerCount = author.followerCount;
 
   /**
    * 작성자 데이터 세팅
@@ -170,43 +178,42 @@ const TopProfileBox = ({ data, userData }) => {
     });
   };
 
-  //최초 1회 작성자 데이터 세팅
-  useEffect(() => {
-    getAuthor(data.userId);
-  }, [data.userId]);
-
   //추천 숫자
-  const [hitCount, setHitCount] = useState(data.hits);
+  const [likeCount, setLikeCount] = useState(0);
 
   //추천 상태
-  const [hit, setHit] = useState(false);
+  const [like, setLike] = useState(false);
 
   /**
    * 추천 상태와 카운트를 바꿔주는 이벤트
    */
-  const hitHandler = () => {
+  const likeHandler = () => {
     if (getIdCookie() === 0) {
       return alert("로그인을 부탁드려요.");
     }
-    const postId = data.postId;
-    const currentUserId = userData.userId;
+
     const hitUser = { post_id: postId, user_id: currentUserId };
-    setHit(!hit);
-    if (hit) {
-      setHitCount(hitCount - 1);
-      deleteBoardHit(postId, hitUser).catch((err) => {
-        alert("잠시 후에 다시 시도해주세요.");
-      });
+
+    if (like) {
+      deleteBoardLike(postId, hitUser)
+        .then((res) => setLikeCount(res.data.result.likeCount))
+        .catch(() => {
+          return alert("잠시 후에 다시 시도해주세요.");
+        });
     } else {
-      setHitCount(hitCount + 1);
-      postBoardHit(postId, hitUser).catch((err) => {
-        alert("잠시 후에 다시 시도해주세요.");
-      });
+      postBoardLike(postId, hitUser)
+        .then((res) => {
+          setLikeCount(res.data.result.likeCount);
+        })
+        .catch(() => {
+          return alert("잠시 후에 다시 시도해주세요.");
+        });
     }
+
+    setLike(!like);
   };
 
   //구독 숫자
-  //작성자 정보가 내려와야 함
   const [subscribeCount, setSubscribeCount] = useState(0);
 
   //구독 상태
@@ -220,22 +227,44 @@ const TopProfileBox = ({ data, userData }) => {
       return alert("로그인을 부탁드려요.");
     }
 
-    const postUserId = data.userId;
-    const currentUserId = userData.userId;
     const followUser = { my_id: currentUserId, user_id: postUserId };
-    setSubscribe(!subscribe);
+
     if (subscribe) {
-      setSubscribeCount(subscribeCount - 1);
-      deleteFollow(postUserId, followUser).catch(() => {
-        alert("잠시 후에 다시 시도해주세요.");
-      });
+      deleteFollow(postUserId, followUser)
+        .then((res) => setSubscribeCount(subscribeCount - 1))
+        .catch(() => {
+          return alert("잠시 후에 다시 시도해주세요.");
+        });
     } else {
-      setSubscribeCount(subscribeCount + 1);
-      postFollow(postUserId, followUser).catch(() => {
-        alert("잠시 후에 다시 시도해주세요.");
-      });
+      postFollow(postUserId, followUser)
+        .then((res) => setSubscribeCount(subscribeCount + 1))
+        .catch(() => {
+          return alert("잠시 후에 다시 시도해주세요.");
+        });
     }
+
+    setSubscribe(!subscribe);
   };
+
+  //작성자 정보, 추천, 팔로워 최초 세팅
+  useEffect(() => {
+    getAuthor(postUserId);
+    setLikeCount(postLikeCount);
+    setSubscribeCount(authorfollowerCount);
+    setSubscribe(currentFollowerState);
+    setLike(() => {
+      if (likeList.findIndex((el) => el.postId === postId) !== -1) {
+        return true;
+      }
+    });
+  }, [
+    authorfollowerCount,
+    currentFollowerState,
+    likeList,
+    postId,
+    postLikeCount,
+    postUserId,
+  ]);
 
   return (
     <ProfileContainer>
@@ -248,14 +277,14 @@ const TopProfileBox = ({ data, userData }) => {
       </div>
       <div className="d-flex justify-content-center align-items-center flex-column w-50">
         <div>
-          <span className="ms-4">추천 : {hitCount}</span>
+          <span className="ms-4">추천 : {likeCount}</span>
         </div>
         <div className="d-flex h-100 flex-column">
-          <div onClick={hitHandler} className="mx-2 py-3 w-100">
+          <div onClick={likeHandler} className="mx-2 py-3 w-100">
             <ProfileIcon
               message={"추천"}
-              state={hit}
-              addStyle={hit ? "bg-primary border-primary" : "border-primary"}
+              state={like}
+              addStyle={like ? "bg-primary border-primary" : "border-primary"}
             />
           </div>
           <div onClick={subscribeHandler} className="mx-2 py-2 w-100">
@@ -289,6 +318,12 @@ const TimeBox = styled.div.attrs({
 })`
   min-width: 365px;
 `;
+const HashBox = styled.div.attrs({
+  className: "w-100 shadow",
+})`
+  min-height: 4.5vh;
+  min-width: 365px;
+`;
 
 const TopContentBox = ({ data }) => {
   return (
@@ -303,6 +338,13 @@ const TopContentBox = ({ data }) => {
       <ContentBox
         dangerouslySetInnerHTML={{ __html: data.content }}
       ></ContentBox>
+      <div className="card w-50 mt-4 shadow">
+        <HashBox>
+          {data.hashTag.map((x, i) => (
+            <Hash tagName={x} key={x + i} />
+          ))}
+        </HashBox>
+      </div>
     </div>
   );
 };
@@ -382,7 +424,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
    * 비회원일때 로그인 페이지로 이동하고, 회원이라면 댓글을 작성할 수 있게 해주는 이벤트
    */
   const buttonEvent = () => {
-    if (currentUser === 0) {
+    if (getIdCookie() === 0) {
       return navigate("/login");
     }
 

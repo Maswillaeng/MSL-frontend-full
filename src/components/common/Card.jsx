@@ -12,7 +12,7 @@ const CardBox = styled.div.attrs({
 })``;
 
 const ThumbnailImg = styled.img.attrs({
-  alt: "thumbnail",
+  alt: "",
   className: "img-fluid mt-3",
 })``;
 const TitleBox = styled.div.attrs({

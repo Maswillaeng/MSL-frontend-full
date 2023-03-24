@@ -432,9 +432,9 @@ const BottomContentBox = ({
           handleAddition={handleAddition}
           handleDelete={handleDelete}
           classNames={{
-            tag: "btn btn-primary p-1 m-1", // tag 요소에 btn, btn-primary 클래스 추가
-            remove: "btn btn-primary btn-sm", // remove 요소에 btn, btn-primary, btn-sm 클래스 추가
-            tagInput: "form-control w-100", // input 요소에 form-control 클래스 추가
+            tag: "btn btn-primary p-1 m-1", 
+            remove: "btn btn-primary btn-sm", 
+            tagInput: "form-control w-100", 
             tagInputField: "tag-input-class",
           }}
           inputAttributes={{

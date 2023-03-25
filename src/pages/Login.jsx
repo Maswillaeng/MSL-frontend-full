@@ -6,11 +6,10 @@ import {
   validationEmail,
   validationPassword,
 } from "../function/utility/validation";
-import { postLogin } from "../function/api/postLogin";
+import { postLogin } from "../function/api/log";
 import { useRecoilState } from "recoil";
 import { currentUserState } from "../recoil/atom";
-import setIdCookie from "../function/cookie/setIdCookie";
-import getIdCookie from "../function/cookie/getIdCookie";
+import { setIdCookie, getIdCookie } from "../function/cookie/cookie";
 import styled from "styled-components";
 
 const LoginForm = styled.form.attrs({

@@ -1,5 +1,5 @@
 import { selector } from "recoil";
-import { getUser } from "../function/api/getUser";
+import { getUser } from "../function/api/log";
 import { boardDataState, currentUserState, lastSliceNumState } from "./atom";
 
 //게시글 분할

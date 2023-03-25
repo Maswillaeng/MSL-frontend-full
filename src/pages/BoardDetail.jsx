@@ -4,24 +4,24 @@ import Button from "../components/common/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import ProfileIcon from "../components/boardDetail/ProfileIcon";
 import styled from "styled-components";
-import { postBoardLike } from "../function/api/postBoardLike";
-import { postFollow } from "../function/api/postFollow";
-import { deleteFollow } from "../function/api/deleteFollow";
+import { postFollow, deleteFollow } from "../function/api/follow";
 import SupportBox from "../components/common/SupportBox";
-import { deleteBoard } from "../function/api/deleteBoard";
-import { postComment } from "../function/api/postComment";
-import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  deleteBoard,
+  deleteBoardLike,
+  postBoardLike,
+} from "../function/api/board";
+import { postComment, getComment } from "../function/api/comment";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import {
   commentDataState,
   currentUserState,
   boardDataState,
 } from "../recoil/atom";
 import { userState } from "../recoil/selector";
-import { deleteBoardLike } from "../function/api/deleteBoardLike";
 import { elapsedTime } from "../function/utility/ elapsedTime";
-import { getUser } from "../function/api/getUser";
-import getIdCookie from "../function/cookie/getIdCookie";
-import { getComment } from "../function/api/getComment";
+import { getUser } from "../function/api/log";
+import { getIdCookie } from "../function/cookie/cookie";
 import Hash from "../components/boardDetail/Hash";
 
 const BoardDetailBox = styled.div.attrs({
@@ -157,6 +157,8 @@ const ProfileContainer = styled.div.attrs({
   min-width: 365px;
 `;
 const TopProfileBox = ({ data, userData }) => {
+  console.log(data);
+  console.log(userData);
   const postId = data.postId;
   const postLikeCount = data.likeCount;
   const postUserId = data.userId;
@@ -253,7 +255,7 @@ const TopProfileBox = ({ data, userData }) => {
     setSubscribeCount(authorfollowerCount);
     setSubscribe(currentFollowerState);
     setLike(() => {
-      if (likeList.findIndex((el) => el.postId === postId) !== -1) {
+      if (likeList && likeList.findIndex((el) => el.postId === postId) !== -1) {
         return true;
       }
     });
@@ -265,6 +267,12 @@ const TopProfileBox = ({ data, userData }) => {
     postLikeCount,
     postUserId,
   ]);
+
+  const currentUser = useSetRecoilState(currentUserState);
+
+  useEffect(() => {
+    currentUser(getIdCookie());
+  }, [subscribe, like]);
 
   return (
     <ProfileContainer>
@@ -319,10 +327,10 @@ const TimeBox = styled.div.attrs({
   min-width: 365px;
 `;
 const HashContent = styled.div.attrs({
-  className:'card w-50 mt-4'
+  className: "card w-50 mt-4",
 })`
-  min-width:365px;
-`
+  min-width: 365px;
+`;
 const HashBox = styled.div.attrs({
   className: "w-100 shadow",
 })`

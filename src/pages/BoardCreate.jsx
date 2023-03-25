@@ -11,12 +11,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Li from "../components/common/Li";
 import EditorComponent from "../components/boardCreate/EditorComponent";
 import styled from "styled-components";
-import { postBoard } from "../function/api/postBoard";
-import { putBoard } from "../function/api/putBoard";
+import { putBoard,postBoard,getBoard } from "../function/api/board";
 import { WithContext as ReactTags } from "react-tag-input";
 import { useRecoilState } from "recoil";
 import { boardDataState } from "../recoil/atom";
-import { getBoard } from "../function/api/getBoard";
 
 const BoardCreate = () => {
   const location = useLocation();

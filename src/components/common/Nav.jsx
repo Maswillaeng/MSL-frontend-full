@@ -2,12 +2,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Li from "./Li";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
-import { postLogOut } from "../../function/api/postLogOut";
+import { postLogOut } from "../../function/api/log";
 import { useRecoilState } from "recoil";
 import { currentUserState, lastSliceNumState } from "../../recoil/atom";
 import { useCallback, useEffect } from "react";
-import deleteIdCookie from "../../function/cookie/deleteIdCookie";
-import getIdCookie from "../../function/cookie/getIdCookie";
+import { getIdCookie, deleteIdCookie } from "../../function/cookie/cookie";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성

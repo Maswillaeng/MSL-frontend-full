@@ -10,8 +10,8 @@ import {
 } from "../function/utility/validation";
 import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
-import { postSignUp } from "../function/api/postSignUp";
-import getIdCookie from "../function/cookie/getIdCookie";
+import { postSignUp } from "../function/api/log";
+import { getIdCookie } from "../function/cookie/cookie";
 import styled from "styled-components";
 
 const SignUpForm = styled.form.attrs({

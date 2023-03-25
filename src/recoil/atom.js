@@ -1,6 +1,6 @@
 import { atom } from "recoil";
-import { getBoard } from "../function/api/getBoard";
-import getIdCookie from "../function/cookie/getIdCookie";
+import { getBoard } from "../function/api/board";
+import {getIdCookie} from "../function/cookie/cookie";
 
 //로그인에 성공한 유저의 id정보
 export const currentUserState = atom({

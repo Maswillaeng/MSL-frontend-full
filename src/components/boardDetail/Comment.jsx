@@ -13,11 +13,9 @@ import Button from "../common/Button";
 import Reply from "./Reply";
 import styled from "styled-components";
 import { elapsedTime } from "../../function/utility/ elapsedTime";
-import { deleteComment } from "../../function/api/deleteComment";
-import { postReply } from "../../function/api/postReply";
-import { getReply } from "../../function/api/getReply";
-import { putComment } from "../../function/api/putComment";
-import getIdCookie from "../../function/cookie/getIdCookie";
+import { deleteComment,putComment } from "../../function/api/comment";
+import { postReply,getReply } from "../../function/api/reply";
+import {getIdCookie} from "../../function/cookie/cookie";
 
 const TopCommentBox = styled.div.attrs({
   className: "w-100 d-flex justify-content-start align-items-center mb-2",

@@ -4,8 +4,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import SupportBox from "../components/common/SupportBox";
-import { deleteFollow } from "../function/api/deleteFollow";
-import { postFollow } from "../function/api/postFollow";
+import { deleteFollow,postFollow } from "../function/api/follow";
 import { userState } from "../recoil/selector";
 
 const MyPage = () => {

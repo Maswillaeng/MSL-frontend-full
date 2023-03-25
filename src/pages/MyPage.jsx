@@ -52,8 +52,8 @@ const MyPage = () => {
       <TopProfileTop userData={userData} />
       <TopProfileBottom userData={userData} currentUser={currentUser} />
       <BottomCategori setCategori={setCategori} categori={categori} />
-      <div className="mb-5 d-flex justify-content-center align-items-center w-100">
-        <div className="mt-5 w-75 row">
+      <div className="mb-5 w-100">
+        <div className="mt-5 w-100 d-flex justify-content-center align-items-center">
           <div className="w-100 row">
             {boardData.map((data, i) => (
               <Card data={data} key={i} />
@@ -69,7 +69,9 @@ const MyPage = () => {
 const UserImg = styled.img.attrs({
   className: "rounded-circle img-fluid",
   alt: "",
-})``;
+})`
+  min-width: 75px;
+`;
 
 const TopProfileTop = ({ userData }) => {
   return (
@@ -107,6 +109,10 @@ const TopProfileBottom = ({ userData, currentUser }) => {
    * 구독 상태와 카운트를 바꿔주는 이벤트
    */
   const subscribeHandler = () => {
+    if (userData.userId === currentUser.userId) {
+      return alert("다른사람만 팔로우 할 수 있습니다.");
+    }
+
     const followUser = { my_id: currentUser.userId, user_id: userData.userId };
     if (subscribe) {
       deleteFollow(userData.userId, followUser)

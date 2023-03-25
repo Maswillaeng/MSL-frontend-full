@@ -5,6 +5,8 @@ import {
   faComment as faCommentR,
 } from "@fortawesome/free-regular-svg-icons";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import FocusBoard from "./FocusBoard";
 
 const CardBox = styled.div.attrs({
   className:
@@ -37,42 +39,81 @@ const Card = ({ data }) => {
     navigate(`/boardDetail/${data.postId}`);
   };
 
+  //게시글 포커스 이벤트
+  const [focus, setFocus] = useState(false);
+  const [timeEvent, setTimeEvent] = useState(null);
+  // 마우스 오버 이벤트 핸들러
+  const handleMouseEnter = () => {
+    setTimeEvent(
+      setTimeout(() => {
+        setFocus(true);
+      }, 500)
+    );
+  };
+
+  // 마우스 리브 이벤트 핸들러
+  const handleMouseLeave = () => {
+    // 이전에 등록한 이벤트가 있다면 삭제
+    if (timeEvent) {
+      clearTimeout(timeEvent);
+      setTimeEvent(null);
+    }
+    // focus 상태 초기화
+    setFocus(false);
+  };
+
+  //전체 화면을 체크하기 위한 상태
+  //의존성 배열을 비워둬도 작동하는 것으로 봐서 resize할때마다 랜더링이 일어나다보니 괜찮은 듯...?
+  const [isFull, setIsFull] = useState(true);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsFull(window.innerWidth === window.screen.width);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <CardBox>
-      <div
-        onClick={detail}
-        className="p-2 border bg-light d-flex flex-column align-items-center shadow pointer h-100 mx-4"
-      >
-        <div className="mb-5 h-50 flex-08 w-75">
-          <ThumbnailImg src={data.thumbnail} />
-        </div>
-        {data.title && (
-          <TitleBox>
-            <span>{data.title}</span>
-          </TitleBox>
-        )}
-        <div className="mt-4 d-flex align-items-center justify-content-center w-100 pb-2 h-25 flex-01">
-          {data.nickname && (
-            <div className="mx-2">
-              <UserImg src={"img/마쉴랭.PNG"} />
-              <span>{data.nickname}</span>
-            </div>
+    <>
+      <CardBox onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        {isFull && focus && <FocusBoard postId={data.postId} />}
+        <div
+          onClick={detail}
+          className="p-2 border bg-light d-flex flex-column align-items-center shadow pointer h-100 mx-4"
+        >
+          <div className="mb-5 h-50 flex-08 w-75">
+            <ThumbnailImg src={data.thumbnail} />
+          </div>
+          {data.title && (
+            <TitleBox>
+              <span>{data.title}</span>
+            </TitleBox>
           )}
-          <div className="mx-2">
-            <FontAwesomeIcon icon={faThumbsUpR} className="me-1 card-icon" />
-            <span>{data.likeCount}</span>
-          </div>
-          <div className="mx-2">
-            <FontAwesomeIcon
-              icon={faCommentR}
-              className="me-1 card-icon"
-              id="card-icon"
-            />
-            <span>{data.commentCount}</span>
+          <div className="mt-4 d-flex align-items-center justify-content-center w-100 pb-2 h-25 flex-01">
+            {data.nickname && (
+              <div className="mx-2">
+                <UserImg src={"img/마쉴랭.PNG"} />
+                <span>{data.nickname}</span>
+              </div>
+            )}
+            <div className="mx-2">
+              <FontAwesomeIcon icon={faThumbsUpR} className="me-1 card-icon" />
+              <span>{data.likeCount}</span>
+            </div>
+            <div className="mx-2">
+              <FontAwesomeIcon
+                icon={faCommentR}
+                className="me-1 card-icon"
+                id="card-icon"
+              />
+              <span>{data.commentCount}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </CardBox>
+      </CardBox>
+    </>
   );
 };
 

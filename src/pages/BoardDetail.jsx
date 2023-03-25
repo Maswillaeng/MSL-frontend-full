@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Comment from "../components/boardDetail/Comment";
 import Button from "../components/common/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ProfileIcon from "../components/boardDetail/ProfileIcon";
 import styled from "styled-components";
 import { postFollow, deleteFollow } from "../function/api/follow";
@@ -30,7 +30,9 @@ const BoardDetailBox = styled.div.attrs({
     "container rounded d-flex flex-column justify-content-start align-items-center p-5",
 })``;
 
-const BoardDetail = () => {
+const BoardDetail = ({ postId }) => {
+  const location = useLocation();
+  const path = location.pathname;
   //useParams가 즉각 작동하지 않아서 400에러가 뜨긴하는데 다음부턴 postId까지 같이 넣어달라고 해야겠다 그러면 에러가 안뜰듯?
   const params = useParams();
 
@@ -45,11 +47,18 @@ const BoardDetail = () => {
 
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
-    getPickBoard(params.id).then((res) => {
-      setBoard(res.data.result);
-    });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [params]);
+    if (params.id && !path.includes("myPage")) {
+      getPickBoard(params.id).then((res) => {
+        setBoard(res.data.result);
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    if (postId) {
+      getPickBoard(postId).then((res) => {
+        setBoard(res.data.result);
+      });
+    }
+  }, [params, path, postId]);
 
   return (
     <BoardDetailBox>

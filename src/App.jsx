@@ -16,6 +16,7 @@ const App = () => {
   const Board = React.lazy(() => import("./pages/Board"));
   const BoardCreate = React.lazy(() => import("./pages/BoardCreate"));
   const BoardDetail = React.lazy(() => import("./pages/BoardDetail"));
+
   return (
     <BrowserRouter>
       <Suspense fallback={<PageLoading />}>

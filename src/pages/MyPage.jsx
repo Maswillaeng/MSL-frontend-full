@@ -27,8 +27,8 @@ const MyPage = () => {
     });
   }, [params]);
 
+  //카테고리에 맞게 게시글 셋팅
   const [boardData, setBoardData] = useState([]);
-
   useEffect(() => {
     if (categori === "작성") {
       setBoardData(userData.postList);
@@ -61,7 +61,9 @@ const MyPage = () => {
           </div>
         </div>
       </div>
-      <SupportBox userData={userData} editUser={editUser} />
+      {userData.userId === currentUser.userId && (
+        <SupportBox userData={userData} editUser={editUser} />
+      )}
     </div>
   );
 };

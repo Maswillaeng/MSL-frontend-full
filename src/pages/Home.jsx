@@ -16,6 +16,7 @@ const HomeBox = styled.div.attrs({
 
 const Home = () => {
   const navigate = useNavigate();
+
   return (
     <HomeBox>
       <TopSearchBox navigate={navigate} />

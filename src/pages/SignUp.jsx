@@ -12,7 +12,6 @@ import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/log";
 import { getIdCookie } from "../function/cookie/cookie";
 import styled from "styled-components";
-import { email } from "../function/email";
 import axios from "axios";
 
 const SignUpForm = styled.form.attrs({
@@ -133,7 +132,7 @@ const SignUp = () => {
       setWarning(realTimeValidation(members, member));
     }, 500);
     return () => clearTimeout(debounceTimer);
-  }, [member]);
+  }, [member, members]);
 
   /**
    * 폼 제출 시, 마지막 유효성 검사

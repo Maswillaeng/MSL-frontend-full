@@ -1,4 +1,3 @@
-import members from "../../dummy/members";
 import {
   validationNickname,
   validationPassword,
@@ -8,7 +7,7 @@ import {
 /**
  * 실시간 유효성 검사 이벤트
  */
-export const realTimeValidation = (member) => {
+export const realTimeValidation = (members, member) => {
   let message = {};
   if (members.filter((x) => x.email === member.email).length !== 0) {
     message = { email: "이미 사용중인 이메일입니다." };

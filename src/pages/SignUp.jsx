@@ -8,11 +8,12 @@ import {
   validationPassword,
   validationPhone,
 } from "../function/utility/validation";
-import members from "../dummy/members";
 import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/log";
 import { getIdCookie } from "../function/cookie/cookie";
 import styled from "styled-components";
+import { email } from "../function/email";
+import axios from "axios";
 
 const SignUpForm = styled.form.attrs({
   className:
@@ -24,6 +25,14 @@ const SignUpForm = styled.form.attrs({
 const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  //유저 리스트 데이터
+  const [members, setMembers] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/user-list").then((res) => {
+      setMembers(res.data.code);
+    });
+  }, []);
 
   //최초 접근 시, 이메일 입력칸 포커스
   useEffect(() => {
@@ -121,7 +130,7 @@ const SignUp = () => {
     const debounceTimer = setTimeout(() => {
       //서버에 api 요청을 모아서 1번만 해야하기때문에 입력을 멈췄을 때,
       // realTimeValidation 함수만 1번 실행되면 된다.
-      setWarning(realTimeValidation(member));
+      setWarning(realTimeValidation(members, member));
     }, 500);
     return () => clearTimeout(debounceTimer);
   }, [member]);

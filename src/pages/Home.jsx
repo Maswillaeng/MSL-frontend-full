@@ -68,6 +68,7 @@ const TopSearchBox = ({ navigate }) => {
 const TopMainNavBox = ({ navigate }) => {
   //로그인 체크 상태
   const currentUser = useRecoilValue(currentUserState);
+
   /**
    * 칵테일 레시피 카테고리로 이동하기 위한 이벤트
    */
@@ -104,7 +105,7 @@ const TopMainNavBox = ({ navigate }) => {
           <li className="nav-item flex-grow-1 d-flex justify-content-center align-items-center ">
             <span
               className="main-color pointer"
-              onClick={() => navigate("/myPage")}
+              onClick={() => navigate(`/myPage/${currentUser}`)}
             >
               MY페이지
             </span>

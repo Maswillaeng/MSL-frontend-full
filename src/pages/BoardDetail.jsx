@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Comment from "../components/boardDetail/Comment";
 import Button from "../components/common/Button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProfileIcon from "../components/boardDetail/ProfileIcon";
 import styled from "styled-components";
 import { postFollow, deleteFollow } from "../function/api/follow";
@@ -9,6 +9,7 @@ import SupportBox from "../components/common/SupportBox";
 import {
   deleteBoard,
   deleteBoardLike,
+  getPickBoard,
   postBoardLike,
 } from "../function/api/board";
 import { postComment, getComment } from "../function/api/comment";
@@ -30,7 +31,8 @@ const BoardDetailBox = styled.div.attrs({
 })``;
 
 const BoardDetail = () => {
-  const location = useLocation();
+  //useParams가 즉각 작동하지 않아서 400에러가 뜨긴하는데 다음부턴 postId까지 같이 넣어달라고 해야겠다 그러면 에러가 안뜰듯?
+  const params = useParams();
 
   //로그인 체크 상태
   const currentUser = useRecoilValue(currentUserState);
@@ -38,20 +40,26 @@ const BoardDetail = () => {
   //로그인중이라면 최초 1회 로그인중인 유저 데이터 셋팅 , 현재 유저 정보임  *작성자 정보 아님*
   const userData = useRecoilValue(userState);
 
+  //조회하려는 게시글의 상태
+  const [board, setBoard] = useState({});
+
   //최초 1회 상세페이지에 들어오면 페이지 최상단으로 이동
   useEffect(() => {
+    getPickBoard(params.id).then((res) => {
+      setBoard(res.data.result);
+    });
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  }, [params]);
 
   return (
     <BoardDetailBox>
       <div className="w-100 mb-5 d-flex justify-content-center align-items-center flex-column">
-        <TopImgBox data={location.state.data} />
-        <TopProfileBox data={location.state.data} userData={userData} />
-        <TopContentBox data={location.state.data} />
+        <TopImgBox data={board} />
+        <TopProfileBox data={board} userData={userData} />
+        <TopContentBox data={board} />
       </div>
       <BottomCommentBox
-        data={location.state.data}
+        data={board}
         userData={userData}
         currentUser={currentUser}
       />
@@ -162,7 +170,7 @@ const TopProfileBox = ({ data, userData }) => {
   // console.log(userData);
   const postId = data.postId;
   const postLikeCount = data.likeCount;
-  const postUserId = data.userId;
+  const postUserId = data.writerId;
   const currentUserId = userData.userId;
   const currentFollowerState = userData.followState;
   const likeList = userData.likePostList;
@@ -362,9 +370,8 @@ const TopContentBox = ({ data }) => {
       ></ContentBox>
       <HashContent>
         <HashBox>
-          {data.hashTag.map((x, i) => (
-            <Hash tagName={x} key={x + i} />
-          ))}
+          {data.hashTag &&
+            data.hashTag.map((x, i) => <Hash tagName={x} key={x + i} />)}
         </HashBox>
       </HashContent>
     </div>

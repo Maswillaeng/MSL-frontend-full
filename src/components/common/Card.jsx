@@ -34,7 +34,7 @@ const Card = ({ data }) => {
    * 데이터를 가지고 상세페이지로 이동하기 위한 이벤트
    */
   const detail = () => {
-    navigate(`/boardDetail/${data.postId}`, { state: { data: data } });
+    navigate(`/boardDetail/${data.postId}`);
   };
 
   return (
@@ -56,7 +56,7 @@ const Card = ({ data }) => {
           </div>
           <div className="mx-2">
             <FontAwesomeIcon icon={faThumbsUpR} className="me-1 card-icon" />
-            <span>{data.hits}</span>
+            <span>{data.likeCount}</span>
           </div>
           <div className="mx-2">
             <FontAwesomeIcon

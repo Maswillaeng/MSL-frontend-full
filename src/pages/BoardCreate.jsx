@@ -11,7 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Li from "../components/common/Li";
 import EditorComponent from "../components/boardCreate/EditorComponent";
 import styled from "styled-components";
-import { putBoard,postBoard,getBoard } from "../function/api/board";
+import { putBoard, postBoard, getBoard } from "../function/api/board";
 import { WithContext as ReactTags } from "react-tag-input";
 import { useRecoilState } from "recoil";
 import { boardDataState } from "../recoil/atom";
@@ -299,7 +299,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
 
   return (
     <TopImgContainer>
-      <div>{'<썸네일>'}</div>
+      <div>{"<썸네일 선택>"}</div>
       <div className="w-50 d-flex justify-content-center align-items-center h-100 mb-3">
         <PlusIconBox>
           {imgNum > 0 && (
@@ -429,9 +429,9 @@ const BottomContentBox = ({
           handleAddition={handleAddition}
           handleDelete={handleDelete}
           classNames={{
-            tag: "btn btn-primary p-1 m-1", 
-            remove: "btn btn-primary btn-sm", 
-            tagInput: "form-control w-100", 
+            tag: "btn btn-primary p-1 m-1",
+            remove: "btn btn-primary btn-sm",
+            tagInput: "form-control w-100",
             tagInputField: "tag-input-class",
           }}
           inputAttributes={{

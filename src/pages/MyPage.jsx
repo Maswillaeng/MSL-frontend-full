@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Button from "../components/common/Button";
+import Card from "../components/common/Card";
 import SupportBox from "../components/common/SupportBox";
 import { deleteFollow, postFollow } from "../function/api/follow";
 import { getUser } from "../function/api/log";
@@ -24,7 +25,18 @@ const MyPage = () => {
     getUser(params.id).then((res) => {
       setUserData(res);
     });
-  }, []);
+  }, [params]);
+
+  const [boardData, setBoardData] = useState([]);
+
+  useEffect(() => {
+    if (categori === "작성") {
+      setBoardData(userData.postList);
+    }
+    if (categori === "추천") {
+      setBoardData(userData.likePostList);
+    }
+  }, [categori, userData]);
 
   /**
    * 회원정보 수정하기 이벤트
@@ -40,8 +52,14 @@ const MyPage = () => {
       <TopProfileTop userData={userData} />
       <TopProfileBottom userData={userData} currentUser={currentUser} />
       <BottomCategori setCategori={setCategori} categori={categori} />
-      <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100">
-        
+      <div className="mb-5 d-flex justify-content-center align-items-center w-100">
+        <div className="mt-5 w-75 row">
+          <div className="w-100 row">
+            {boardData.map((data, i) => (
+              <Card data={data} key={i} />
+            ))}
+          </div>
+        </div>
       </div>
       <SupportBox userData={userData} editUser={editUser} />
     </div>
@@ -80,7 +98,7 @@ const AccessBox = styled.div.attrs({
 
 const TopProfileBottom = ({ userData, currentUser }) => {
   //구독 숫자
-  const [subscribeCount, setSubscribeCount] = useState(userData.followerCount);
+  const [subscribeCount, setSubscribeCount] = useState(0);
 
   //구독 상태
   const [subscribe, setSubscribe] = useState(false);
@@ -91,14 +109,12 @@ const TopProfileBottom = ({ userData, currentUser }) => {
   const subscribeHandler = () => {
     const followUser = { my_id: currentUser.userId, user_id: userData.userId };
     if (subscribe) {
-      setSubscribeCount(subscribeCount - 1);
       deleteFollow(userData.userId, followUser)
         .then((res) => setSubscribeCount(res.data.result.userFollowerCount))
         .catch(() => {
           return alert("잠시 후에 다시 시도해주세요.");
         });
     } else {
-      setSubscribeCount(subscribeCount + 1);
       postFollow(userData.userId, followUser)
         .then((res) => setSubscribeCount(res.data.result.userFollowerCount))
         .catch(() => {
@@ -107,6 +123,11 @@ const TopProfileBottom = ({ userData, currentUser }) => {
     }
     setSubscribe(!subscribe);
   };
+
+  //최초 1회 팔로우 숫자 셋팅
+  useEffect(() => {
+    setSubscribeCount(userData.followerCount);
+  }, [userData]);
 
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">

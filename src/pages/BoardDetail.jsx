@@ -157,8 +157,9 @@ const ProfileContainer = styled.div.attrs({
   min-width: 365px;
 `;
 const TopProfileBox = ({ data, userData }) => {
-  console.log(data);
-  console.log(userData);
+  const navigate = useNavigate();
+  // console.log(data);
+  // console.log(userData);
   const postId = data.postId;
   const postLikeCount = data.likeCount;
   const postUserId = data.userId;
@@ -194,16 +195,16 @@ const TopProfileBox = ({ data, userData }) => {
       return alert("로그인을 부탁드려요.");
     }
 
-    const hitUser = { post_id: postId, user_id: currentUserId };
+    const likeUser = { post_id: postId, user_id: currentUserId };
 
     if (like) {
-      deleteBoardLike(postId, hitUser)
+      deleteBoardLike(postId, likeUser)
         .then((res) => setLikeCount(res.data.result.likeCount))
         .catch(() => {
           return alert("잠시 후에 다시 시도해주세요.");
         });
     } else {
-      postBoardLike(postId, hitUser)
+      postBoardLike(postId, likeUser)
         .then((res) => {
           setLikeCount(res.data.result.likeCount);
         })
@@ -233,13 +234,13 @@ const TopProfileBox = ({ data, userData }) => {
 
     if (subscribe) {
       deleteFollow(postUserId, followUser)
-        .then((res) => setSubscribeCount(subscribeCount - 1))
+        .then((res) => setSubscribeCount(res.data.result.userFollowerCount))
         .catch(() => {
           return alert("잠시 후에 다시 시도해주세요.");
         });
     } else {
       postFollow(postUserId, followUser)
-        .then((res) => setSubscribeCount(subscribeCount + 1))
+        .then((res) => setSubscribeCount(res.data.result.userFollowerCount))
         .catch(() => {
           return alert("잠시 후에 다시 시도해주세요.");
         });
@@ -268,19 +269,28 @@ const TopProfileBox = ({ data, userData }) => {
     postUserId,
   ]);
 
+  //현재 접속중인 유저의 데이터
   const currentUser = useSetRecoilState(currentUserState);
 
+  //유저 데이터 업데이트
   useEffect(() => {
     currentUser(getIdCookie());
-  }, [subscribe, like]);
+  }, [subscribe, like, currentUser]);
+
+  //작성자의 마이페이지로 이동
+  const moveMyPage = () => {
+    navigate(`/myPage/${postUserId}`);
+  };
 
   return (
     <ProfileContainer>
       <div className="d-flex justify-content-center align-items-center w-25">
         <ProfileUserImg src={author.userImage} />
       </div>
-      <div className="d-flex justify-content-center align-items-center flex-column w-25">
-        <div>{data.nickname}</div>
+      <div className="d-flex justify-content-center align-items-center flex-column w-25 pe-2">
+        <div onClick={moveMyPage} className="pointer">
+          {data.nickname}
+        </div>
         <div>구독자 {subscribeCount}명</div>
       </div>
       <div className="d-flex justify-content-center align-items-center flex-column w-50">

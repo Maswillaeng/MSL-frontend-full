@@ -36,7 +36,7 @@ export const postSignUp = async (member) => {
 
 
 /**
- * 현재 로그인한 유저 데이터 조회
+ * 유저 데이터 조회
  */
 export const getUser = async (id) => {
   if (id === 0) {

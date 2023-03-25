@@ -108,7 +108,7 @@ const BoardCreate = () => {
         editData={editData}
         tags={tags}
       />
-      <div className="d-flex flex-column justify-content-start align-items-center my-5 p-5 ">
+      <div className="d-flex flex-column justify-content-start align-items-center my-3 p-5 ">
         <TopImgBox imgData={imgData} imgNum={imgNum} setImgNum={setImgNum} />
         <TopAddImg
           addImgData={addImgData}
@@ -182,14 +182,12 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
    */
   const editEvent = () => {
     const allImgData = Object.values(imgData).filter((x) => x !== "");
-
     const postData = {
       ...content,
       thumbnail:
         allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData[imgNum],
       imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
     };
-
     const num = editData.postId;
 
     putBoard(num, postData)
@@ -267,7 +265,7 @@ const ThumbnailImgBox = styled.div.attrs({
   min-width: 360px;
 `;
 const ThumbnailImg = styled.img.attrs({
-  className: "img-fluid p-3",
+  className: " p-3 h-100 w-100",
   alt: "",
 })``;
 const PlusIconBox = styled.div.attrs({
@@ -301,6 +299,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
 
   return (
     <TopImgContainer>
+      <div>{'<썸네일>'}</div>
       <div className="w-50 d-flex justify-content-center align-items-center h-100 mb-3">
         <PlusIconBox>
           {imgNum > 0 && (

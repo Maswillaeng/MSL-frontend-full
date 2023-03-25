@@ -9,7 +9,7 @@ const ImgBox = styled.div.attrs({
 })``;
 
 const ImgFile = styled.img.attrs({
-  className: "img-fluid",
+  className: "py-2 h-100 w-100",
   alt: "",
 })``;
 

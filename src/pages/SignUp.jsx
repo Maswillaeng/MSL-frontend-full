@@ -7,8 +7,8 @@ import {
   validationNickname,
   validationPassword,
   validationPhone,
+  realTimeValidation,
 } from "../function/utility/validation";
-import { realTimeValidation } from "../function/utility/realTimeValidation";
 import { postSignUp } from "../function/api/log";
 import { getIdCookie } from "../function/cookie/cookie";
 import styled from "styled-components";

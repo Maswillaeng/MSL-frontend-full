@@ -1,19 +1,30 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import SupportBox from "../components/common/SupportBox";
-import { deleteFollow,postFollow } from "../function/api/follow";
+import { deleteFollow, postFollow } from "../function/api/follow";
+import { getUser } from "../function/api/log";
 import { userState } from "../recoil/selector";
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const params = useParams();
+
   //카테고리 상태
   const [categori, setCategori] = useState("");
 
-  //조회하려는 유저의 데이터 상태
-  const userData = useRecoilValue(userState);
+  //현재 로그인한 유저의 정보
+  const currentUser = useRecoilValue(userState);
+
+  //조회하려는 유저의 데이터를 셋팅
+  const [userData, setUserData] = useState({});
+  useEffect(() => {
+    getUser(params.id).then((res) => {
+      setUserData(res);
+    });
+  }, []);
 
   /**
    * 회원정보 수정하기 이벤트
@@ -27,10 +38,10 @@ const MyPage = () => {
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
       <TopProfileTop userData={userData} />
-      <TopProfileBottom userData={userData} />
+      <TopProfileBottom userData={userData} currentUser={currentUser} />
       <BottomCategori setCategori={setCategori} categori={categori} />
       <div className="mb-5 px-5 d-flex justify-content-center align-items-center w-100">
-        글
+        
       </div>
       <SupportBox userData={userData} editUser={editUser} />
     </div>
@@ -67,9 +78,9 @@ const AccessBox = styled.div.attrs({
   margin-bottom: -15px;
 `;
 
-const TopProfileBottom = ({ userData }) => {
+const TopProfileBottom = ({ userData, currentUser }) => {
   //구독 숫자
-  const [subscribeCount, setSubscribeCount] = useState(0);
+  const [subscribeCount, setSubscribeCount] = useState(userData.followerCount);
 
   //구독 상태
   const [subscribe, setSubscribe] = useState(false);
@@ -77,31 +88,33 @@ const TopProfileBottom = ({ userData }) => {
   /**
    * 구독 상태와 카운트를 바꿔주는 이벤트
    */
-  // const subscribeHandler = () => {
-  //   const followUser = { my_id: userData.userId, user_id: data.userId };
-  //   setSubscribe(!subscribe);
-  //   if (subscribe) {
-  //     setSubscribeCount(subscribeCount - 1);
-  //     deleteFollow(data.userId, followUser).catch((err) => {
-  //       console.log(err);
-  //       alert("잠시 후에 다시 시도해주세요.");
-  //     });
-  //   } else {
-  //     setSubscribeCount(subscribeCount + 1);
-  //     postFollow(data.userId, followUser).catch((err) => {
-  //       console.log(err);
-  //       alert("잠시 후에 다시 시도해주세요.");
-  //     });
-  //   }
-  // };
+  const subscribeHandler = () => {
+    const followUser = { my_id: currentUser.userId, user_id: userData.userId };
+    if (subscribe) {
+      setSubscribeCount(subscribeCount - 1);
+      deleteFollow(userData.userId, followUser)
+        .then((res) => setSubscribeCount(res.data.result.userFollowerCount))
+        .catch(() => {
+          return alert("잠시 후에 다시 시도해주세요.");
+        });
+    } else {
+      setSubscribeCount(subscribeCount + 1);
+      postFollow(userData.userId, followUser)
+        .then((res) => setSubscribeCount(res.data.result.userFollowerCount))
+        .catch(() => {
+          return alert("잠시 후에 다시 시도해주세요.");
+        });
+    }
+    setSubscribe(!subscribe);
+  };
 
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">
       <div>
         <span className="me-3">팔로우 {userData.followerCount}</span>
-        <span>팔로워 {userData.followingCount}</span>
+        <span>팔로워 {subscribeCount}</span>
       </div>
-      <AccessBox>
+      <AccessBox onClick={subscribeHandler}>
         <Button addStyle={"px-5"} message={"팔로우"} />
       </AccessBox>
       <AccessBox>

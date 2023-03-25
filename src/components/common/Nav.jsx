@@ -20,6 +20,7 @@ const MainNav = () => {
   //로그인 체크 상태
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
+  //무한 스크롤 카운트 상태
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
   /**
@@ -83,7 +84,7 @@ const MainNav = () => {
     {
       마이페이지: {
         event: () => {
-          navigate("/myPage");
+          navigate(`/myPage/${getIdCookie()}`);
         },
       },
     },

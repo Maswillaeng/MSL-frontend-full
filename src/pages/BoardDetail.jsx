@@ -318,11 +318,15 @@ const TimeBox = styled.div.attrs({
 })`
   min-width: 365px;
 `;
+const HashContent = styled.div.attrs({
+  className:'card w-50 mt-4'
+})`
+  min-width:365px;
+`
 const HashBox = styled.div.attrs({
   className: "w-100 shadow",
 })`
   min-height: 4.5vh;
-  min-width: 365px;
 `;
 
 const TopContentBox = ({ data }) => {
@@ -338,13 +342,13 @@ const TopContentBox = ({ data }) => {
       <ContentBox
         dangerouslySetInnerHTML={{ __html: data.content }}
       ></ContentBox>
-      <div className="card w-50 mt-4 shadow">
+      <HashContent>
         <HashBox>
           {data.hashTag.map((x, i) => (
             <Hash tagName={x} key={x + i} />
           ))}
         </HashBox>
-      </div>
+      </HashContent>
     </div>
   );
 };

@@ -35,7 +35,7 @@ const MainNav = () => {
   useEffect(() => {
     if (getIdCookie() !== currentUser) {
       alert("다시 로그인을 부탁드려요.");
-      return navigate("/");
+      return window.location.replace("/");
     }
   }, [currentUser, navigate]);
 

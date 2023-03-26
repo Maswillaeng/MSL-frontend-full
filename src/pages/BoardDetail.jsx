@@ -175,19 +175,17 @@ const ProfileContainer = styled.div.attrs({
 `;
 const TopProfileBox = ({ data, userData }) => {
   const navigate = useNavigate();
-  // console.log(data);
-  // console.log(userData);
+
+  //작성자 정보 상태
+  const [author, setAuthor] = useState({});
+
   const postId = data.postId;
   const postLikeCount = data.likeCount;
   const postUserId = data.writerId;
   const currentUserId = userData.userId;
-  const currentFollowerState = userData.followState;
-  const likeList = userData.likePostList;
-  //작성자 정보
-  //작성자의 이미지때문에 관리 시작
-  const [author, setAuthor] = useState({});
   const authorfollowerCount = author.followerCount;
-
+  const authorFollowerState = author.followState;
+  const likeList = userData.likePostList;
   /**
    * 작성자 데이터 세팅
    * @param {userId} id
@@ -262,7 +260,6 @@ const TopProfileBox = ({ data, userData }) => {
           return alert("잠시 후에 다시 시도해주세요.");
         });
     }
-
     setSubscribe(!subscribe);
   };
 
@@ -271,15 +268,15 @@ const TopProfileBox = ({ data, userData }) => {
     getAuthor(postUserId);
     setLikeCount(postLikeCount);
     setSubscribeCount(authorfollowerCount);
-    setSubscribe(currentFollowerState);
+    setSubscribe(authorFollowerState);
     setLike(() => {
       if (likeList && likeList.findIndex((el) => el.postId === postId) !== -1) {
         return true;
       }
     });
   }, [
+    authorFollowerState,
     authorfollowerCount,
-    currentFollowerState,
     likeList,
     postId,
     postLikeCount,

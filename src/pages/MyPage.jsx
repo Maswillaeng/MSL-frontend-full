@@ -101,6 +101,8 @@ const AccessBox = styled.div.attrs({
 `;
 
 const TopProfileBottom = ({ userData, currentUser }) => {
+  console.log(userData);
+  console.log(currentUser);
   //구독 숫자
   const [subscribeCount, setSubscribeCount] = useState(0);
 
@@ -134,21 +136,29 @@ const TopProfileBottom = ({ userData, currentUser }) => {
 
   //최초 1회 팔로우 숫자 셋팅
   useEffect(() => {
+    setSubscribe(userData.followState);
     setSubscribeCount(userData.followerCount);
   }, [userData]);
 
   return (
     <div className="mb-5 d-flex flex-column justify-content-start align-items-start px-5">
       <div>
-        <span className="me-3">팔로우 {userData.followerCount}</span>
+        <span className="me-3">팔로우 {userData.followingCount}</span>
         <span>팔로워 {subscribeCount}</span>
       </div>
-      <AccessBox onClick={subscribeHandler}>
-        <Button addStyle={"px-5"} message={"팔로우"} />
-      </AccessBox>
-      <AccessBox>
-        <Button addStyle={"px-4"} message={"메세지 보내기"} />
-      </AccessBox>
+      {userData.userId !== currentUser.userId && (
+        <>
+          <AccessBox onClick={subscribeHandler}>
+            <Button
+              addStyle={subscribe ? "px-4" : "px-5"}
+              message={subscribe ? "팔로우 취소" : "팔로우"}
+            />
+          </AccessBox>
+          <AccessBox>
+            <Button addStyle={"px-4"} message={"메세지 보내기"} />
+          </AccessBox>
+        </>
+      )}
     </div>
   );
 };

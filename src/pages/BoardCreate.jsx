@@ -67,7 +67,7 @@ const BoardCreate = () => {
   //카테고리 상태, 최초 값은 레시피로 설정
   const [content, setContent] = useState({
     title: "",
-    category: "FREE",
+    category: "레시피",
     content: "",
   });
 

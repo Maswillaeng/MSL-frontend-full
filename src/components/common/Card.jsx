@@ -42,6 +42,7 @@ const Card = ({ data }) => {
   //게시글 포커스 이벤트
   const [focus, setFocus] = useState(false);
   const [timeEvent, setTimeEvent] = useState(null);
+
   // 마우스 오버 이벤트 핸들러
   const handleMouseEnter = () => {
     setTimeEvent(
@@ -64,7 +65,7 @@ const Card = ({ data }) => {
 
   //전체 화면을 체크하기 위한 상태
   //의존성 배열을 비워둬도 작동하는 것으로 봐서 resize할때마다 랜더링이 일어나다보니 괜찮은 듯...?
-  const [isFull, setIsFull] = useState(true);
+  const [isFull, setIsFull] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       setIsFull(window.innerWidth === window.screen.width);
@@ -73,6 +74,11 @@ const Card = ({ data }) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  //전체화면 최초 값 셋팅
+  useEffect(() => {
+    setIsFull(window.innerWidth === window.screen.width);
   }, []);
 
   return (

@@ -101,8 +101,6 @@ const AccessBox = styled.div.attrs({
 `;
 
 const TopProfileBottom = ({ userData, currentUser }) => {
-  console.log(userData);
-  console.log(currentUser);
   //구독 숫자
   const [subscribeCount, setSubscribeCount] = useState(0);
 

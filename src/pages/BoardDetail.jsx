@@ -265,15 +265,20 @@ const TopProfileBox = ({ data, userData }) => {
 
   //작성자 정보, 추천, 팔로워 최초 세팅
   useEffect(() => {
-    getAuthor(postUserId);
-    setLikeCount(postLikeCount);
-    setSubscribeCount(authorfollowerCount);
-    setSubscribe(authorFollowerState);
-    setLike(() => {
-      if (likeList && likeList.findIndex((el) => el.postId === postId) !== -1) {
-        return true;
-      }
-    });
+    if (postUserId) {
+      getAuthor(postUserId);
+      setLikeCount(postLikeCount);
+      setSubscribeCount(authorfollowerCount);
+      setSubscribe(authorFollowerState);
+      setLike(() => {
+        if (
+          likeList &&
+          likeList.findIndex((el) => el.postId === postId) !== -1
+        ) {
+          return true;
+        }
+      });
+    }
   }, [
     authorFollowerState,
     authorfollowerCount,
@@ -346,7 +351,8 @@ const TitleBox = styled.div.attrs({
   min-width: 365px;
 `;
 const TimeBox = styled.div.attrs({
-  className: "w-50 mb-4 d-flex justify-content-end align-items-end mt-5",
+  className:
+    "w-50 mb-4 d-flex justify-content-end align-items-end mt-5 flex-column",
 })`
   min-width: 365px;
 `;
@@ -368,16 +374,15 @@ const TopContentBox = ({ data }) => {
         <h1>{data.title}</h1>
       </TitleBox>
       <TimeBox>
-        <span className="mx-3">{data.categori}</span>
-        <span>{elapsedTime(data.createAt)}</span>
+        <div>카테고리 : {data.category}</div>
+        <div>{elapsedTime(data.createAt)}</div>
       </TimeBox>
       <ContentBox
         dangerouslySetInnerHTML={{ __html: data.content }}
       ></ContentBox>
       <HashContent>
         <HashBox>
-          {data.hashTag &&
-            data.hashTag.map((x, i) => <Hash tagName={x} key={x + i} />)}
+          {data.tag && data.tag.map((x, i) => <Hash tagName={x} key={x + i} />)}
         </HashBox>
       </HashContent>
     </div>
@@ -447,9 +452,10 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
 
   //댓글을 셋팅하기 위한 이펙트
   useEffect(() => {
-    getComment(data.postId).then((res) =>
-      setCommentData(res.data.result.comment)
-    );
+    if (data.postId)
+      getComment(data.postId).then((res) =>
+        setCommentData(res.data.result.comment)
+      );
   }, [checkDelete, data.postId, setCommentData]);
 
   //버튼 타겟, 버튼을 클릭하기 위해 생성
@@ -570,7 +576,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
             </div>
           </>
         )}
-        {data.userId === currentUser && (
+        {data.writerId === currentUser && (
           <SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />
         )}
       </CommentBox>

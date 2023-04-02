@@ -8,7 +8,7 @@ const useIntersectionObserver = (callback) => {
   const observer = useRef(
     new IntersectionObserver(
       // IntersectionObserver의 콜백 함수를 정의한다.
-      (entries, observer) => {
+      (entries) => {
         // entries 배열의 모든 요소에 대해 반복문을 실행한다.
         entries.forEach((entry) => {
           // 만약 요소가 교차되었다면(callback 함수를 실행해야 한다면)

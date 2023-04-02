@@ -11,7 +11,7 @@ export const getBoard = async () => {
  * 게시글 삭제
  */
 export const deleteBoard = async (num) => {
-  return await axios.delete(`http://localhost:8080/api/postD/${num}`, {
+  return await axios.delete(`http://localhost:8080/api/post/${num}`, {
     headers: {
       "Content-Type": `application/json`,
     },

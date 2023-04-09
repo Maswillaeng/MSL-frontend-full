@@ -15,8 +15,10 @@ const CardBox = styled.div.attrs({
 
 const ThumbnailImg = styled.img.attrs({
   alt: "",
-  className: "img-fluid mt-3",
-})``;
+  className: "w-100 mt-3",
+})`
+  max-height: 16vh;
+`;
 const TitleBox = styled.div.attrs({
   className: "mt-2 mb-5 px-4 h-25 flex-02",
 })`
@@ -43,8 +45,7 @@ const Card = ({ data }) => {
   const [focus, setFocus] = useState(false);
   const [timeEvent, setTimeEvent] = useState(null);
 
-  // 마우스 오버 이벤트 핸들러
-  const handleMouseEnter = () => {
+  const onMouseEnter = () => {
     setTimeEvent(
       setTimeout(() => {
         setFocus(true);
@@ -52,19 +53,16 @@ const Card = ({ data }) => {
     );
   };
 
-  // 마우스 리브 이벤트 핸들러
-  const handleMouseLeave = () => {
+  const onMouseLeave = () => {
     // 이전에 등록한 이벤트가 있다면 삭제
     if (timeEvent) {
       clearTimeout(timeEvent);
       setTimeEvent(null);
     }
-    // focus 상태 초기화
     setFocus(false);
   };
 
   //전체 화면을 체크하기 위한 상태
-  //의존성 배열을 비워둬도 작동하는 것으로 봐서 resize할때마다 랜더링이 일어나다보니 괜찮은 듯...?
   const [isFull, setIsFull] = useState(false);
   useEffect(() => {
     const handleResize = () => {
@@ -83,7 +81,7 @@ const Card = ({ data }) => {
 
   return (
     <>
-      <CardBox onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <CardBox onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         {isFull && focus && <FocusBoard postId={data.postId} />}
         <div
           onClick={detail}

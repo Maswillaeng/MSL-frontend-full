@@ -300,7 +300,6 @@ const TopProfileBox = ({ data, userData }) => {
   const moveMyPage = () => {
     navigate(`/myPage/${postUserId}`);
   };
-
   return (
     <ProfileContainer>
       <div className="d-flex justify-content-center align-items-center w-25">
@@ -368,13 +367,20 @@ const HashBox = styled.div.attrs({
 `;
 
 const TopContentBox = ({ data }) => {
+  let category = data.category;
+  if (category === "서울") {
+    category = "서울/경기";
+  }
+  if (category === "그_외") {
+    category = "그 외";
+  }
   return (
     <div className="d-flex flex-column justify-content-center align-items-center my-5 w-100">
       <TitleBox>
         <h1>{data.title}</h1>
       </TitleBox>
       <TimeBox>
-        <div>카테고리 : {data.category}</div>
+        <div>카테고리 : {category}</div>
         <div>{elapsedTime(data.createAt)}</div>
       </TimeBox>
       <ContentBox
@@ -412,6 +418,7 @@ const BottomBox = styled.div.attrs({
 `;
 
 const BottomCommentBox = ({ data, userData, currentUser }) => {
+  const location = useLocation();
   const navigate = useNavigate();
 
   //게시글 데이터 상태
@@ -576,7 +583,7 @@ const BottomCommentBox = ({ data, userData, currentUser }) => {
             </div>
           </>
         )}
-        {data.writerId === currentUser && (
+        {data.writerId === currentUser && location.pathname !== "/board" && (
           <SupportBox moveEdit={moveEdit} moveDelete={moveDelete} />
         )}
       </CommentBox>

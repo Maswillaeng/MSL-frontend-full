@@ -43,10 +43,9 @@ const MyPage = () => {
    */
   const editUser = () => {
     if (window.confirm("회원정보를 수정하시겠습니까?")) {
-      navigate("/signUp", { state: { userData } });
+      navigate("/edit", { state: { currentUser } });
     }
   };
-
   return (
     <div className="container rounded d-flex flex-column justify-content-start align-items-start mt-3 p-5">
       <TopProfileTop userData={userData} />

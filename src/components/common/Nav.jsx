@@ -17,9 +17,6 @@ const Nav = () => {
 const MainNav = () => {
   const navigate = useNavigate();
 
-  //로그인 체크 상태
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
-
   //무한 스크롤 카운트 상태
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
@@ -30,6 +27,9 @@ const MainNav = () => {
     setLastSliceNum(1); //전역으로 무한스크롤을 관리하다보니 다시 1로 리셋
     navigate("/");
   }, [navigate, setLastSliceNum]);
+
+  //로그인 체크 상태
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
   //로그인 상태가 아니라면 발동하는 이펙트
   useEffect(() => {

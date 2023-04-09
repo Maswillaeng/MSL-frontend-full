@@ -9,7 +9,7 @@ import {
   validationPhone,
   realTimeValidation,
 } from "../function/utility/validation";
-import { postSignUp } from "../function/api/log";
+import { postSignUp, putUser } from "../function/api/log";
 import { getIdCookie } from "../function/cookie/cookie";
 import styled from "styled-components";
 import axios from "axios";
@@ -21,7 +21,7 @@ const SignUpForm = styled.form.attrs({
   min-width: 470px;
 `;
 
-const SignUp = () => {
+const SignUp = ({ userId, introduction, userImage }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -46,8 +46,19 @@ const SignUp = () => {
   const [editUser, setEditUser] = useState(undefined);
 
   useEffect(() => {
-    location.state && setEditUser(location.state.userData);
-  }, [location.state]);
+    axios
+      .get(`http://localhost:8080/api/user-list`)
+      .then((res) => {
+        const allMember = res.data.code;
+        const editData = allMember.filter((x) => x.userId === userId)[0];
+        setEditUser(editData);
+      })
+      .then(() => {
+        setEditUser((edit) => {
+          return { ...edit, userImage, introduction };
+        });
+      });
+  }, [introduction, userId, userImage]);
 
   //프로필 이미지 상태
   const [imgFile, setImgFile] = useState("");
@@ -58,11 +69,19 @@ const SignUp = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
+      const formData = new FormData();
+      formData.append("data", file);
+      axios
+        .post("http://localhost:8080/api/upload", formData, {
+          headers: {
+            "Content-Type": `multipart/form-data`,
+          },
+        })
+        .then((res) => setMember({ ...member, userImage: res.data }))
+        .catch(() => alert("사진 등록에 실패하였습니다."));
       setImgFile(reader.result);
-      setMember({ ...member, userImage: reader.result });
     };
   };
-
   //input들을 target 설정해주기 위한 ref
   const targetRefs = useRef([]);
 
@@ -135,7 +154,7 @@ const SignUp = () => {
   }, [member, members]);
 
   /**
-   * 폼 제출 시, 마지막 유효성 검사
+   * 폼 제출 시, 마지막 유효성 검사, 회원가입 이벤트
    */
   const buttonEvent = () => {
     if (
@@ -143,7 +162,6 @@ const SignUp = () => {
       members.filter((x) => x.email === member.email).length !== 0
     )
       return targetRefs.current[0].focus();
-
     if (!validationPassword.test(member.password))
       return targetRefs.current[1].focus();
 
@@ -169,6 +187,25 @@ const SignUp = () => {
       });
   };
 
+  /**
+   * 회원 수정 이벤트
+   */
+  const editEvent = () => {
+    if (!validationPassword.test(member.password))
+      return targetRefs.current[1].focus();
+    if (member.password !== member.pwc) return targetRefs.current[2].focus();
+    const userImage = member.userImage;
+    const data = { ...member, ...editUser, userImage };
+    putUser(data)
+      .then(() => {
+        alert("회원정보를 수정하였습니다.");
+        navigate("/");
+      })
+      .catch(() => {
+        alert("잠시 후에 다시 시도해주세요.");
+      });
+  };
+
   return (
     <div className="container d-flex justify-content-center align-items-center w-100">
       <SignUpForm onSubmit={(e) => e.preventDefault()}>
@@ -186,7 +223,13 @@ const SignUp = () => {
             editUser={editUser}
           />
         ))}
-        <Button buttonEvent={buttonEvent} size={"lg"} message={"회원가입"} />
+        <Button
+          buttonEvent={
+            editUser && editUser.introduction ? editEvent : buttonEvent
+          }
+          size={"lg"}
+          message={editUser && editUser.introduction ? "수정하기" : "회원가입"}
+        />
       </SignUpForm>
     </div>
   );

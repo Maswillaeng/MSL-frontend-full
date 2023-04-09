@@ -34,7 +34,6 @@ export const postSignUp = async (member) => {
   });
 };
 
-
 /**
  * 유저 데이터 조회
  */
@@ -46,4 +45,11 @@ export const getUser = async (id) => {
     const user = res.data.result;
     return user;
   });
+};
+
+/**
+ * 회원 데이터 수정
+ */
+export const putUser = async (data) => {
+  return await axios.put("http://localhost:8080/api/user", data);
 };

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 //스타일 컴포넌트
 const DafaultLabel = styled.label.attrs({
@@ -27,7 +28,9 @@ const ImgLabel = styled.label.attrs({
 const ImgBox = styled.div.attrs({
   className:
     "border border-3 mx-5 d-flex justify-content-center align-items-center pointer w-50 h-100",
-})``;
+})`
+  min-width: 145px;
+`;
 
 const UserImg = styled.img.attrs({
   className: "rounded img-fluid",
@@ -45,6 +48,7 @@ const Input = ({
   warning,
   editUser,
 }) => {
+  const location = useLocation();
   /**
    * 이미지 업로드 클릭용 이벤트
    */
@@ -61,7 +65,6 @@ const Input = ({
       [e.target.name]: e.target.value,
     });
   };
-
   return (
     <div className="d-flex mt-1 mb-1 ms-5 ps-3 col-12 w-100 justify-content-center align-items-center">
       {data.id !== "userImage" && data.id !== "introduction" ? (
@@ -75,6 +78,8 @@ const Input = ({
             </div>
             <div className="col-12 col-md-8">
               <input
+                value={editUser && editUser[data.id]}
+                disabled={editUser && editUser[data.id] && "disabled"}
                 autoComplete="current-password"
                 id={data.id}
                 type={data.type}
@@ -94,32 +99,34 @@ const Input = ({
           </DangerMessage>
         </div>
       ) : data.id === "userImage" ? (
-        <ImgInputBox>
-          <div className="row mb-2 w-75 h-100">
-            <div className="col-12 col-md-4 d-flex justify-content-start align-items-center">
-              <ImgLabel htmlFor={data.id}>{data.name}</ImgLabel>
+        location.pathname !== "/signUp" && (
+          <ImgInputBox>
+            <div className="row mb-2 w-75 h-100">
+              <div className="col-12 col-md-4 d-flex justify-content-start align-items-center">
+                <ImgLabel htmlFor={data.id}>{data.name}</ImgLabel>
+              </div>
+              <div className="col-12 col-md-6 h-100">
+                <input
+                  type={data.type}
+                  accept="image/*"
+                  placeholder={data.placeholder}
+                  ref={(el) => (targetRefs.current[idx] = el)}
+                  name={data.id}
+                  onChange={() => {
+                    saveImgFile(idx);
+                  }}
+                  className="hidden"
+                />
+                <ImgBox onClick={uploadClick}>
+                  {!imgFile && (
+                    <FontAwesomeIcon icon={faPlus} className="input-icon" />
+                  )}
+                  {imgFile && <UserImg src={imgFile} />}
+                </ImgBox>
+              </div>
             </div>
-            <div className="col-12 col-md-8 h-100">
-              <input
-                type={data.type}
-                accept="image/*"
-                placeholder={data.placeholder}
-                ref={(el) => (targetRefs.current[idx] = el)}
-                name={data.id}
-                onChange={() => {
-                  saveImgFile(idx);
-                }}
-                className="hidden"
-              />
-              <ImgBox onClick={uploadClick}>
-                {!imgFile && (
-                  <FontAwesomeIcon icon={faPlus} className="input-icon" />
-                )}
-                {imgFile && <UserImg src={imgFile} />}
-              </ImgBox>
-            </div>
-          </div>
-        </ImgInputBox>
+          </ImgInputBox>
+        )
       ) : (
         <>
           <div className="d-flex w-100 justify-content-center align-items-center flex-column pt-4">

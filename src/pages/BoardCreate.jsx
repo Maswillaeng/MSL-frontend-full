@@ -154,11 +154,13 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
     const postData = {
       ...content,
       thumbnail:
-        allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData[imgNum],
-      imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
+        allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData[imgNum].data,
+      imgData:
+        allImgData.length === 0
+          ? "/img/마쉴랭.PNG"
+          : allImgData.map((x) => x.data),
       tag: tag,
     };
-
     postBoard(postData)
       .then(() => {
         alert("글이 등록되었습니다.");
@@ -189,14 +191,12 @@ const BoardCreateNav = ({ content, imgData, imgNum, editData, tags }) => {
       imgData: allImgData.length === 0 ? "/img/마쉴랭.PNG" : allImgData,
     };
     const num = editData.postId;
-
     putBoard(num, postData)
       .then(() => {
         alert("글이 수정되었습니다.");
         getBoard()
           .then((res) => {
             const data = res.data.result.reverse();
-            console.log(data);
             return data;
           })
           .then((res) => {
@@ -315,7 +315,7 @@ const TopImgBox = ({ imgData, imgNum, setImgNum }) => {
             "이미지를 등록해주세요."
           ) : (
             <ThumbnailImg
-              src={Object.values(imgData).filter((x) => x !== "")[imgNum]}
+              src={Object.values(imgData).filter((x) => x !== "")[imgNum].data}
             />
           )}
         </ThumbnailImgBox>
@@ -414,9 +414,9 @@ const BottomContentBox = ({
             <option disabled>-칵테일 레시피-</option>
             <option defaultValue="레시피">레시피</option>
             <option disabled>-칵테일 맛집-</option>
-            <option defaultValue="서울/경기">서울/경기</option>
-            <option defaultValue="광역시">광역시</option>
-            <option defaultValue="그 외">그 외</option>
+            <option value="서울">서울/경기</option>
+            <option value="광역시">광역시</option>
+            <option value="그_외">그 외</option>
           </select>
         </div>
       </ContentTitleBox>

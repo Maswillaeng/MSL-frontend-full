@@ -8,10 +8,16 @@ export const currentUserState = atom({
   default: getIdCookie(),
 });
 
+//게시글 slice를 위한 숫자
+export const sliceCountState = atom({
+  key: "sliceCountState",
+  default: 1,
+});
+
 //게시글 데이터
 export const boardDataState = atom({
   key: "boardDataState",
-  default: getBoard().then((res) => {
+  default: getBoard(50).then((res) => {
     const data = res.data.result.reverse();
     return data;
   }),

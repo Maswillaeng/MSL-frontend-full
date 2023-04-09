@@ -16,11 +16,7 @@ const Carousel = () => {
   };
 
   //메인 이미지 배열
-  const imgArr = [
-    "img/KakaoTalk_20230225_174505991.png",
-    "img/KakaoTalk_20230225_174505991.png",
-    "img/KakaoTalk_20230225_174505991.png",
-  ];
+  const imgArr = ["img/main-img.png", "img/main-img.png", "img/main-img.png"];
 
   return (
     <div className="w-100">

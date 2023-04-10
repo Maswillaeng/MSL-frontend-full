@@ -74,7 +74,7 @@ const TopMainNavBox = ({ navigate }) => {
    * 칵테일 레시피 카테고리로 이동하기 위한 이벤트
    */
   const moveRecipe = () => {
-    navigate("/board", { state: { categori: "칵테일 레시피" } });
+    navigate("/board", { state: { categori: "레시피" } });
   };
 
   //nav값을 셋팅하기 위한 배열
@@ -82,7 +82,7 @@ const TopMainNavBox = ({ navigate }) => {
     {
       name: "서울/경기",
       event: () => {
-        navigate("/board", { state: { categori: "서울/경기" } });
+        navigate("/board", { state: { categori: "서울" } });
       },
     },
     {
@@ -94,7 +94,7 @@ const TopMainNavBox = ({ navigate }) => {
     {
       name: "그 외",
       event: () => {
-        navigate("/board", { state: { categori: "그 외" } });
+        navigate("/board", { state: { categori: "그_외" } });
       },
     },
   ];

@@ -4,14 +4,22 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import Card from "../components/common/Card";
 import SkeletonUi from "../components/common/SkeletonUi";
 import useIntersectionObserver from "../function/hook/useIntersectionObserver";
-import { lastSliceNumState } from "../recoil/atom";
+import {
+  boardDataState,
+  categoryState,
+  lastSliceNumState,
+} from "../recoil/atom";
 import { boardDataSliceState, sliceDataLengthState } from "../recoil/selector";
+import { getCategoryBoard } from "../function/api/board";
 
 const Board = () => {
   const location = useLocation();
 
-  //게시글 데이터
-  const boardData = useRecoilValue(boardDataSliceState);
+  //게시글 전체데이터
+  const [, setBoardData] = useRecoilState(boardDataState);
+
+  //게시글 slice 데이터
+  const boardDataSlice = useRecoilValue(boardDataSliceState);
 
   //현재 불러와진 글의 개수
   const sliceDataLength = useRecoilValue(sliceDataLengthState);
@@ -19,21 +27,28 @@ const Board = () => {
   //게시글 추가 로드를 위한 상태
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
+  //카테고리 상태
+  const [categori, setCategori] = useRecoilState(categoryState);
+
   //네비를 통해 들어온다면 최초 1회만 그 카테고리에 맞게 재설정
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     if (location.state) {
       setCategori(location.state.categori);
-      location.state = undefined;
     }
     setLastSliceNum(1);
-  }, [location, setLastSliceNum]);
+  }, [location, setCategori, setLastSliceNum]);
 
   //로딩 상태
   const [loading, setLoading] = useState(false);
 
-  //카테고리 상태
-  const [categori, setCategori] = useState("전체게시글");
+  //카테고리를 통해 넘어왔을 때, 카테고리에 맞는 글을 셋팅
+  useEffect(() => {
+    if (categori !== "전체게시글")
+      getCategoryBoard(categori, 20).then((res) =>
+        setBoardData(res.data.result.content)
+      );
+  }, [categori, setBoardData]);
 
   //무한스크롤 observe 타겟
   const target = useRef(null);
@@ -60,7 +75,7 @@ const Board = () => {
       id="board-box"
     >
       <BoardTop categori={categori} />
-      <BoardMiddle boardData={boardData} />
+      <BoardMiddle boardDataSlice={boardDataSlice} />
       <BoardBottom
         target={target}
         loading={loading}
@@ -78,13 +93,13 @@ const BoardTop = ({ categori }) => {
   );
 };
 
-const BoardMiddle = ({ boardData }) => {
+const BoardMiddle = ({ boardDataSlice }) => {
   return (
     <div
       className={`d-flex flex-column justify-content-start align-items-center w-100 flex-grow-1 mt-5`}
     >
       <div className="mt-5 w-75 row">
-        {boardData.map((data, i) => (
+        {boardDataSlice.map((data, i) => (
           <Card data={data} key={data.createAt + i} />
         ))}
       </div>

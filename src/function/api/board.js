@@ -4,7 +4,9 @@ import axios from "axios";
  * 모든 게시글 조회
  */
 export const getBoard = async (num) => {
-  return await axios.get(`http://localhost:8080/api/post/page`, { size: num });
+  return await axios.get(
+    `http://localhost:8080/api/post/page?page=0&size=${num}`
+  );
 };
 
 /**
@@ -69,3 +71,11 @@ export const putBoard = async (num, postData) => {
   });
 };
 
+/**
+ * 게시글 카테고리 별 조회
+ */
+export const getCategoryBoard = async (category, size) => {
+  return await axios.get(
+    `http://localhost:8080/api/post/list?category=${category}&page=0&size=${size}`
+  );
+};

@@ -34,3 +34,9 @@ export const commentDataState = atom({
   key: "commentDataState",
   default: [],
 });
+
+//카테고리 상태
+export const categoryState = atom({
+  key: "categoryState",
+  default: "전체게시글",
+});

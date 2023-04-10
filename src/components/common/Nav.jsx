@@ -4,9 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMartiniGlassEmpty } from "@fortawesome/free-solid-svg-icons";
 import { postLogOut } from "../../function/api/log";
 import { useRecoilState } from "recoil";
-import { currentUserState, lastSliceNumState } from "../../recoil/atom";
+import {
+  boardDataState,
+  categoryState,
+  currentUserState,
+  lastSliceNumState,
+} from "../../recoil/atom";
 import { useCallback, useEffect } from "react";
 import { getIdCookie, deleteIdCookie } from "../../function/cookie/cookie";
+import { getBoard } from "../../function/api/board";
 
 const Nav = () => {
   //boardCreate만 다른 네비바를 갖기 위해 작성
@@ -17,6 +23,9 @@ const Nav = () => {
 const MainNav = () => {
   const navigate = useNavigate();
 
+  //카테고리 상태
+  const [category, setCategory] = useRecoilState(categoryState);
+
   //무한 스크롤 카운트 상태
   const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
@@ -25,8 +34,17 @@ const MainNav = () => {
    */
   const moveMain = useCallback(() => {
     setLastSliceNum(1); //전역으로 무한스크롤을 관리하다보니 다시 1로 리셋
+    setCategory("전체게시글");
     navigate("/");
-  }, [navigate, setLastSliceNum]);
+  }, [navigate, setCategory, setLastSliceNum]);
+
+  //게시글 상태
+  const [, setBoardData] = useRecoilState(boardDataState);
+
+  //카테고리를 통해 넘어왔을 때,
+  useEffect(() => {
+    getBoard(20).then((res) => setBoardData(res.data.result)); //홈으로 이동하면 다시 전체글로
+  }, [category, setBoardData]);
 
   //로그인 체크 상태
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
@@ -37,7 +55,7 @@ const MainNav = () => {
       alert("다시 로그인을 부탁드려요.");
       return window.location.replace("/");
     }
-  }, [currentUser, navigate]);
+  }, [currentUser, navigate, setCategory]);
 
   //로그아웃했을 때, li 데이터들을 가진 배열
   const navArr = [

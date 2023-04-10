@@ -5,7 +5,9 @@ import axios from "axios";
  */
 export const getBoard = async (num) => {
   return await axios.get(
-    `http://localhost:8080/api/post/page?page=0&size=${num}`
+    `http://localhost:8080/api/post/page?page=${Math.floor(
+      (num / 20) - 1
+    )}&size=${num}`
   );
 };
 
@@ -77,5 +79,15 @@ export const putBoard = async (num, postData) => {
 export const getCategoryBoard = async (category, size) => {
   return await axios.get(
     `http://localhost:8080/api/post/list?category=${category}&page=0&size=${size}`
+  );
+};
+
+/**
+ * 게시글 검색
+ */
+export const postSearchBoard = async (category, content, size = 20) => {
+  return await axios.post(
+    `http://localhost:8080/api/post/search?postWriter=${category}&page=0&size=${size}`,
+    { data: content }
   );
 };

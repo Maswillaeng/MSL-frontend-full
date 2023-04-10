@@ -6,17 +6,21 @@ import SkeletonUi from "../components/common/SkeletonUi";
 import useIntersectionObserver from "../function/hook/useIntersectionObserver";
 import {
   boardDataState,
+  boardSizeState,
   categoryState,
   lastSliceNumState,
 } from "../recoil/atom";
 import { boardDataSliceState, sliceDataLengthState } from "../recoil/selector";
-import { getCategoryBoard } from "../function/api/board";
+import { getBoard, getCategoryBoard } from "../function/api/board";
 
 const Board = () => {
   const location = useLocation();
 
+  //게시글 사이즈
+  const [boardSize, setBoardSize] = useRecoilState(boardSizeState);
+
   //게시글 전체데이터
-  const [, setBoardData] = useRecoilState(boardDataState);
+  const [boardData, setBoardData] = useRecoilState(boardDataState);
 
   //게시글 slice 데이터
   const boardDataSlice = useRecoilValue(boardDataSliceState);
@@ -25,7 +29,7 @@ const Board = () => {
   const sliceDataLength = useRecoilValue(sliceDataLengthState);
 
   //게시글 추가 로드를 위한 상태
-  const [, setLastSliceNum] = useRecoilState(lastSliceNumState);
+  const [lastSliceNum, setLastSliceNum] = useRecoilState(lastSliceNumState);
 
   //카테고리 상태
   const [categori, setCategori] = useRecoilState(categoryState);
@@ -42,23 +46,37 @@ const Board = () => {
   //로딩 상태
   const [loading, setLoading] = useState(false);
 
+  //게시글 데이터를 가져오는 이펙트
+  useEffect(() => {
+    getBoard(boardSize).then((res) =>
+      setBoardData([...boardData, ...res.data.result])
+    );
+  }, [boardSize, setBoardData]);
+
   //카테고리를 통해 넘어왔을 때, 카테고리에 맞는 글을 셋팅
   useEffect(() => {
     if (categori !== "전체게시글")
-      getCategoryBoard(categori, 20).then((res) =>
+      getCategoryBoard(categori, boardSize).then((res) =>
         setBoardData(res.data.result.content)
       );
-  }, [categori, setBoardData]);
+  }, [boardSize, categori, setBoardData]);
 
   //무한스크롤 observe 타겟
   const target = useRef(null);
 
-  //커스텀훅 사용
+  //무한스크롤 커스텀훅 사용
   const [observe, unobserve] = useIntersectionObserver(() => {
     setLoading(true);
     setLastSliceNum((lastSliceNum) => lastSliceNum + 1);
     setLoading(false);
   });
+
+  //lastSliceNum이 4의 배수일때 한 턴 빠르게 데이터를 미리 가져올 수 있도록
+  useEffect(() => {
+    if (lastSliceNum % 4 === 0 && sliceDataLength % 4 === 0) {
+      setBoardSize(boardSize + 20);
+    }
+  }, [lastSliceNum, setBoardSize, sliceDataLength]);
 
   useEffect(() => {
     // 타겟 설정

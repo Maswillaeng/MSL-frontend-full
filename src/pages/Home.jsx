@@ -140,7 +140,7 @@ const TopMainNavBox = ({ navigate }) => {
 
 const BottomHotBox = () => {
   //게시글 데이터
-  const boardData = useRecoilValue(boardDataSliceState);
+  const boardSliceData = useRecoilValue(boardDataSliceState);
 
   //현재 불러와진 글의 개수
   const sliceDataLength = useRecoilValue(sliceDataLengthState);
@@ -159,7 +159,7 @@ const BottomHotBox = () => {
     <div className="w-75 my-5">
       <div className="ps-3 fs-1 mb-4">인기레시피</div>
       <div className="w-100 row ms-1">
-        {boardData.map((data, i) => (
+        {boardSliceData.map((data, i) => (
           <Card data={data} key={data.createAt + i} />
         ))}
       </div>

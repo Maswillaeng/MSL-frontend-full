@@ -17,10 +17,13 @@ export const sliceCountState = atom({
 //게시글 데이터
 export const boardDataState = atom({
   key: "boardDataState",
-  default: getBoard(50).then((res) => {
-    const data = res.data.result.reverse();
-    return data;
-  }),
+  default: [],
+});
+
+//게시글 사이즈
+export const boardSizeState = atom({
+  key: "boardSizeState",
+  default: 20,
 });
 
 //무한스크롤을 위한 카운트

@@ -28,6 +28,14 @@ const Home = () => {
 };
 
 const TopSearchBox = ({ navigate }) => {
+  //select 상태
+  const [option, setOption] = useState("title");
+
+  //option변경
+  const optionHandler = (e) => {
+    setOption(e.target.value);
+  };
+
   //검색 값 상태
   const [inputVal, setInputVal] = useState("");
 
@@ -42,13 +50,25 @@ const TopSearchBox = ({ navigate }) => {
    * 검색 버튼 이벤트
    */
   const buttonEvent = () => {
+    if (inputVal === "") {
+      return alert("검색어를 입력해주세요.");
+    }
     navigate("/board", {
-      state: { categori: `${inputVal}에 대한 검색결과입니다.` },
+      state: {
+        categori: `${inputVal}에 대한 검색결과입니다.`,
+        option: [option, inputVal],
+      },
     });
   };
 
   return (
     <div className="mb-3 w-100 d-flex justify-content-center align-items-center">
+      <select className="border p-2 " onChange={optionHandler}>
+        <option value={"title"}>제목</option>
+        <option value={"PostContent"}>내용</option>
+        <option value={"commentWriter"}>작성자</option>
+        <option value={"commentContent"}>댓글내용</option>
+      </select>
       <form
         onSubmit={(e) => e.preventDefault()}
         className="my-2 d-flex justify-content-center align-items-center"

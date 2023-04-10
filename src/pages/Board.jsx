@@ -11,7 +11,11 @@ import {
   lastSliceNumState,
 } from "../recoil/atom";
 import { boardDataSliceState, sliceDataLengthState } from "../recoil/selector";
-import { getBoard, getCategoryBoard } from "../function/api/board";
+import {
+  getBoard,
+  getCategoryBoard,
+  getSearchBoard,
+} from "../function/api/board";
 
 const Board = () => {
   const location = useLocation();
@@ -48,18 +52,28 @@ const Board = () => {
 
   //게시글 데이터를 가져오는 이펙트
   useEffect(() => {
-    getBoard(boardSize).then((res) =>
-      setBoardData([...boardData, ...res.data.result])
-    );
+    if (sliceDataLength % 4 !== 0)
+      getBoard(boardSize).then((res) =>
+        setBoardData([...boardData, ...res.data.result])
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boardSize, setBoardData]);
 
   //카테고리를 통해 넘어왔을 때, 카테고리에 맞는 글을 셋팅
   useEffect(() => {
-    if (categori !== "전체게시글")
-      getCategoryBoard(categori, boardSize).then((res) =>
+    if (location.state) {
+      const option = location.state.option[0];
+      const content = location.state.option[1];
+      getSearchBoard(option, content).then((res) =>
         setBoardData(res.data.result.content)
       );
-  }, [boardSize, categori, setBoardData]);
+    } else {
+      if (categori !== "전체게시글")
+        getCategoryBoard(categori, boardSize).then((res) =>
+          setBoardData(res.data.result.content)
+        );
+    }
+  }, [boardSize, categori, setBoardData, location.state]);
 
   //무한스크롤 observe 타겟
   const target = useRef(null);
@@ -73,9 +87,10 @@ const Board = () => {
 
   //lastSliceNum이 4의 배수일때 한 턴 빠르게 데이터를 미리 가져올 수 있도록
   useEffect(() => {
-    if (lastSliceNum % 4 === 0 && sliceDataLength % 4 === 0) {
+    if (lastSliceNum % 4 === 0) {
       setBoardSize(boardSize + 20);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastSliceNum, setBoardSize, sliceDataLength]);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ const ImgThumbnailBox = styled.div.attrs({
   height: 25vh;
 `;
 
-const AddImg = ({ addImgData, setImgNum, imgData, num }) => {
+const AddImg = ({ addImgData, setImgNum, num }) => {
   const [imgFile, setImgFile] = useState("");
   const target = useRef(null);
 

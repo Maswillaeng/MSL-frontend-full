@@ -15,6 +15,7 @@ import { putBoard, postBoard, getBoard } from "../function/api/board";
 import { WithContext as ReactTags } from "react-tag-input";
 import { useRecoilState } from "recoil";
 import { boardDataState } from "../recoil/atom";
+import axios from "axios";
 
 const BoardCreate = () => {
   const location = useLocation();
@@ -35,6 +36,29 @@ const BoardCreate = () => {
   //텍스트 에디터용 상태와 이벤트
   const [desc, setDesc] = useState("");
   const onEditorChange = (value) => {
+    if (value.includes("data:image")) {
+      const regex = /<img.*?src="(data:image\/png;base64,.*?)".*?>/g;
+      const matches = value.matchAll(regex);
+      for (const match of matches) {
+        const base64Data = match[1];
+        const byteString = atob(base64Data.split(",")[1]);
+        const mimeString = base64Data.split(",")[0].split(":")[1].split(";")[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeString });
+        const file = new File([blob], "image.png", { type: mimeString });
+        const formData = new FormData();
+        formData.append("image", file);
+        axios.post("http://localhost:8080/api/upload", formData, {
+          headers: {
+            "Content-Type": `multipart/form-data`,
+          },
+        });
+      }
+    }
     setDesc(value);
     setContent({
       ...content,
